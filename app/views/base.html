@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+      {% block title %}
+        Tietokantasovellus
+      {% endblock %}
+    </title>
+
+    {% block head %}
+      <!-- Bootstrap (tyylitiedosto) -->
+      <link href="{{base_path}}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Font awesome -->
+      <link href="{{base_path}}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+      <!-- Oma tyylitiedostomme -->
+      <link href="{{base_path}}/assets/css/site.css" rel="stylesheet">
+    {% endblock %}
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Sovelluksen nimi -->
+          <a class="navbar-brand" href="{{base_path}}">Tsoha Bootstrap</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navigation">
+          <ul class="nav navbar-nav">
+            <!-- Navigaation linkit -->
+            <li><a href="{{base_path}}">Etusivu</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="main-container">
+      <!-- Dynaaminen sisältö tulee tähän -->
+      {% block content %}{% endblock %}
+    </div>
+
+    {% block body %}
+      <!-- jQuery -->
+      <script src="{{base_path}}/vendor/jquery.min.js"></script>
+
+      <!-- Bootstrap (skriptitiedosto) -->
+      <script src="{{base_path}}/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+      <!-- Oma skriptitiedostomme -->
+      <script src="{{base_path}}/assets/js/site.js"></script>
+    {% endblock %}
+  </body>
+</html>

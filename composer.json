@@ -1,0 +1,11 @@
+{
+	"autoload": {
+		"classmap": [
+			"vendor/Slim/Slim.php",
+			"vendor/Twig/lib/Twig/Autoloader.php",
+			"config/database.php",
+			"lib/",
+			"app/controllers"
+		]
+	}
+}
