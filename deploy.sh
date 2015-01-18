@@ -6,13 +6,13 @@ source $DIR/config/environment.sh
 echo "Siirretään tiedostoja users-palvelimelle..."
 
 # Tämä komento siirtää tiedostot palvelimelta
-rsync -r $DIR/ $USERNAME@users.cs.helsinki.fi:htdocs/$PROJECT_FOLDER
+rsync -r $DIR/app $DIR/assets $DIR/config $DIR/lib $DIR/sql $DIR/vendor index.php composer.json $USERNAME@users.cs.helsinki.fi:htdocs/$PROJECT_FOLDER
 
 echo "Valmis!"
 
-echo "Generoidaan Composerilla classmap_autoload.php-tiedosto..."
+echo "Suoritetaan php composer.phar dump-autoload..."
 
-# Päivitetään autoload_classmap.php-tiedosto
+# Suoritetaan php composer.phar dump-autoload
 ssh $USERNAME@users.cs.helsinki.fi "
 cd htdocs/$PROJECT_FOLDER
 php composer.phar dump-autoload

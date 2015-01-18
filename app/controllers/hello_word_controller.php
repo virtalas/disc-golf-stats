@@ -3,7 +3,7 @@
   class HelloWorldController extends BaseController{
 
     public static function index(){
-   	  self::render_view('home.html');
+   	  View::make('home.html');
     }
 
     public static function sandbox(){
