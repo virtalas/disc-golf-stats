@@ -1,5 +1,9 @@
 <?php
 
+  // Laitetaan virheilmoitukset näkymään
+  error_reporting(E_ALL);
+  ini_set('display_errors', '1');
+
   // Selvitetään, missä kansiossa index.php on
   $script_name = $_SERVER['SCRIPT_NAME'];
   $explode =  explode('/', $script_name);

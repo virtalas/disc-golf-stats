@@ -1,3 +1,4 @@
+#!/bin/sh
 source config/environment.sh
 
 echo "Luodaan projektikansio..."
@@ -16,10 +17,10 @@ exit"
 
 echo "Valmis!"
 
-echo "Siirretään tiedostot palvelimelle..."
+echo "Siirretään tiedostot users-palvelimelle..."
 
 # Siirretään tiedostot palvelimelle
-scp -r app config lib vendor sql assets index.php composer.json $USERNAME@users.cs.helsinki.fi:htdocs/$PROJECT_FOLDER
+scp --progress -r app config lib vendor sql assets index.php composer.json $USERNAME@users.cs.helsinki.fi:htdocs/$PROJECT_FOLDER
 
 echo "Valmis!"
 
