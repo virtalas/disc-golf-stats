@@ -1,4 +1,4 @@
-# Tietokantasovelluksen esittelysiv
+# Tietokantasovelluksen esittelysivu
 
 Yleisiä linkkejä:
 
