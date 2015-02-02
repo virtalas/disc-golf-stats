@@ -1,6 +1,6 @@
 <?php
 /*
- *  Tämä ohjelmakoodi on muokattu versio alkuperäisesti David Consuegran veriosta, joka löytyy täältä: 
+ *  Tämä ohjelmakoodi on muokattu versio alkuperäisesti David Consuegran veriosta, joka löytyy täältä:
  *  http://advancedkittenry.github.io/koodaaminen/testisovellus.html
  */
 

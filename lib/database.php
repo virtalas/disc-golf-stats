@@ -26,7 +26,7 @@
       }
 
       public static function test_connection(){
-        require 'vendor/connectiontest/connectiontest.php';
+        require 'vendor/ConnectionTest/connection_test.php';
 
         exit();
       }
