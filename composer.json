@@ -2,12 +2,13 @@
 	"autoload": {
 		"classmap": [
 			"config/database.php",
-			"lib/",
+			"lib",
 			"app/controllers"
 		]
 	},
 	"require": {
 		"slim/slim": "2.*",
-		"twig/twig": "~1.0"
+		"twig/twig": "~1.0",
+		"raveren/kint": "v0.9"
 	}
 }
