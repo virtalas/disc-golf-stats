@@ -1,4 +1,3 @@
-#!/bin/sh
 source config/environment.sh
 
 echo "Luodaan tietokantaulut..."

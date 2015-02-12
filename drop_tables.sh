@@ -1,4 +1,3 @@
-#!/bin/sh
 source config/environment.sh
 
 echo "Poistetaan tietokantataulut..."
