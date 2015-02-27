@@ -8,7 +8,7 @@
 	},
 	"require": {
 		"slim/slim": "2.*",
-		"twig/twig": "~1.0",
+		"twig/twig": "~1.5",
 		"raveren/kint": "v0.9"
 	}
 }
