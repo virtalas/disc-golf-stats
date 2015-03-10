@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source config/environment.sh
 
 echo "Luodaan projektikansio..."
