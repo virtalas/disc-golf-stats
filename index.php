@@ -29,6 +29,7 @@
   require 'vendor/autoload.php';
 
   $routes = new \Slim\Slim();
+  $routes->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 
   $routes->get('/tietokantayhteys', function(){
     DB::test_connection();
