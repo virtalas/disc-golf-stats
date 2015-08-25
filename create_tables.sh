@@ -2,7 +2,7 @@
 
 source config/environment.sh
 
-echo "Luodaan tietokantaulut..."
+echo "Luodaan tietokantataulut..."
 
 ssh $USERNAME@users.cs.helsinki.fi "
 cd htdocs/$PROJECT_FOLDER/sql
