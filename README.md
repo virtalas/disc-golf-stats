@@ -2,9 +2,9 @@
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni](https://www.cs.helsinki.fi)
-* [Linkki dokumentaatiooni](https://www.github.com)
+* [Linkki sovellukseeni](http://lassvirt.users.cs.helsinki.fi/tsoha)
+* [Linkki dokumentaatiooni](https://github.com/virtalas/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
 ## Työn aihe
 
-Laita tähän aihekuvaus tai [linkki valmiiseen aiheeseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Pokemon-kanta.html) 
+Frisbeegolf-tulospalvelu pitää kirjaa pelaajien väylillä heittämistä heitoista, sekä pelattujen kierrosten rataolosuhteista. Käyttäjä ottaa ylös kierroksensa aikana tulokset ja syöttää ne rataolosuhteiden kanssa palveluun valittuaan oikean radan. Käyttäjä pystyy näkemään pelaamansa pelit ja niiden tiedot, sekä lisäämään omia frisbeegolfratojaan. Palvelu näyttää lisäksi sekä käyttäjäkohtaisia että kaikkiin käyttäjiin perustuvia tilastoja.
