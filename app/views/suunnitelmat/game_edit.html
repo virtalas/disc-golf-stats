@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Muokkaa peliä</h2>
+
+<form>
+	<div class="form-group">
+		<label for="exampleInputEmail1">Valitse rata</label>
+		<select class="form-control" id="course">
+			<option>Meilahti</option>
+		</select>
+	</div>
+
+	<div class="form-group">
+		<label for="gameDate">Päivämäärä (YYYY-MM-DD HH:MM)</label>
+		<input class="form-control" id="gameDate">
+	</div>
+
+	<div class="form-group">
+		<label>Valitse olosuhteet</label>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" class="wet"> Sadetta
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" class="wet_no_rain"> Märkää (ei sadetta)
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" class="wind"> Tuulista
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" class="variant"> Poikkeava rata
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" class="dark"> Pimeää
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" class="led"> LED
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" class="snow"> Lunta
+			</label>
+		</div>
+  	</div>
+
+  	<label>Väylien tulokset</label>
+
+  	<table>
+  		<tr>
+  			<td>1</td>
+  			<td>2</td>
+  			<td>3</td>
+  			<td>4</td>
+  			<td>5</td>
+  			<td>6</td>
+  			<td>7</td>
+  			<td>8</td>
+  			<td>9</td>
+  			<td>10</td>
+  			<td>11</td>
+  			<td>12</td>
+  			<td>13</td>
+  			<td>14</td>
+  			<td>15</td>
+  			<td>16</td>
+  			<td>17</td>
+  			<td>18</td>
+  		</tr>
+  		<tr>
+  			<td><input class="form-control" class="hole1"></td>
+  			<td><input class="form-control" class="hole2"></td>
+  			<td><input class="form-control" class="hole3"></td>
+  			<td><input class="form-control" class="hole4"></td>
+  			<td><input class="form-control" class="hole5"></td>
+  			<td><input class="form-control" class="hole6"></td>
+  			<td><input class="form-control" class="hole7"></td>
+  			<td><input class="form-control" class="hole8"></td>
+  			<td><input class="form-control" class="hole9"></td>
+  			<td><input class="form-control" class="hole10"></td>
+  			<td><input class="form-control" class="hole11"></td>
+  			<td><input class="form-control" class="hole12"></td>
+  			<td><input class="form-control" class="hole13"></td>
+  			<td><input class="form-control" class="hole14"></td>
+  			<td><input class="form-control" class="hole15"></td>
+  			<td><input class="form-control" class="hole16"></td>
+  			<td><input class="form-control" class="hole17"></td>
+  			<td><input class="form-control" class="hole18"></td>
+  		</tr>
+  	</table>
+
+  	<label>OB</label>
+
+  	<table>
+  		<tr>
+  			<td>1</td>
+  			<td>2</td>
+  			<td>3</td>
+  			<td>4</td>
+  			<td>5</td>
+  			<td>6</td>
+  			<td>7</td>
+  			<td>8</td>
+  			<td>9</td>
+  			<td>10</td>
+  			<td>11</td>
+  			<td>12</td>
+  			<td>13</td>
+  			<td>14</td>
+  			<td>15</td>
+  			<td>16</td>
+  			<td>17</td>
+  			<td>18</td>
+  		</tr>
+  		<tr>
+  			<td><input class="form-control" class="obhole1"></td>
+  			<td><input class="form-control" class="obhole2"></td>
+  			<td><input class="form-control" class="obhole3"></td>
+  			<td><input class="form-control" class="obhole4"></td>
+  			<td><input class="form-control" class="obhole5"></td>
+  			<td><input class="form-control" class="obhole6"></td>
+  			<td><input class="form-control" class="obhole7"></td>
+  			<td><input class="form-control" class="obhole8"></td>
+  			<td><input class="form-control" class="obhole9"></td>
+  			<td><input class="form-control" class="obhole10"></td>
+  			<td><input class="form-control" class="obhole11"></td>
+  			<td><input class="form-control" class="obhole12"></td>
+  			<td><input class="form-control" class="obhole13"></td>
+  			<td><input class="form-control" class="obhole14"></td>
+  			<td><input class="form-control" class="obhole15"></td>
+  			<td><input class="form-control" class="obhole16"></td>
+  			<td><input class="form-control" class="obhole17"></td>
+  			<td><input class="form-control" class="obhole18"></td>
+  		</tr>
+  	</table>
+
+	<button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+{% endblock %}

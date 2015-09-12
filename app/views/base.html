@@ -7,7 +7,7 @@
 
     <title>
       {% block title %}
-        Tietokantasovellus
+        Frisbeegolf-tulospalvelu
       {% endblock %}
     </title>
 
@@ -33,13 +33,19 @@
             <span class="icon-bar"></span>
           </button>
           <!-- Sovelluksen nimi -->
-          <a class="navbar-brand" href="{{base_path}}">Tsoha Bootstrap</a>
+          <a class="navbar-brand" href="{{base_path}}">Frisbeegolf-tulospalvelu</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navigation">
           <ul class="nav navbar-nav">
             <!-- Navigaation linkit -->
-            <li><a href="{{base_path}}">Etusivu</a></li>
+            <li><a href="{{base_path}}/stats">Tilastot</a></li>
+            <li><a href="{{base_path}}/games">Pelit</a></li>
+            <li><a href="{{base_path}}/courses">Radat</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{base_path}}/sign_in">Kirjaudu sisään</a></li>
           </ul>
         </div>
       </div>
