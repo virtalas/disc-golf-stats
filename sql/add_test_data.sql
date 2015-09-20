@@ -21,6 +21,27 @@ INSERT INTO hole (courseid, hole_num, par) VALUES (1, 16, 3);
 INSERT INTO hole (courseid, hole_num, par) VALUES (1, 17, 3);
 INSERT INTO hole (courseid, hole_num, par) VALUES (1, 18, 4);
 
+INSERT INTO course (name, city) VALUES ('Kivikko', 'Helsinki');
+
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 1, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 2, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 3, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 4, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 5, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 6, 4);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 7, 4);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 8, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 9, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 10, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 11, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 12, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 13, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 14, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 15, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 16, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 17, 3);
+INSERT INTO hole (courseid, hole_num, par) VALUES (2, 18, 3);
+
 INSERT INTO game (courseid, gamedate, windy) VALUES (1, NOW(), true);
 
 INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (1, 1, 1, 6, 1);

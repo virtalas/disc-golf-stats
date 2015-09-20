@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Radat</h1>
+
+  <p>
+    <a href="{{base_path}}/course/new" class="btn btn-success">Lisää rata</a>
+  </p>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Nimi</th>
+        <th>Kaupunki</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for course in courses %}
+        <tr>
+          <td><a href="{{base_path}}/course/{{course.courseid}}">{{course.name}}</a></td>
+          <td>{{course.city}}</td>
+          <td><a class="btn btn-default btn-sm" href="{{base_path}}/course/{{course.courseid}}/edit">Muokkaa</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

@@ -16,6 +16,26 @@
     HelloWorldController::courses();
   });
 
+  // Ratojen listaussivu
+  $routes->get('/course', function() {
+    CourseController::index();
+  });
+
+  // Radan lisääminen tietokantaan
+  $routes->post('/course', function(){
+    CourseController::store();
+  });
+
+  // Radan lisäyssivu
+  $routes->get('/course/new', function(){
+    CourseController::create();
+  });
+
+  // Radan esittelysivu
+  $routes->get('/course/:courseid', function($courseid){
+    CourseController::show($courseid);
+  });
+
   $routes->get('/sign_in', function() {
     HelloWorldController::sign_in();
   });

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+  {% if message is not null %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+
+  <h2>{{course.name}}, {{course.city}}</h2>
+
+  <table style="width:300px">
+    <tr>
+      <td>Pelatut pelit:</td>
+      <td>{{games_played}}</td>
+    </tr>
+    <tr>
+      <td>Viimeisin peli:</td>
+      <td>{{latest_game_date}}</td>
+    </tr>
+  </table>
+
+  <br><br>
+
+  <a href="#">Kaikki pelit radalla</a>
+
+  <br><br>
+
+  <h3>Väylät</h3>
+
+  <table width='350px'>
+    <tr>
+      <td>Väylä</td>
+      <td>&nbsp;</td>
+      {% for hole in holes %}
+        <td class='td1'>{{hole.hole_num}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>Par</td>
+      <td>&nbsp;</td>
+      {% for hole in holes %}
+        <td class='td1'>{{hole.par}}</td>
+      {% endfor %}
+    </tr>
+  </table>
+
+{% endblock %}

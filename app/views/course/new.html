@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h2>Lisää rata</h2>
+
+  <form method="post" action="{{base_path}}/course">
+    <div class="form-group">
+      <label for="name">Radan nimi</label>
+      <input class="form-control" name="name">
+    </div>
+    <div class="form-group">
+      <label for="city">Radan kaupunki</label>
+      <input class="form-control" name="city">
+    </div>
+
+    <label>Par-tulokset</label>
+
+    <table>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+          <td>13</td>
+          <td>14</td>
+          <td>15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td><input class="form-control" name="hole1" value="3"></td>
+          <td><input class="form-control" name="hole2" value="3"></td>
+          <td><input class="form-control" name="hole3" value="3"></td>
+          <td><input class="form-control" name="hole4" value="3"></td>
+          <td><input class="form-control" name="hole5" value="3"></td>
+          <td><input class="form-control" name="hole6" value="3"></td>
+          <td><input class="form-control" name="hole7" value="3"></td>
+          <td><input class="form-control" name="hole8" value="3"></td>
+          <td><input class="form-control" name="hole9" value="3"></td>
+          <td><input class="form-control" name="hole10" value="3"></td>
+          <td><input class="form-control" name="hole11" value="3"></td>
+          <td><input class="form-control" name="hole12" value="3"></td>
+          <td><input class="form-control" name="hole13" value="3"></td>
+          <td><input class="form-control" name="hole14" value="3"></td>
+          <td><input class="form-control" name="hole15" value="3"></td>
+          <td><input class="form-control" name="hole16" value="3"></td>
+          <td><input class="form-control" name="hole17" value="3"></td>
+          <td><input class="form-control" name="hole18" value="3"></td>
+        </tr>
+      </table>
+
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+
+{% endblock %}

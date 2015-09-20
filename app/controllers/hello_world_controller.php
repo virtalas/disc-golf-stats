@@ -26,7 +26,11 @@
 
     public static function sandbox() {
       // Testaa koodiasi täällä
-      View::make('helloworld.html');
+      $player = Player::find(1);
+      $players = Player::all();
+      // Kint-luokan dump-metodi tulostaa muuttujan arvon
+      Kint::dump($players);
+      Kint::dump($player);
     }
 
     public static function course_info() {
