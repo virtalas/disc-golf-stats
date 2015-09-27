@@ -5,6 +5,8 @@ Yleisiä linkkejä:
 * [Linkki sovellukseeni](http://lassvirt.users.cs.helsinki.fi/tsoha)
 * [Linkki dokumentaatiooni](https://github.com/virtalas/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
+Sisäänkirjautuminen onnistuu käyttäjätunnuksella 'teppo' ja salasanalla 'salasana'.
+
 Suunnitelmasivut:
 
 * [Tilastot](http://lassvirt.users.cs.helsinki.fi/tsoha/stats)

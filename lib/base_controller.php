@@ -3,7 +3,16 @@
   class BaseController{
 
     public static function get_user_logged_in(){
-      // Toteuta kirjautuneen käyttäjän haku tähän
+      // Katsotaan onko user-avain sessiossa
+      if(isset($_SESSION['user'])){
+        $user_id = $_SESSION['user'];
+        // Pyydetään User-mallilta käyttäjä session mukaisella id:llä
+        $user = Player::find($user_id);
+
+        return $user;
+      }
+
+      // Käyttäjä ei ole kirjautunut sisään
       return null;
     }
 

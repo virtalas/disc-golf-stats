@@ -6,6 +6,7 @@
 
     public function __construct($attributes) {
       parent::__construct($attributes);
+      $this->validators = array('validate_name', 'validate_city');
     }
 
     public function save() {
@@ -17,6 +18,22 @@
       $this->courseid = $row['courseid'];
 
       return $this->courseid;
+    }
+
+    public function update() {
+      $sql = "UPDATE course SET name = :name, city = :city WHERE courseid = :courseid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array(
+        'name' => $this->name,
+        'city' => $this->city,
+        'courseid' => $this->courseid
+      ));
+    }
+
+    public function destroy() {
+      $sql = "DELETE FROM course WHERE courseid = :courseid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $this->courseid));
     }
 
     public static function all() {
@@ -74,6 +91,19 @@
       return null;
     }
 
+    public static function next_courseid() {
+      $sql = "SELECT MAX(courseid) + 1 as next_courseid FROM course";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $row = $query->fetch();
+
+      if ($row) {
+        return $row['next_courseid'];
+      }
+
+      return null;
+    }
+
     public static function get_course_from_row($row) {
       if ($row) {
         $course = new Course(array(
@@ -86,5 +116,15 @@
       }
 
       return null;
+    }
+
+    // Validators
+
+    public function validate_name() {
+      return $this->validate_string_not_empty($this->name, "Nimi");
+    }
+
+    public function validate_city() {
+      return $this->validate_string_not_empty($this->city, "Kaupunki");
     }
   }

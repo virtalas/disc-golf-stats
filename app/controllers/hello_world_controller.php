@@ -26,11 +26,19 @@
 
     public static function sandbox() {
       // Testaa koodiasi täällä
-      $player = Player::find(1);
-      $players = Player::all();
-      // Kint-luokan dump-metodi tulostaa muuttujan arvon
-      Kint::dump($players);
-      Kint::dump($player);
+      $course = new Course(array(
+        'name' => '',
+        'city' => ''
+      ));
+
+      $errors = $course->errors();
+      Kint::dump($errors);
+
+      $hole = new Hole(array('hole_num' => 'yksi', 'par' => 'kolme'));
+      $errors = $hole->errors();
+      Kint::dump($errors);
+
+      echo Course::next_courseid();
     }
 
     public static function course_info() {

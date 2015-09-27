@@ -6,6 +6,7 @@
 
   	public function __construct($attributes) {
   		parent::__construct($attributes);
+      $this->validators = array('validate_hole_num_and_par');
   	}
 
     public function save() {
@@ -17,6 +18,18 @@
                             'par' => $this->par));
       $row = $query->fetch();
       $this->holeid = $row['holeid'];
+    }
+
+    public function update() {
+      $sql = "UPDATE hole SET par = :par WHERE holeid = :holeid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('par' => $this->par, 'holeid' => $this->holeid));
+    }
+
+    public function destroy() {
+      $sql = "DELETE FROM hole WHERE holeid = :holeid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('holeid' => $this->holeid));
     }
 
   	public static function all() {
@@ -47,7 +60,7 @@
     }
 
     public static function course_holes($courseid) {
-      $sql ="SELECT * FROM hole WHERE courseid = :courseid ORDER BY hole_num";
+      $sql = "SELECT * FROM hole WHERE courseid = :courseid ORDER BY hole_num";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $courseid));
       $rows = $query->fetchAll();
@@ -68,5 +81,15 @@
       }
 
       return $holes;
+    }
+
+    // Validators
+
+    public function validate_hole_num_and_par() {
+      $hole_num_errors = $this->validate_integer($this->hole_num, "Väylän numeron");
+      $par_errors = $this->validate_integer($this->par, "Par-tuloksen");
+
+      $errors = array_merge($hole_num_errors, $par_errors);
+      return $errors;
     }
   }

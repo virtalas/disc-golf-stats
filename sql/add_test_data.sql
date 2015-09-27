@@ -1,4 +1,4 @@
-INSERT INTO player (firstname, username, password) VALUES ('Teppo', 'teppoppo', 'poppopoo');
+INSERT INTO player (firstname, username, password) VALUES ('Teppo', 'teppo', 'salasana');
 
 INSERT INTO course (name, city) VALUES ('Tali', 'Helsinki');
 

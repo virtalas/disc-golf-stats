@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-  <h2>Lisää rata</h2>
+  <h2>Muokkaa rataa</h2>
 
   {% if errors %}
     <div class="alert alert-danger">
@@ -13,7 +13,7 @@
     </div>
   {% endif %}
 
-  <form method="post" action="{{base_path}}/course">
+  <form method="post" action="{{base_path}}/course/{{attributes.courseid}}/edit">
     <div class="form-group">
       <label for="name">Radan nimi</label>
       <input class="form-control" name="name" value="{{attributes.name}}">

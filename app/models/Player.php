@@ -8,6 +8,25 @@
   		parent::__construct($attributes);
   	}
 
+    public static function authenticate($username, $password) {
+      $sql = "SELECT * FROM Player WHERE username = :username AND password = :password LIMIT 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('username' => $username, 'password' => $password));
+      $row = $query->fetch();
+
+      if($row){
+        $player = new Player(array(
+          'playerid' => $row['playerid'],
+          'firstname' => $row['firstname'],
+          'lastname' => $row['lastname'],
+          'username' => $row['username']
+        ));
+        return $player;
+      }else{
+        return null;
+      }
+    }
+
   	public static function all() {
   		$query = DB::connection()->prepare('SELECT * FROM player');
   		$query->execute();
@@ -28,9 +47,10 @@
   	}
 
   	public static function find($playerid){
-  	    $query = DB::connection()->prepare('SELECT * FROM player WHERE playerid = :playerid LIMIT 1');
-  	    $query->execute(array('playerid' => $playerid));
-  	    $row = $query->fetch();
+      $sql = "SELECT * FROM player WHERE playerid = :playerid LIMIT 1";
+	    $query = DB::connection()->prepare($sql);
+	    $query->execute(array('playerid' => $playerid));
+	    $row = $query->fetch();
 
       if ($row) {
   			$player = new Player(array(

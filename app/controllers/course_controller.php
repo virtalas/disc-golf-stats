@@ -31,10 +31,13 @@
         'city' => $params['city']
       );
       $course = new Course($course_params);
-      $courseid = $course->save();
+      $errors = $course->errors();
 
-      // Create course holes
+      $courseid = Course::next_courseid();
       $number_of_holes = count($params) - count($course_params);
+
+      // Check hole validity before saving anything
+      $holes = array();
       for ($hole_num = 1; $hole_num <= $number_of_holes; $hole_num++) {
         $par = $params['hole'. $hole_num];
         $hole = new Hole(array(
@@ -42,9 +45,85 @@
           'hole_num' => $hole_num,
           'par' => $par
         ));
-        $hole->save();
+        $holes[] = $hole;
+        $errors = array_merge($errors, $hole->errors());
       }
 
-      Redirect::to('/course/'. $courseid, array('message' => 'Rata lisätty.'));
+      if (count($errors) == 0) {
+        // Course and holes were all valid
+        $course->save();
+
+        foreach ($holes as $hole) {
+          $hole->save();
+        }
+
+        Redirect::to('/course/'. $courseid, array('message' => 'Rata ja sen väylät lisätty.'));
+      } else {
+        View::make('course/new.html', array('errors' => $errors, 'attributes' => $params));
+      }
+    }
+
+    public static function edit($courseid) {
+      $course = Course::find($courseid);
+      $attributes = array(
+        'courseid' => $course->courseid,
+        'name' => $course->name,
+        'city' => $course->city
+      );
+
+      $hole_num = 1;
+      foreach (Hole::course_holes($course->courseid) as $hole) {
+        $attributes = array_merge($attributes, array('hole'. $hole_num => $hole->par));
+        $hole_num++;
+      }
+
+      View::make('course/edit.html', array('attributes' => $attributes));
+    }
+
+    public static function update($courseid) {
+      $params = $_POST;
+
+      $course_params = array(
+        'courseid' => $courseid,
+        'name' => $params['name'],
+        'city' => $params['city']
+      );
+      $course = new Course($course_params);
+      $errors = $course->errors();
+
+      // Check hole validity before saving anything
+      $holes = Hole::course_holes($courseid);
+
+      foreach ($holes as $hole) {
+        $hole->par = $params['hole'. $hole->hole_num];
+        $errors = array_merge($errors, $hole->errors());
+      }
+
+      if (count($errors) == 0) {
+        // Course and holes were all valid
+        $course->update();
+
+        foreach ($holes as $hole) {
+          $hole->update();
+        }
+
+        Redirect::to('/course/'. $courseid, array('message' => 'Rata ja sen väylät päivitetty.'));
+      } else {
+        View::make('course/new.html', array('errors' => $errors, 'attributes' => $params));
+      }
+    }
+
+    public static function destroy($courseid) {
+      // Destroy both the course and its holes.
+      $course = new Course(array('courseid' => $courseid));
+      $holes = Hole::course_holes($course->courseid);
+
+      foreach ($holes as $hole) {
+        $hole->destroy();
+      }
+
+      $course->destroy();
+
+      Redirect::to('/course', array('message' => 'Rata poistettu.'));
     }
   }

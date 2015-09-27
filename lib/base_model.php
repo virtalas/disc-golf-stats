@@ -21,9 +21,29 @@
 
       foreach($this->validators as $validator){
         // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
+        $errors = array_merge($errors, $this->{$validator}());
       }
 
       return $errors;
     }
 
+    public function validate_string_not_empty($string, $type) {
+      $errors = array();
+
+      if ($string == '' || $string == null) {
+        $errors[] = $type. ' ei saa olla tyhjä.';
+      }
+
+      return $errors;
+    }
+
+    public function validate_integer($integer, $type) {
+      $errors = array();
+
+      if (!is_numeric($integer)) {
+        $errors[] = $type. ' pitää olla numero.';
+      }
+
+      return $errors;
+    }
   }

@@ -36,6 +36,31 @@
     CourseController::show($courseid);
   });
 
+  // Radan muokkauslomakkeen esittäminen
+  $routes->get('/course/:courseid/edit', function($courseid){
+    CourseController::edit($courseid);
+  });
+
+  // Radan muokkaaminen
+  $routes->post('/course/:courseid/edit', function($courseid){
+    CourseController::update($courseid);
+  });
+
+  // Radan poisto
+  $routes->post('/course/:courseid/destroy', function($courseid){
+    CourseController::destroy($courseid);
+  });
+
+  // Kirjautumislomakkeen esittäminen
+  $routes->get('/login', function(){
+    UserController::login();
+  });
+
+  // Kirjautumisen käsittely
+  $routes->post('/login', function(){
+    UserController::handle_login();
+  });
+
   $routes->get('/sign_in', function() {
     HelloWorldController::sign_in();
   });
