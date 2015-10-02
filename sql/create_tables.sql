@@ -2,7 +2,7 @@ CREATE TABLE Player(
 playerid SERIAL PRIMARY KEY,
 firstname varchar(50) NOT NULL,
 lastname varchar(50),
-username varchar(50) NOT NULL,
+username varchar(50) UNIQUE NOT NULL,
 password varchar(50) NOT NULL
 );
 

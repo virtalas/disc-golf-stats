@@ -65,7 +65,7 @@
       $query->execute(array('courseid' => $courseid));
       $rows = $query->fetchAll();
       
-      return Hole::get_holes_from_rows($rows);
+      return self::get_holes_from_rows($rows);
     }
 
     public static function get_holes_from_rows($rows) {

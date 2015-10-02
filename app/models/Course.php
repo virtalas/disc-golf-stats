@@ -2,7 +2,7 @@
 
   class Course extends BaseModel {
 
-    public $courseid, $name, $city;
+    public $courseid, $name, $city, $holes, $number_of_holes;
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -34,6 +34,15 @@
       $sql = "DELETE FROM course WHERE courseid = :courseid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $this->courseid));
+    }
+
+    public function prepare() {
+      $this->load_holes();
+    }
+
+    private function load_holes() {
+      $this->holes = Hole::course_holes($this->courseid);
+      $this->number_of_holes = count($this->holes);
     }
 
     public static function all() {
@@ -86,19 +95,6 @@
 
       if ($row) {
         return $row['gamedate'];
-      }
-
-      return null;
-    }
-
-    public static function next_courseid() {
-      $sql = "SELECT MAX(courseid) + 1 as next_courseid FROM course";
-      $query = DB::connection()->prepare($sql);
-      $query->execute();
-      $row = $query->fetch();
-
-      if ($row) {
-        return $row['next_courseid'];
       }
 
       return null;

@@ -1,5 +1,9 @@
 <?php
 
+  function check_logged_in(){
+    BaseController::check_logged_in();
+  }
+
   $routes->get('/', function() {
     HelloWorldController::stats();
   });
@@ -8,47 +12,62 @@
     HelloWorldController::stats();
   });
 
-  $routes->get('/games', function() {
+  $routes->get('/games', 'check_logged_in', function() {
     HelloWorldController::games();
   });
 
-  $routes->get('/courses', function() {
+  $routes->get('/courses', 'check_logged_in', function() {
     HelloWorldController::courses();
   });
 
   // Ratojen listaussivu
-  $routes->get('/course', function() {
+  $routes->get('/course', 'check_logged_in', function() {
     CourseController::index();
   });
 
   // Radan lisääminen tietokantaan
-  $routes->post('/course', function(){
+  $routes->post('/course', 'check_logged_in', function(){
     CourseController::store();
   });
 
   // Radan lisäyssivu
-  $routes->get('/course/new', function(){
+  $routes->get('/course/new', 'check_logged_in', function(){
     CourseController::create();
   });
 
   // Radan esittelysivu
-  $routes->get('/course/:courseid', function($courseid){
+  $routes->get('/course/:courseid', 'check_logged_in', function($courseid){
     CourseController::show($courseid);
   });
 
   // Radan muokkauslomakkeen esittäminen
-  $routes->get('/course/:courseid/edit', function($courseid){
+  $routes->get('/course/:courseid/edit', 'check_logged_in', function($courseid){
     CourseController::edit($courseid);
   });
 
   // Radan muokkaaminen
-  $routes->post('/course/:courseid/edit', function($courseid){
+  $routes->post('/course/:courseid/edit', 'check_logged_in', function($courseid){
     CourseController::update($courseid);
   });
 
   // Radan poisto
-  $routes->post('/course/:courseid/destroy', function($courseid){
+  $routes->post('/course/:courseid/destroy', 'check_logged_in', function($courseid){
     CourseController::destroy($courseid);
+  });
+
+  // Pelien listaussivu
+  $routes->get('/game', 'check_logged_in', function() {
+    GameController::index();
+  });
+
+  // Pelin lisääminen tietokantaan
+  $routes->post('/game', 'check_logged_in', function(){
+    GameController::store();
+  });
+
+  // Pelin lisäyssivu
+  $routes->get('/game/new', 'check_logged_in', function(){
+    GameController::create();
   });
 
   // Kirjautumislomakkeen esittäminen
@@ -59,6 +78,11 @@
   // Kirjautumisen käsittely
   $routes->post('/login', function(){
     UserController::handle_login();
+  });
+
+  // Uloskirjautuminen
+  $routes->post('/logout', function(){
+    UserController::logout();
   });
 
   $routes->get('/sign_in', function() {

@@ -42,7 +42,7 @@ INSERT INTO hole (courseid, hole_num, par) VALUES (2, 16, 3);
 INSERT INTO hole (courseid, hole_num, par) VALUES (2, 17, 3);
 INSERT INTO hole (courseid, hole_num, par) VALUES (2, 18, 3);
 
-INSERT INTO game (courseid, gamedate, windy) VALUES (1, NOW(), true);
+INSERT INTO game (courseid, gamedate, windy) VALUES (1, '2015-09-20 17:00:00', true);
 
 INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (1, 1, 1, 6, 1);
 INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (1, 2, 1, 3, 0);
@@ -62,3 +62,24 @@ INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (1, 15, 1, 3, 0)
 INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (1, 16, 1, 3, 0);
 INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (1, 17, 1, 3, 0);
 INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (1, 18, 1, 5, 1);
+
+INSERT INTO game (courseid, gamedate, rain, windy, comment) VALUES (2, NOW(), true, true, 'Väylän 6 korista oli irronnut ketju.');
+
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 19, 1, 3, 1);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 20, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 21, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 22, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 23, 1, 4, 2);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 24, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 25, 1, 4, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 26, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 27, 1, 5, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 28, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 29, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 30, 1, 3, 1);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 31, 1, 4, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 32, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 33, 1, 2, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 34, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 35, 1, 3, 0);
+INSERT INTO score (gameid, holeid, playerid, stroke, ob) VALUES (2, 36, 1, 4, 1);

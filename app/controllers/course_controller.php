@@ -1,8 +1,13 @@
 <?php
 
   class CourseController extends BaseController {
+
     public static function index() {
       $courses = Course::all();
+
+      foreach ($courses as $course) {
+        $course->prepare();
+      }
 
       View::make('course/index.html', array('courses' => $courses));
     }
@@ -33,7 +38,6 @@
       $course = new Course($course_params);
       $errors = $course->errors();
 
-      $courseid = Course::next_courseid();
       $number_of_holes = count($params) - count($course_params);
 
       // Check hole validity before saving anything
@@ -41,7 +45,6 @@
       for ($hole_num = 1; $hole_num <= $number_of_holes; $hole_num++) {
         $par = $params['hole'. $hole_num];
         $hole = new Hole(array(
-          'courseid' => $courseid,
           'hole_num' => $hole_num,
           'par' => $par
         ));
@@ -51,9 +54,11 @@
 
       if (count($errors) == 0) {
         // Course and holes were all valid
-        $course->save();
+        $courseid = $course->save();
+        $course->number_of_holes = count($holes);
 
         foreach ($holes as $hole) {
+          $hole->courseid = $courseid;
           $hole->save();
         }
 
