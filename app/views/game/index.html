@@ -60,7 +60,7 @@
   </table>
 
   {% for game in games %}
-    <br><br>
+    <br><br><br>
     <table id='card'>
       <tr>
         <th colspan=30>{{game.course.name}}</th>
@@ -169,6 +169,8 @@
       {% endif %}
 
     </table>
+
+    <a href="{{base_path}}/game/{{game.gameid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
 
   {% endfor %}
 

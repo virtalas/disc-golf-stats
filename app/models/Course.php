@@ -2,7 +2,8 @@
 
   class Course extends BaseModel {
 
-    public $courseid, $name, $city, $holes, $number_of_holes;
+    public $courseid, $name, $city, // Ready to use after creation
+            $holes, $number_of_holes; // Need to be prepared via prepare()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -53,11 +54,13 @@
       $courses = array();
 
       foreach ($rows as $row) {
-        $courses[] = new Course(array(
+        $course = new Course(array(
           'courseid' => $row['courseid'],
           'name' => $row['name'],
           'city' => $row['city']
         ));
+        $course->prepare();
+        $courses[] = $course;
       }
 
       return $courses;
@@ -107,6 +110,7 @@
           'name' => $row['name'],
           'city' => $row['city']
         ));
+        $course->prepare();
 
         return $course;
       }

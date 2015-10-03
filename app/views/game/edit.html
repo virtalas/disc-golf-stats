@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 
-  <h2>Lisää peli radalle {{course.name}}, {{course.city}}</h2>
+  {% import "macros/forms.html" as forms %}
+
+  <h2>Muokkaa peliä radalla {{game.course.name}}, {{game.course.city}}</h2>
+
+  {{forms.destroy_button("#{base_path}/game/#{game.gameid}/destroy")}}
+
+  <br>
 
   {% if errors %}
     <div class="alert alert-danger">
@@ -15,13 +21,13 @@
 
   <br>
 
-  <form method="post" action="{{base_path}}/game">
+  <form method="post" action="{{base_path}}/game/{{game.gameid}}/edit">
     <div class="form-group">
       <label>Valitse olosuhteet</label>
       <div class="checkbox">
         <label>
           <input type="checkbox" name="rain" value="1"
-            {% if attributes.rain %}
+            {% if game.rain %}
               checked
             {% endif %}
           > Sadetta (rain)
@@ -31,7 +37,7 @@
       <div class="checkbox">
         <label>
           <input type="checkbox" name="wet_no_rain" value="1"
-            {% if attributes.wet_no_rain %}
+            {% if game.wet_no_rain %}
               checked
             {% endif %}
           > Märkää (ei sadetta) (wet_no_rain)
@@ -41,7 +47,7 @@
       <div class="checkbox">
         <label>
           <input type="checkbox" name="windy" value="1"
-            {% if attributes.windy %}
+            {% if game.windy %}
               checked
             {% endif %}
           > Tuulta (windy)
@@ -51,7 +57,7 @@
       <div class="checkbox">
         <label>
           <input type="checkbox" name="variant" value="1"
-            {% if attributes.variant %}
+            {% if game.variant %}
               checked
             {% endif %}
           > Poikkeava rata (variant)
@@ -61,7 +67,7 @@
       <div class="checkbox">
         <label>
           <input type="checkbox" name="dark" value="1"
-            {% if attributes.dark %}
+            {% if game.dark %}
               checked
             {% endif %}
           > Pimeää (dark)
@@ -71,7 +77,7 @@
       <div class="checkbox">
         <label>
           <input type="checkbox" name="led" value="1"
-            {% if attributes.led %}
+            {% if game.led %}
               checked
             {% endif %}
           > LED (led)
@@ -81,7 +87,7 @@
       <div class="checkbox">
         <label>
           <input type="checkbox" name="snow" value="1"
-            {% if attributes.snow %}
+            {% if game.snow %}
               checked
             {% endif %}
           > Lunta (snow)
@@ -91,54 +97,73 @@
 
     <div class="form-group">
       <label>Päivämäärä ja pelin päättymisaika</label>
-      <br>
-      Päivämäärä <input class="form-control" type="text" name="date" value="{% if attributes.date %}{{attributes.date}}{% else %}{{"now"|date("Y-m-d")}}{% endif %}">
-      kellonaika <input class="form-control" type="text" name="time" value="{% if attributes.time %}{{attributes.time}}{% else %}{{"now"|date("H:i")}}{% endif %}">
+
+      <div class="row">
+        <div class="col-xs-1">
+          Päivämäärä
+        </div>
+        <div class="col-xs-2">
+          <input class="form-control" type="text" name="date" value="{{date}}">
+        </div>
+        <div class="col-xs-1">
+          kellonaika
+        </div>
+        <div class="col-xs-2">
+          <input class="form-control" type="text" name="time" value="{{time}}">
+        </div>
+      </div>
     </div>
 
     <div class="row">
       <div class="col-xs-4">
         <label>Kommentit</label>
-        <textarea class="form-control" name="comment" width="100px" value="{{attributes.comment}}"></textarea>
+        <textarea class="form-control" name="comment" width="100px">{{game.comment}}</textarea>
       </div>
     </div>
 
     <br>
-    <div class="form-group">
-      <label>Heitot</label>
-      <table>
-        <tr>
-          {% for hole in course.holes %}
-            <td>{{hole.hole_num}}</td>
-          {% endfor %}
-        </tr>
-        <tr>
-          {% for hole in course.holes %}
-            <td><input class="form-control" type="text" name="hole{{hole.hole_num}}" value="{% if attribute(attributes, 'hole' ~ hole.hole_num) %}{{attribute(attributes, 'hole' ~ hole.hole_num)}}{% else %}3{% endif %}"></td>
-          {% endfor %}
-        </tr>
-      </table>
-    </div>
 
-    <div class="form-group">
-      <label>OB:t</label>
-      <table>
-        <tr>
-          {% for hole in course.holes %}
-            <td>{{hole.hole_num}}</td>
-          {% endfor %}
-        </tr>
-        <tr>
-          {% for hole in course.holes %}
-            <td><input class="form-control" type="text" name="obhole{{hole.hole_num}}" value="{% if attribute(attributes, 'obhole' ~ hole.hole_num) %}{{attribute(attributes, 'obhole' ~ hole.hole_num)}}{% else %}0{% endif %}"></td>
-          {% endfor %}
-        </tr>
-      </table>
-    </div>
+    {% for playername,scores in game.scores %}
+
+      <h4>Pelaajan {{playername}} tulokset</h4>
+
+      <div class="form-group">
+        <label>Heitot</label>
+        <table>
+          <tr>
+            {% for hole in game.course.holes %}
+              <td>{{hole.hole_num}}</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            {% for score in scores %}
+              <td><input class="form-control" type="text" name="hole{{score.hole.hole_num}}" value="{{score.stroke}}"></td>
+            {% endfor %}
+          </tr>
+        </table>
+      </div>
+
+      <div class="form-group">
+        <label>OB:t</label>
+        <table>
+          <tr>
+            {% for hole in game.course.holes %}
+              <td>{{hole.hole_num}}</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            {% for score in scores %}
+              <td><input class="form-control" type="text" name="obhole{{score.hole.hole_num}}" value="{{score.ob}}"></td>
+            {% endfor %}
+          </tr>
+        </table>
+      </div>
+
+    {% endfor %}
 
     <br>
 
-    <input type="hidden" name="courseid" value="{{course.courseid}}">
+    <input type="hidden" name="courseid" value="{{game.course.courseid}}">
     <input type="hidden" name="playerid" value="{{user_logged_in.playerid}}">
 
     <button type="submit" class="btn btn-default">Lähetä</button>

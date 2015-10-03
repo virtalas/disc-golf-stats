@@ -1,9 +1,9 @@
 <?php
   class Game extends BaseModel {
 
-    public $gameid, $courseid, $gamedate, $comment, $rain, $wet_no_rain, $windy,
-            $variant, $dark, $led, $snow,
-            $course, $scores, $conditions;
+    public $gameid, $courseid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
+            $variant, $dark, $led, $snow, // Ready to use after creation
+            $course, $scores, $conditions; // Need to be prepared via prepare()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -40,7 +40,6 @@
               WHERE gameid = :gameid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('gameid' => $this->gameid,
-                            'courseid' => $this->courseid, 
                             'gamedate' => $this->gamedate, 
                             'comment' => $this->comment, 
                             'rain' => $this->rain, 
@@ -51,6 +50,7 @@
                             'led' => $this->led, 
                             'snow' => $this->snow
                             ));
+      return $this->gameid;
     }
 
     public function destroy() {
@@ -125,7 +125,7 @@
       $games = array();
 
       foreach ($rows as $row) {
-        $games[] = new Game(array(
+        $game = new Game(array(
           'gameid' => $row['gameid'],
           'courseid' => $row['courseid'], 
           'gamedate' => $row['gamedate'], 
@@ -138,6 +138,8 @@
           'led' => $row['led'], 
           'snow' => $row['snow']
         ));
+        $game->prepare();
+        $games[] = $game;
       }
 
       return $games;
@@ -157,6 +159,34 @@
       return $players;
     }
 
+    public static function find($gameid){
+      $sql = "SELECT * FROM game WHERE gameid = :gameid LIMIT 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('gameid' => $gameid));
+      $row = $query->fetch();
+
+      if ($row) {
+        $game = new Game(array(
+          'gameid' => $row['gameid'],
+          'courseid' => $row['courseid'], 
+          'gamedate' => $row['gamedate'], 
+          'comment' => $row['comment'], 
+          'rain' => $row['rain'], 
+          'wet_no_rain' => $row['wet_no_rain'], 
+          'windy' => $row['windy'],
+          'variant' => $row['variant'], 
+          'dark' => $row['dark'], 
+          'led' => $row['led'], 
+          'snow' => $row['snow']
+        ));
+        $game->prepare();
+
+        return $game;
+      }
+
+      return null;
+    }
+
     // Validators
 
     public function validate_date() {
@@ -165,7 +195,7 @@
       $d = DateTime::createFromFormat($format, $this->gamedate);
 
       if (!($d && $d->format($format) == $this->gamedate)) {
-        $errors[] = "Päivämäärä on annettu väärässä muodossa. Nuodata annettua syntaksia.";
+        $errors[] = "Päivämäärä on annettu väärässä muodossa. Nuodata annettua syntaksia (YYYY-MM-DD HH:MM).";
       }
 
       return $errors;

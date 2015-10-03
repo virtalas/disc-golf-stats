@@ -70,6 +70,21 @@
     GameController::create();
   });
 
+  // Pelin muokkauslomakkeen esittäminen
+  $routes->get('/game/:gameid/edit', 'check_logged_in', function($gameid){
+    GameController::edit($gameid);
+  });
+
+  // Pelin muokkaaminen
+  $routes->post('/game/:gameid/edit', 'check_logged_in', function($gameid){
+    GameController::update($gameid);
+  });
+
+  // Radan poisto
+  $routes->post('/game/:gameid/destroy', 'check_logged_in', function($gameid){
+    GameController::destroy($gameid);
+  });
+
   // Kirjautumislomakkeen esittäminen
   $routes->get('/login', function(){
     UserController::login();

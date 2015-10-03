@@ -1,8 +1,8 @@
 <?php
   class Score extends BaseModel {
 
-    public $scoreid, $gameid, $holeid, $playerid, $stroke, $ob,
-            $player, $hole;
+    public $scoreid, $gameid, $holeid, $playerid, $stroke, $ob, // Ready to use after creation
+            $player, $hole; // Need to be prepared via prepare()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -25,9 +25,11 @@
     public function update() {
       $sql = "UPDATE score SET stroke = :stroke, ob = :ob WHERE scoreid = :scoreid";
       $query = DB::connection()->prepare($sql);
-      $query->execute(array('stroke' => $this->stroke,
-                            'ob' => $this->ob,
-                            'scoreid' => $this->scoreid));
+      $query->execute(array(
+        'stroke' => $this->stroke,
+        'ob' => $this->ob,
+        'scoreid' => $this->scoreid
+      ));
     }
 
     public function destroy() {

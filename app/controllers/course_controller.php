@@ -5,10 +5,6 @@
     public static function index() {
       $courses = Course::all();
 
-      foreach ($courses as $course) {
-        $course->prepare();
-      }
-
       View::make('course/index.html', array('courses' => $courses));
     }
 
@@ -114,13 +110,13 @@
 
         Redirect::to('/course/'. $courseid, array('message' => 'Rata ja sen väylät päivitetty.'));
       } else {
-        View::make('course/new.html', array('errors' => $errors, 'attributes' => $params));
+        View::make('course/edit.html', array('errors' => $errors, 'attributes' => $params));
       }
     }
 
     public static function destroy($courseid) {
       // Destroy both the course and its holes.
-      $course = new Course(array('courseid' => $courseid));
+      $course = Course::find($courseid);
       $holes = Hole::course_holes($course->courseid);
 
       foreach ($holes as $hole) {
@@ -129,6 +125,6 @@
 
       $course->destroy();
 
-      Redirect::to('/course', array('message' => 'Rata poistettu.'));
+      Redirect::to('/course', array('message' => 'Rata ja sen väylät poistettu.'));
     }
   }

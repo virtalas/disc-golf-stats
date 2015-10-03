@@ -2,7 +2,7 @@
 
   class Hole extends BaseModel {
   	
-  	public $holeid, $courseid, $hole_num, $par;
+  	public $holeid, $courseid, $hole_num, $par; // Ready to use after creation
 
   	public function __construct($attributes) {
   		parent::__construct($attributes);

@@ -2,7 +2,7 @@
 
   class Player extends BaseModel {
 
-  	public $playerid, $firstname, $lastname, $username, $password;
+  	public $playerid, $firstname, $lastname, $username, $password; // Ready to use after creation
 
   	public function __construct($attributes) {
   		parent::__construct($attributes);
