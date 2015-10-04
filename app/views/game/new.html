@@ -91,9 +91,21 @@
 
     <div class="form-group">
       <label>Päivämäärä ja pelin päättymisaika</label>
-      <br>
-      Päivämäärä <input class="form-control" type="text" name="date" value="{% if attributes.date %}{{attributes.date}}{% else %}{{"now"|date("Y-m-d")}}{% endif %}">
-      kellonaika <input class="form-control" type="text" name="time" value="{% if attributes.time %}{{attributes.time}}{% else %}{{"now"|date("H:i")}}{% endif %}">
+
+      <div class="row">
+        <div class="col-xs-1">
+          Päivämäärä
+        </div>
+        <div class="col-xs-2">
+          <input class="form-control" type="text" name="date" value="{% if attributes.date %}{{attributes.date}}{% else %}{{"now"|date("Y-m-d")}}{% endif %}">
+        </div>
+        <div class="col-xs-1">
+          kellonaika
+        </div>
+        <div class="col-xs-2">
+          <input class="form-control" type="text" name="time" value="{% if attributes.time %}{{attributes.time}}{% else %}{{"now"|date("H:i")}}{% endif %}">
+        </div>
+      </div>
     </div>
 
     <div class="row">

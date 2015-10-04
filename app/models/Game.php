@@ -7,7 +7,7 @@
 
     public function __construct($attributes) {
       parent::__construct($attributes);
-      $this->validators = array('validate_date');
+      $this->validators = array('validate_date', 'validate_rain_and_wet_no_rain');
     }
 
     public function save() {
@@ -196,6 +196,16 @@
 
       if (!($d && $d->format($format) == $this->gamedate)) {
         $errors[] = "Päivämäärä on annettu väärässä muodossa. Nuodata annettua syntaksia (YYYY-MM-DD HH:MM).";
+      }
+
+      return $errors;
+    }
+
+    public function validate_rain_and_wet_no_rain() {
+      $errors = array();
+
+      if ($this->rain && $this->wet_no_rain) {
+        $errors[] = "Olosuhteina ei voi olla sekä sadetta että märkää (ei sadetta).";
       }
 
       return $errors;
