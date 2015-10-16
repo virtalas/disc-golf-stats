@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% set current_page = 'game' %}
+
 {% block content %}
 
   {% import "macros/forms.html" as forms %}
@@ -13,20 +16,7 @@
 
   <br>
 
-  <form method="get" action="{{base_path}}/game/new">
-    <label>Lisää peli valitsemalla ensin rata</label>
-    <div class="row">
-      <div class="col-xs-2">
-        <select class="form-control" name="course">
-          {% for course in courses %}
-            <option value="{{course.courseid}}">{{course.name}}, {{course.city}}</option>
-          {% endfor %}
-        </select>
-      </div>
-    
-      <button type="submit" class="btn btn-default">Uusi peli</button>
-    </div>
-  </form>
+  {{forms.new_game(courses, base_path)}}
 
   <br>
 
@@ -34,144 +24,28 @@
     Tuloskortit ovat päivämäärän perusteella laskevassa järjestyksessä.
   </p>
 
-  <table width=50%>
-    <tr>
-      <td>Olosuhteina voi olla:</td>
-      <td>Värikoodaus:</td>
-    </tr>
-    <tr>
-      <td>
-        <li>sadetta</li>
-        <li>märkää (ei sadetta)</li>
-        <li>tuulista</li>
-        <li>poikkeava rata</li>
-        <li>pimeää</li>
-        <li>LED</li>
-        <li>lunta</li>
-      </td>
-      <td valign="top">
-        <li><font color="red">hole in one</font></li>
-        <li><font color="#00FF00">birdie</font></li>
-        <li><font color="#A7C942">par</font></li>
-        <li><font color="orange">bogey</font></li>
-        <li><font color="#8E668E">over bogey</font></li>
-      </td>
-    </tr>
-  </table>
+  {{forms.list_games(games, base_path)}}
 
-  {% for game in games %}
-    <br><br><br>
-    <table id='card'>
-      <tr>
-        <th colspan=30>{{game.course.name}}</th>
-      </tr>
-      <tr>
-        <th colspan=30 class='date'>{{game.gamedate}}</th>
-      </tr>
-      <tr>
-        <td class='names'>Väylä</td>
-
-        {% for hole_num in 1..game.course.number_of_holes %}
-          <td>{{hole_num}}</td>
-        {% endfor %}
-
-        <td>tulos</td>
-        <td>par</td>
-      </tr>
-      <tr>
-        <td class='names'>PAR</td>
-
-        {% set total_par = 0 %}
-
-        {% for hole in game.course.holes %}
-          <td>{{hole.par}}</td>
-          {% set total_par = total_par + hole.par %}
-        {% endfor %}
-
-        <td>{{total_par}}</td>
-        <td>0</td>
-      </tr>
-      <tr>
-
-        <!-- Cycle through every player's scores in the game and display them on their own row -->
-        {% for playername,scores in game.scores %}
-          <td class='names'>{{playername}}</td>
-
-          {% set total_score = 0 %}
-
-          {% for score in scores %}
-
-            <!-- Score card color coding -->
-            {% if score.stroke == 0 %}
-              <td>
-            {% elseif score.stroke == 1 %}
-              <td class='hole_in_one'>
-            {% elseif score.stroke + score.ob < score.hole.par %}
-              <td class='birdie'>
-            {% elseif score.stroke + score.ob == score.hole.par %}
-              <td class='par'>
-            {% elseif score.stroke + score.ob - score.hole.par == 1 %}
-              <td class='bogey'>
-            {% else %}
-              <td class='over_bogey'>
-            {% endif %}
-
-            {% if score.stroke == 0 %}
-              -
-            {% else %}
-              {{score.stroke}}
-            {% endif %}
-
-            <!-- Display OB strokes -->
-            <table>
-              <tr>
-                {% if score.ob != 0 %}
-                  {% for i in 1..score.ob %}
-                    <td class='ob'></td>
-                  {% endfor %}
-                {% endif %}
-              </tr>
-            </table>
-
-            </td>
-
-            {% set total_score = total_score + score.stroke + score.ob %}
-
-          {% endfor %}
-
-          <!-- Display player's total score and compared to par -->
-          <td>{{total_score}}</td>
-
-          {% set to_par = total_score - total_par %}
-          {% if to_par > 0 %}
-            <td>+{{to_par}}</td>
-          {% else %}
-            <td>{{to_par}}</td>
-          {% endif %}
-
-        {% endfor %}
-
-      </tr>
-
-      <!-- Display game conditions if there are any -->
-      {% if game.conditions %}
-        <tr>
-          <td class='names'>Olosuhteet</td><td colspan=30 class='names'>{{game.conditions}}</td>
-        </tr>
-      {% endif %}
-
-      <!-- Display comments if there are any -->
-      {% if game.comment %}
-        <tr>
-          <td class='names'>Kommentit</td>
-          <td colspan=30 class='names'>{{game.comment}}</td>
-        </tr>
-      {% endif %}
-
-    </table>
-
-    <a href="{{base_path}}/game/{{game.gameid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
-
-  {% endfor %}
+  <nav>
+    <ul class="pagination">
+      <li class="{% if not prev_page %}disabled{% endif %}">
+          <a class="{% if not prev_page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{prev_page}}">
+            <span aria-hidden="true">«</span>
+            <span class="sr-only">Previous</span>
+          </a>
+      </li>
+      {% for page in 1..pages %}
+        <li class="{% if curr_page == page %}active{% endif %}">
+          <a class="{% if curr_page == page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{page}}">{{page}}</a>
+        </li>
+      {% endfor %}
+      <li class="{% if not next_page %}disabled{% endif %}">
+        <a class="{% if not next_page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{next_page}}">
+          <span aria-hidden="true">»</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
 {% endblock %}

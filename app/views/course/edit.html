@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% set current_page = 'course' %}
+
 {% block content %}
 
   <h2>Muokkaa rataa</h2>
@@ -68,7 +71,10 @@
         </tr>
       </table>
 
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
+    <br>
 
+      <button type="submit" class="btn btn-primary">Lähetä</button>
+      <a href="{{base_path}}/course"><button type="button" class="btn btn-default">Peruuta</button></a>
+  </form>
+    
 {% endblock %}

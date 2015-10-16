@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% set current_page = 'course' %}
+
 {% block content %}
 
   {% import "macros/forms.html" as forms %}
@@ -12,7 +15,7 @@
   <h2>{{course.name}}, {{course.city}}</h2>
 
   <p>
-    {{forms.destroy_button("#{base_path}/course/#{course.courseid}/destroy")}}
+    {{forms.destroy_button("#{base_path}/course/#{course.courseid}/destroy", "Poista", "Oletko varma että haluat poistaa radan? Radan poistaminen poistaa myös kaikki sillä pelatut pelit.")}}
     <a href="{{base_path}}/course/{{course.courseid}}/edit" class="btn btn-default">Muokkaa</a>
   </p>
 

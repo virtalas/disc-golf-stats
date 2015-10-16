@@ -4,21 +4,17 @@
     BaseController::check_logged_in();
   }
 
+  // Stats
+
   $routes->get('/', function() {
-    HelloWorldController::stats();
+    StatsController::stats();
   });
 
   $routes->get('/stats', function() {
-    HelloWorldController::stats();
+    StatsController::stats();
   });
 
-  $routes->get('/games', 'check_logged_in', function() {
-    HelloWorldController::games();
-  });
-
-  $routes->get('/courses', 'check_logged_in', function() {
-    HelloWorldController::courses();
-  });
+  // Radat
 
   // Ratojen listaussivu
   $routes->get('/course', 'check_logged_in', function() {
@@ -55,6 +51,8 @@
     CourseController::destroy($courseid);
   });
 
+  // Pelit
+
   // Pelien listaussivu
   $routes->get('/game', 'check_logged_in', function() {
     GameController::index();
@@ -68,6 +66,11 @@
   // Pelin lisäyssivu
   $routes->get('/game/new', 'check_logged_in', function(){
     GameController::create();
+  });
+
+  // Pelin esittelysivu
+  $routes->get('/game/:gameid', 'check_logged_in', function($gameid){
+    GameController::show($gameid);
   });
 
   // Pelin muokkauslomakkeen esittäminen
@@ -85,6 +88,8 @@
     GameController::destroy($gameid);
   });
 
+  // Käyttäjä
+
   // Kirjautumislomakkeen esittäminen
   $routes->get('/login', function(){
     UserController::login();
@@ -98,6 +103,26 @@
   // Uloskirjautuminen
   $routes->post('/logout', function(){
     UserController::logout();
+  });
+
+  // Rekisteröitymislomakkeen esittäminen
+  $routes->get('/register', function(){
+    UserController::register();
+  });
+
+  // Rekisteröitymisen käsittely
+  $routes->post('/register', function(){
+    UserController::handle_register();
+  });
+
+  // Suunnitelmasivut
+
+  $routes->get('/games', 'check_logged_in', function() {
+    HelloWorldController::games();
+  });
+
+  $routes->get('/courses', 'check_logged_in', function() {
+    HelloWorldController::courses();
   });
 
   $routes->get('/sign_in', function() {

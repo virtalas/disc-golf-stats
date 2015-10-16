@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% set current_page = 'game' %}
+
 {% block content %}
 
   <h2>Lisää peli radalle {{course.name}}, {{course.city}}</h2>
@@ -153,7 +156,8 @@
     <input type="hidden" name="courseid" value="{{course.courseid}}">
     <input type="hidden" name="playerid" value="{{user_logged_in.playerid}}">
 
-    <button type="submit" class="btn btn-default">Lähetä</button>
+    <button type="submit" class="btn btn-primary">Lähetä</button>
+    <a href="{{base_path}}/game"><button type="button" class="btn btn-default">Peruuta</button></a>
   </form>
 
 {% endblock %}

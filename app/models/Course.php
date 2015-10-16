@@ -47,23 +47,21 @@
     }
 
     public static function all() {
-      $sql = "SELECT * FROM course";
+      $sql = "SELECT * FROM course ORDER BY courseid";
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
-      $courses = array();
+      
+      return self::get_courses_from_rows($rows);
+    }
 
-      foreach ($rows as $row) {
-        $course = new Course(array(
-          'courseid' => $row['courseid'],
-          'name' => $row['name'],
-          'city' => $row['city']
-        ));
-        $course->prepare();
-        $courses[] = $course;
-      }
-
-      return $courses;
+    public static function all_order_by_name() {
+      $sql = "SELECT * FROM course ORDER BY name";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+      
+      return self::get_courses_from_rows($rows);
     }
 
     public static function find($courseid){
@@ -72,7 +70,7 @@
       $query->execute(array('courseid' => $courseid));
       $row = $query->fetch();
 
-      return Course::get_course_from_row($row);
+      return self::get_course_from_row($row);
     }
 
     public static function number_of_games_played($courseid) {
@@ -103,6 +101,21 @@
       return null;
     }
 
+    public static function player_courses($playerid) {
+      $sql = "SELECT courseid, name, city
+              FROM course
+              WHERE courseid IN
+              (SELECT hole.courseid FROM hole
+              JOIN score ON score.holeid = hole.holeid
+              WHERE score.playerid = :playerid)
+              ORDER BY name";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $rows = $query->fetchAll();
+
+      return self::get_courses_from_rows($rows);
+    }
+
     public static function get_course_from_row($row) {
       if ($row) {
         $course = new Course(array(
@@ -116,6 +129,22 @@
       }
 
       return null;
+    }
+
+    private static function get_courses_from_rows($rows) {
+      $courses = array();
+
+      foreach ($rows as $row) {
+        $course = new Course(array(
+          'courseid' => $row['courseid'],
+          'name' => $row['name'],
+          'city' => $row['city']
+        ));
+        $course->prepare();
+        $courses[] = $course;
+      }
+
+      return $courses;
     }
 
     // Validators

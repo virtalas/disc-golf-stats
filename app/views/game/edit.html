@@ -1,11 +1,14 @@
 {% extends "base.html" %}
+
+{% set current_page = 'game' %}
+
 {% block content %}
 
   {% import "macros/forms.html" as forms %}
 
   <h2>Muokkaa peliä radalla {{game.course.name}}, {{game.course.city}}</h2>
 
-  {{forms.destroy_button("#{base_path}/game/#{game.gameid}/destroy")}}
+  {{forms.destroy_button("#{base_path}/game/#{game.gameid}/destroy", "Poista", "Oletko varma että haluat poistaa pelin?")}}
 
   <br>
 
@@ -166,7 +169,8 @@
     <input type="hidden" name="courseid" value="{{game.course.courseid}}">
     <input type="hidden" name="playerid" value="{{user_logged_in.playerid}}">
 
-    <button type="submit" class="btn btn-default">Lähetä</button>
+    <button type="submit" class="btn btn-primary">Lähetä</button>
+    <a href="{{base_path}}/game"><button type="button" class="btn btn-default">Peruuta</button></a>
   </form>
 
 {% endblock %}

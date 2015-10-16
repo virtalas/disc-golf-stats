@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% set current_page = 'game' %}
+
+{% block content %}
+
+  {% import "macros/forms.html" as forms %}
+
+  {% if message is not null %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+
+  <h2>{{games[0].course.name}}, {{games[0].course.city}} – {{games[0].gamedate}}</h2>
+
+  <br>
+
+  {{forms.new_game(courses, base_path)}}
+
+  <br>
+
+  {{forms.list_games(games, base_path)}}
+
+{% endblock %}

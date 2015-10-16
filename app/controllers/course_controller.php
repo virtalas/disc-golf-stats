@@ -116,8 +116,14 @@
 
     public static function destroy($courseid) {
       // Destroy both the course and its holes.
+      // Also destroy all games and scores on the course.
       $course = Course::find($courseid);
       $holes = Hole::course_holes($course->courseid);
+      $games = Game::course_games($courseid);
+
+      foreach ($games as $game) {
+        GameController::destroy_no_redirect($game->gameid);
+      }
 
       foreach ($holes as $hole) {
         $hole->destroy();
@@ -125,6 +131,6 @@
 
       $course->destroy();
 
-      Redirect::to('/course', array('message' => 'Rata ja sen väylät poistettu.'));
+      Redirect::to('/course', array('message' => 'Rata ja sen väylät poistettu. Kaikki radan pelit poistettu.'));
     }
   }

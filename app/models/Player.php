@@ -8,13 +8,24 @@
   		parent::__construct($attributes);
   	}
 
+    public function save() {
+      $sql = "INSERT INTO player (firstname, username, password) 
+              VALUES (:firstname, :username, :password) RETURNING playerid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('firstname' => $this->firstname,
+                            'username' => $this->username,
+                            'password' => $this->password));
+      $row = $query->fetch();
+      $this->playerid = $row['playerid'];
+    }
+
     public static function authenticate($username, $password) {
       $sql = "SELECT * FROM Player WHERE username = :username AND password = :password LIMIT 1";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('username' => $username, 'password' => $password));
       $row = $query->fetch();
 
-      if($row){
+      if ($row) {
         $player = new Player(array(
           'playerid' => $row['playerid'],
           'firstname' => $row['firstname'],
@@ -22,8 +33,21 @@
           'username' => $row['username']
         ));
         return $player;
-      }else{
+      } else {
         return null;
+      }
+    }
+
+    public static function username_exists($username) {
+      $sql = "SELECT * FROM Player WHERE username = :username LIMIT 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('username' => $username));
+      $row = $query->fetch();
+
+      if ($row) {
+        return true;
+      } else {
+        return false;
       }
     }
 

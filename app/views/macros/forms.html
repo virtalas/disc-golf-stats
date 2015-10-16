@@ -1,5 +1,169 @@
-{% macro destroy_button(action, text) %}
-  <form method="post" action="{{action}}" style="display: inline-block;">
+{% macro destroy_button(action, text, warning_message) %}
+  <form method="post" action="{{action}}" style="display: inline-block;" class="destroy-form" data-confirm="{{warning_message}}">
     <button type="submit" class="btn btn-danger">{{text|default('Poista')}}</button>
   </form> 
+{% endmacro %}
+
+
+
+{% macro new_game(courses, base_path) %}
+  <form method="get" action="{{base_path}}/game/new">
+    <label>Lisää peli valitsemalla ensin rata</label>
+    <div class="row">
+      <div class="col-xs-2">
+        <select class="form-control" name="course">
+          {% for course in courses %}
+            <option value="{{course.courseid}}">{{course.name}}, {{course.city}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    
+      <button type="submit" class="btn btn-default">Uusi peli</button>
+    </div>
+  </form>
+{% endmacro %}
+
+
+
+{% macro list_games(games, base_path) %}
+  <table width=60%>
+    <tr>
+      <td>Olosuhteina voi olla:</td>
+      <td>Värikoodaus:</td>
+    </tr>
+    <tr>
+      <td>
+        <li>sadetta</li>
+        <li>märkää (ei sadetta)</li>
+        <li>tuulista</li>
+        <li>poikkeava rata</li>
+        <li>pimeää</li>
+        <li>LED</li>
+        <li>lunta</li>
+      </td>
+      <td valign="top">
+        <li><font color="red">hole in one</font></li>
+        <li><font color="#00FF00">birdie</font></li>
+        <li><font color="#A7C942">par</font></li>
+        <li><font color="orange">bogey</font></li>
+        <li><font color="#8E668E">over bogey</font></li>
+      </td>
+    </tr>
+  </table>
+
+  {% for game in games %}
+    <br><br><br>
+    <table id='card'>
+      <tr>
+        <th colspan=30><a class="hidden_link" href="{{base_path}}/game/{{game.gameid}}">{{game.course.name}}</a></th>
+      </tr>
+      <tr>
+        <th colspan=30 class='date'><a class="hidden_link" href="{{base_path}}/game/{{game.gameid}}">{{game.gamedate}}</a></th>
+      </tr>
+      <tr>
+        <td class='names'>Väylä</td>
+
+        {% for hole_num in 1..game.course.number_of_holes %}
+          <td>{{hole_num}}</td>
+        {% endfor %}
+
+        <td>tulos</td>
+        <td>par</td>
+      </tr>
+      <tr>
+        <td class='names'>PAR</td>
+
+        {% set total_par = 0 %}
+
+        {% for hole in game.course.holes %}
+          <td>{{hole.par}}</td>
+          {% set total_par = total_par + hole.par %}
+        {% endfor %}
+
+        <td>{{total_par}}</td>
+        <td>0</td>
+      </tr>
+      <tr>
+
+        <!-- Cycle through every player's scores in the game and display them on their own row -->
+        {% for playername,scores in game.scores %}
+          <td class='names'>{{playername}}</td>
+
+          {% set total_score = 0 %}
+
+          {% for score in scores %}
+
+            <!-- Score card color coding -->
+            {% if score.stroke == 0 %}
+              <td>
+            {% elseif score.stroke == 1 %}
+              <td class='hole_in_one'>
+            {% elseif score.stroke + score.ob < score.hole.par %}
+              <td class='birdie'>
+            {% elseif score.stroke + score.ob == score.hole.par %}
+              <td class='par'>
+            {% elseif score.stroke + score.ob - score.hole.par == 1 %}
+              <td class='bogey'>
+            {% else %}
+              <td class='over_bogey'>
+            {% endif %}
+
+            {% if score.stroke == 0 %}
+              -
+            {% else %}
+              {{score.stroke}}
+            {% endif %}
+
+            <!-- Display OB strokes -->
+            <table>
+              <tr>
+                {% if score.ob != 0 %}
+                  {% for i in 1..score.ob %}
+                    <td class='ob'></td>
+                  {% endfor %}
+                {% endif %}
+              </tr>
+            </table>
+
+            </td>
+
+            {% set total_score = total_score + score.stroke + score.ob %}
+
+          {% endfor %}
+
+          <!-- Display player's total score and compared to par -->
+          <td>{{total_score}}</td>
+
+          {% set to_par = total_score - total_par %}
+          {% if to_par > 0 %}
+            <td>+{{to_par}}</td>
+          {% else %}
+            <td>{{to_par}}</td>
+          {% endif %}
+
+        {% endfor %}
+
+      </tr>
+
+      <!-- Display game conditions if there are any -->
+      {% if game.conditions %}
+        <tr>
+          <td class='names'>Olosuhteet</td><td colspan=30 class='names'>{{game.conditions}}</td>
+        </tr>
+      {% endif %}
+
+      <!-- Display comments if there are any -->
+      {% if game.comment %}
+        <tr>
+          <td class='names'>Kommentit</td>
+          <td colspan=30 class='names'>{{game.comment}}</td>
+        </tr>
+      {% endif %}
+
+    </table>
+
+    <a href="{{base_path}}/game/{{game.gameid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
+
+  {% endfor %}
+
 {% endmacro %}

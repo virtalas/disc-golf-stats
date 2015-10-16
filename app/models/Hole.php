@@ -68,7 +68,7 @@
       return self::get_holes_from_rows($rows);
     }
 
-    public static function get_holes_from_rows($rows) {
+    private static function get_holes_from_rows($rows) {
       $holes = array();
 
       foreach ($rows as $row) {

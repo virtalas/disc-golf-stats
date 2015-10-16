@@ -11,7 +11,8 @@
       $user = Player::authenticate($params['username'], $params['password']);
 
       if (!$user) {
-        View::make('user/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'username' => $params['username']));
+        View::make('user/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!',
+                                            'username' => $params['username']));
       } else {
         $_SESSION['user'] = $user->playerid;
 
@@ -19,9 +20,54 @@
       }
     }
 
-    public static function logout(){
+    public static function logout() {
       $_SESSION['user'] = null;
       Redirect::to('/login', array('message' => 'Olet kirjautunut ulos.'));
+    }
+
+    public static function register() {
+      View::make('user/register.html');
+    }
+
+    public static function handle_register() {
+      $firstname = $_POST['firstname'];
+      $username = $_POST['username'];
+      $password = $_POST['password'];
+      $password2 = $_POST['password2'];
+
+      $errors = array();
+
+      if ($firstname == null) {
+        $errors[] = "Syötä nimesi.";
+      }
+      if ($username == null) {
+        $errors[] = "Syötä uusi käyttäjätunnus.";
+      }
+      if (Player::username_exists($username)) {
+        $errors[] = "Käyttäjätunnus on jo käytössä. Valitse toinen käyttäjätunnus.";
+      }
+      if ($password == null || $password2 == null) {
+        $errors[] = "Syötä uusi salasana.";
+      }
+      if ($password != $password2) {
+        $errors[] = "Annetut salasanat eivät täsmänneet.";
+      }
+
+      if ($errors != null) {
+        View::make('user/register.html', array('errors' => $errors,
+                                              'username' => $username,
+                                              'firstname' => $firstname));
+      } else {
+        // rekisteröi pelaaja ja kirjaa sisään.
+        $player = new Player(array(
+          'firstname' => $firstname,
+          'username' => $username,
+          'password' => $password
+        ));
+        $player->save();
+
+        self::handle_login();
+      }
     }
   }
 ?>

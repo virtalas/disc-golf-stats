@@ -4,14 +4,114 @@
 	margin: 0px auto;
 }
 
-.navbar .container-fluid {
-	max-width: 1200px;
-	margin: 0px auto;
+* {
+    /*font-family: Georgia, serif;*/
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.navbar {
-	/*background-color: #66FF66;*/
+/*.navbar .container {
+	max-width: 1200px;
+	margin: 0px auto;
+}*/
+
+/*
+  http://work.smarchal.com/twbscolor/css/5cb85c449d44ffffffd1ffed1
+*/
+
+.navbar-default {
+  background-color: #5cb85c;
+  border-color: #449d44;
+  line-height: 30px;
+  font-size: 120%;
 }
+.navbar-default .navbar-brand {
+  color: #ffffff;
+  font-size: 125%;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: #d1ffed;
+}
+.navbar-default .navbar-text {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #d1ffed;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu {
+  background-color: #5cb85c;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+  color: #d1ffed;
+  background-color: #449d44;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > .divider {
+  background-color: #5cb85c;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: #d1ffed;
+  background-color: #449d44;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #d1ffed;
+  background-color: #449d44;
+}
+.navbar-default .navbar-toggle {
+  border-color: #449d44;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #449d44;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #ffffff;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #ffffff;
+}
+.navbar-default .navbar-link {
+  color: #ffffff;
+}
+.navbar-default .navbar-link:hover {
+  color: #d1ffed;
+}
+
+@media (max-width: 600px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #ffffff;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #d1ffed;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #d1ffed;	
+    background-color: #449d44;
+  }
+}
+
+
+.navbar-collapse.collapse {
+display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: -15px !important;
+}
+
+.navbar-right {
+float: right!important;
+}
+
 
 td.td1 {
 	text-align: center;
@@ -20,7 +120,7 @@ td.td1 {
 /* Score card displaying */
 #card {
 	font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
-	width: 63%;
+	width: 700px;
 	border-collapse: collapse;
 }
 
@@ -36,7 +136,7 @@ td.td1 {
 	color: #ffffff;
 }
 
-#card th.date {
+#card th.date, a.hidden_link {
 	font-size: 1.0em;
 	/*text-align: left;*/
 	border-top: 0px;
@@ -44,6 +144,7 @@ td.td1 {
 	padding-bottom: 4px;
 	background-color: #3087C1;
 	color: #ffffff;
+	text-decoration: none;
 }
 
 #card td {

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <section>
+  	<h3>Tilastoja</h3>
+
+  	<table style="width:530px">
+          <tr>
+            	<td>Pelejä:</td>
+            	<td>{{game_count}}</td>
+          </tr>
+          <tr>
+            	<td>Heittoja:</td>
+            	<td>{{throw_count}}</td>
+          </tr>
+          <tr>
+            	<td>Viimeisin peli: </td>
+            	<td>{{latest_game}}</td>
+          </tr>
+    	</table>
+
+      {% if user_logged_in %}
+
+        <br>
+
+       	<h3>Käyttäjän {{user_logged_in.firstname}} tilastoja</h3>
+
+       	<table style="width:530px">
+            <tr>
+              	<td>Pelejä:</td>
+              	<td>{{player_game_count}}</td>
+            </tr>
+            <tr>
+              	<td>Heittoja:</td>
+              	<td>{{player_throw_count}}</td>
+            </tr>
+            <tr>
+              	<td>Viimeisin peli: </td>
+              	<td>{{player_latest_game}}</td>
+            </tr>
+        </table>
+
+        <br>
+
+        <h4>Ennätykset</h4>
+
+        <table style="width:400px">
+          <tr>
+            <th><b>Päivämäärä</b></th>
+            <th><b>Rata</b></th>
+            <th><b>Tulos</b></th>
+            <td align="right"><b>Par</b></td>
+            <th></th>
+          </tr>
+          {% for high_score in high_scores %}
+            <tr>
+              <td>{{high_score[0].gamedate}}</td>
+              <td>{{high_score[1].name}}</td>
+              <td>{{high_score[2]}}</td>
+              <td align="right">{{high_score[3]}}</td></td>
+            </tr>
+          {% endfor %}
+        </table>
+
+      {% endif %}
+
+  </section>
+
+{% endblock %}

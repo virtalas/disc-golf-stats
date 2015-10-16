@@ -81,6 +81,26 @@
       return $player_scores;
     }
 
+    public static function count_all() {
+      $sql = "SELECT SUM(stroke) AS score_count FROM score";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $row = $query->fetch();
+
+      return $row['score_count'];
+    }
+
+    public static function count_all_player_scores($playerid) {
+      $sql = "SELECT SUM(stroke) AS score_count FROM score
+              WHERE scoreid IN
+              (SELECT scoreid FROM score WHERE playerid = :playerid)";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $row = $query->fetch();
+
+      return $row['score_count'];
+    }
+
     // Validators
 
     public function validate_stroke() {

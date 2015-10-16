@@ -2,15 +2,37 @@
   class GameController extends BaseController {
 
     public function index() {
+      $page = isset($_GET['page']) && $_GET['page']  ? $_GET['page'] : 1;
       $player = self::get_user_logged_in();
+      $games_count = Game::count_all_player_games($player->playerid);
+      $page_size = 10;
+      $pages = ceil($games_count/$page_size);
 
-      $games = Game::all_player_games($player->playerid);
-      $scores = array();
-      $holes = array();
+      $games = Game::all(array(
+        'playerid' => $player->playerid,
+        'page' => $page,
+        'page_size' => $page_size
+      ));
+
+      if ($page > 1) {
+        $prev_page = (int)$page - 1;
+      } else {
+        $prev_page = null;
+      }
+
+      if ($pages > $page) {
+        $next_page = (int)$page + 1;
+      } else {
+        $next_page = null;
+      }
 
       View::make('game/index.html', array(
         'games' => $games,
-        'courses' => Course::all()
+        'courses' => Course::all(),
+        'prev_page' => $prev_page,
+        'curr_page' => $page,
+        'next_page' => $next_page,
+        'pages' => $pages
       ));
     }
 
@@ -81,7 +103,7 @@
           $score->save();
         }
 
-        Redirect::to('/game', array('message' => 'Peli ja sen tulokset lisätty.'));
+        Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
       } else {
         View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
       }
@@ -154,13 +176,29 @@
           }
         }
 
-        Redirect::to('/game', array('message' => 'Peli ja sen tulokset päivitetty.'));
+        Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset päivitetty.'));
       } else {
         View::make('game/edit.html', array('errors' => $errors, 'game' => $game, 'date' => $date, 'time' => $time));
       }
     }
 
+    public static function show($gameid) {
+      $game = Game::find_format_gamedate($gameid);
+      $games = array($game);
+
+      View::make('game/show.html', array(
+        'games' => $games,
+        'courses' => Course::all()
+      ));
+    }
+
     public static function destroy($gameid) {
+      self::destroy_no_redirect($gameid);
+
+      Redirect::to('/game', array('message' => 'Peli ja sen tulokset poistettu.'));
+    }
+
+    public static function destroy_no_redirect($gameid) {
       // Destroy both the game and its scores.
       $game = Game::find($gameid);
       $player_scores = $game->scores;
@@ -172,7 +210,5 @@
       }
 
       $game->destroy();
-
-      Redirect::to('/game', array('message' => 'Peli ja sen tulokset poistettu.'));
     }
   }

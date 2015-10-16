@@ -1,10 +1,19 @@
 {% extends "base.html" %}
+
+{% set current_page = 'course' %}
+
 {% block content %}
+
+  {% if message is not null %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
 
 	<h1>Radat</h1>
   
   <p>
-    <a href="{{base_path}}/course/new" class="btn btn-success">Lisää rata</a>
+    <a href="{{base_path}}/course/new" class="btn btn-default">Lisää rata</a>
   </p>
 
   <table class="table table-striped table-bordered">

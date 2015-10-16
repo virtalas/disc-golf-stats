@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% set current_page = 'course' %}
+
 {% block content %}
 
   <h2>Lisää rata</h2>
@@ -26,49 +29,52 @@
     <label>Par-tulokset</label>
 
     <table>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
-          <td>6</td>
-          <td>7</td>
-          <td>8</td>
-          <td>9</td>
-          <td>10</td>
-          <td>11</td>
-          <td>12</td>
-          <td>13</td>
-          <td>14</td>
-          <td>15</td>
-          <td>16</td>
-          <td>17</td>
-          <td>18</td>
-        </tr>
-        <tr>
-          <td><input class="form-control" name="hole1" value="{% if attributes.hole1 %}{{attributes.hole1}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole2" value="{% if attributes.hole2 %}{{attributes.hole2}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole3" value="{% if attributes.hole3 %}{{attributes.hole3}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole4" value="{% if attributes.hole4 %}{{attributes.hole4}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole5" value="{% if attributes.hole5 %}{{attributes.hole5}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole6" value="{% if attributes.hole6 %}{{attributes.hole6}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole7" value="{% if attributes.hole7 %}{{attributes.hole7}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole8" value="{% if attributes.hole8 %}{{attributes.hole8}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole9" value="{% if attributes.hole9 %}{{attributes.hole9}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole10" value="{% if attributes.hole10 %}{{attributes.hole10}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole11" value="{% if attributes.hole11 %}{{attributes.hole11}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole12" value="{% if attributes.hole12 %}{{attributes.hole12}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole13" value="{% if attributes.hole13 %}{{attributes.hole13}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole14" value="{% if attributes.hole14 %}{{attributes.hole14}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole15" value="{% if attributes.hole15 %}{{attributes.hole15}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole16" value="{% if attributes.hole16 %}{{attributes.hole16}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole17" value="{% if attributes.hole17 %}{{attributes.hole17}}{% else %}3{% endif %}"></td>
-          <td><input class="form-control" name="hole18" value="{% if attributes.hole18 %}{{attributes.hole18}}{% else %}3{% endif %}"></td>
-        </tr>
-      </table>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+        <td>10</td>
+        <td>11</td>
+        <td>12</td>
+        <td>13</td>
+        <td>14</td>
+        <td>15</td>
+        <td>16</td>
+        <td>17</td>
+        <td>18</td>
+      </tr>
+      <tr>
+        <td><input class="form-control" name="hole1" value="{% if attributes.hole1 %}{{attributes.hole1}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole2" value="{% if attributes.hole2 %}{{attributes.hole2}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole3" value="{% if attributes.hole3 %}{{attributes.hole3}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole4" value="{% if attributes.hole4 %}{{attributes.hole4}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole5" value="{% if attributes.hole5 %}{{attributes.hole5}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole6" value="{% if attributes.hole6 %}{{attributes.hole6}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole7" value="{% if attributes.hole7 %}{{attributes.hole7}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole8" value="{% if attributes.hole8 %}{{attributes.hole8}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole9" value="{% if attributes.hole9 %}{{attributes.hole9}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole10" value="{% if attributes.hole10 %}{{attributes.hole10}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole11" value="{% if attributes.hole11 %}{{attributes.hole11}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole12" value="{% if attributes.hole12 %}{{attributes.hole12}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole13" value="{% if attributes.hole13 %}{{attributes.hole13}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole14" value="{% if attributes.hole14 %}{{attributes.hole14}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole15" value="{% if attributes.hole15 %}{{attributes.hole15}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole16" value="{% if attributes.hole16 %}{{attributes.hole16}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole17" value="{% if attributes.hole17 %}{{attributes.hole17}}{% else %}3{% endif %}"></td>
+        <td><input class="form-control" name="hole18" value="{% if attributes.hole18 %}{{attributes.hole18}}{% else %}3{% endif %}"></td>
+      </tr>
+    </table>
 
-    <button type="submit" class="btn btn-default">Submit</button>
+    <br>
+
+      <button type="submit" class="btn btn-primary">Lähetä</button>
+      <a href="{{base_path}}/course"><button type="button" class="btn btn-default">Peruuta</button></a>
   </form>
 
 {% endblock %}
