@@ -2,7 +2,7 @@
 
   class Player extends BaseModel {
 
-  	public $playerid, $firstname, $lastname, $username, $password; // Ready to use after creation
+  	public $playerid, $admin, $firstname, $lastname, $username, $password; // Ready to use after creation
 
   	public function __construct($attributes) {
   		parent::__construct($attributes);
@@ -20,12 +20,12 @@
     }
 
     public static function authenticate($username, $password) {
-      $sql = "SELECT * FROM Player WHERE username = :username AND password = :password LIMIT 1";
+      $sql = "SELECT * FROM Player WHERE username = :username LIMIT 1";
       $query = DB::connection()->prepare($sql);
-      $query->execute(array('username' => $username, 'password' => $password));
+      $query->execute(array('username' => $username));
       $row = $query->fetch();
 
-      if ($row) {
+      if ($row && hash_equals($row['password'], crypt($password, $row['password']))) {
         $player = new Player(array(
           'playerid' => $row['playerid'],
           'firstname' => $row['firstname'],
@@ -36,6 +36,11 @@
       } else {
         return null;
       }
+    }
+
+    public static function is_admin($playerid) {
+      $player = self::find($playerid);
+      return $player->admin;
     }
 
     public static function username_exists($username) {
@@ -62,8 +67,7 @@
   				'playerid' => $row['playerid'],
   				'firstname' => $row['firstname'],
   				'lastname' => $row['lastname'],
-  				'username' => $row['username'],
-  				'password' => $row['password']
+  				'username' => $row['username']
   			));
   		}
 
@@ -79,6 +83,7 @@
       if ($row) {
   			$player = new Player(array(
   				'playerid' => $row['playerid'],
+          'admin' => $row['admin'],
   				'firstname' => $row['firstname'],
   				'lastname' => $row['lastname'],
   				'username' => $row['username'],
@@ -91,3 +96,17 @@
   		return null;
   	}
   }
+
+// function hash_equals used for verifying crypted passwords
+if(!function_exists('hash_equals')) {
+  function hash_equals($str1, $str2) {
+    if(strlen($str1) != strlen($str2)) {
+      return false;
+    } else {
+      $res = $str1 ^ $str2;
+      $ret = 0;
+      for($i = strlen($res) - 1; $i >= 0; $i--) $ret |= ord($res[$i]);
+      return !$ret;
+    }
+  }
+}

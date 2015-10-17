@@ -21,7 +21,9 @@
     }
 
     public static function create() {
-      View::make('course/new.html');
+      $hole_count = $_GET['hole_count'];
+
+      View::make('course/new.html', array('hole_count' => $hole_count));
     }
 
     public static function store() {
@@ -34,7 +36,7 @@
       $course = new Course($course_params);
       $errors = $course->errors();
 
-      $number_of_holes = count($params) - count($course_params);
+      $number_of_holes = count($params) - count($course_params) - 1; // one hidden input for hole_count
 
       // Check hole validity before saving anything
       $holes = array();
@@ -60,7 +62,9 @@
 
         Redirect::to('/course/'. $courseid, array('message' => 'Rata ja sen väylät lisätty.'));
       } else {
-        View::make('course/new.html', array('errors' => $errors, 'attributes' => $params));
+        View::make('course/new.html', array('errors' => $errors,
+                                            'attributes' => $params,
+                                            'hole_count' => $params['hole_count']));
       }
     }
 

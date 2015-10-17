@@ -14,10 +14,12 @@
 
   <h2>{{course.name}}, {{course.city}}</h2>
 
-  <p>
-    {{forms.destroy_button("#{base_path}/course/#{course.courseid}/destroy", "Poista", "Oletko varma että haluat poistaa radan? Radan poistaminen poistaa myös kaikki sillä pelatut pelit.")}}
-    <a href="{{base_path}}/course/{{course.courseid}}/edit" class="btn btn-default">Muokkaa</a>
-  </p>
+  {% if admin_logged_in %}
+    <p>
+      {{forms.destroy_button("#{base_path}/course/#{course.courseid}/destroy", "Poista", "Oletko varma että haluat poistaa radan? Radan poistaminen poistaa myös kaikki sillä pelatut pelit.")}}
+      <a href="{{base_path}}/course/{{course.courseid}}/edit" class="btn btn-default">Muokkaa</a>
+    </p>
+  {% endif %}
 
   <table style="width:300px">
     <tr>
@@ -30,9 +32,9 @@
     </tr>
   </table>
 
-  <br><br>
+  <!-- <br><br>
 
-  <a href="#">Kaikki pelit radalla</a>
+  <a href="#">Kaikki pelit radalla</a> -->
 
   <br><br>
 

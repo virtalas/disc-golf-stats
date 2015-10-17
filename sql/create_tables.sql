@@ -1,9 +1,10 @@
 CREATE TABLE Player(
 playerid SERIAL PRIMARY KEY,
+admin boolean DEFAULT false,
 firstname varchar(50) NOT NULL,
 lastname varchar(50),
 username varchar(50) UNIQUE NOT NULL,
-password varchar(50) NOT NULL
+password varchar(100) NOT NULL
 );
 
 CREATE TABLE Course(

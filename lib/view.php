@@ -18,6 +18,11 @@
           $content['user_logged_in'] = BaseController::get_user_logged_in();
         }
 
+        // Asetetaan näkymään kirjautunut admin-käyttäjä, jos get_admin_logged_in-metodi on toteutettu
+        if(method_exists('BaseController', 'get_admin_logged_in')){
+          $content['admin_logged_in'] = BaseController::get_admin_logged_in();
+        }
+
         // Tulostetaan Twig:n renderöimä näkymä
         echo $twig->render($view, $content);
       } catch (Exception $e){

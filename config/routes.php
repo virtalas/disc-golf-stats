@@ -1,7 +1,11 @@
 <?php
 
-  function check_logged_in(){
+  function check_logged_in() {
     BaseController::check_logged_in();
+  }
+
+  function check_admin_logged_in() {
+    BaseController::check_admin_logged_in();
   }
 
   // Stats
@@ -36,18 +40,18 @@
     CourseController::show($courseid);
   });
 
-  // Radan muokkauslomakkeen esittäminen
-  $routes->get('/course/:courseid/edit', 'check_logged_in', function($courseid){
+  // Radan muokkauslomakkeen esittäminen (vain admin)
+  $routes->get('/course/:courseid/edit', 'check_admin_logged_in', function($courseid){
     CourseController::edit($courseid);
   });
 
-  // Radan muokkaaminen
-  $routes->post('/course/:courseid/edit', 'check_logged_in', function($courseid){
+  // Radan muokkaaminen (vain admin)
+  $routes->post('/course/:courseid/edit', 'check_admin_logged_in', function($courseid){
     CourseController::update($courseid);
   });
 
-  // Radan poisto
-  $routes->post('/course/:courseid/destroy', 'check_logged_in', function($courseid){
+  // Radan poisto (vain admin)
+  $routes->post('/course/:courseid/destroy', 'check_admin_logged_in', function($courseid){
     CourseController::destroy($courseid);
   });
 

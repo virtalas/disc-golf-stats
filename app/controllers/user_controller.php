@@ -58,14 +58,15 @@
                                               'username' => $username,
                                               'firstname' => $firstname));
       } else {
-        // rekisteröi pelaaja ja kirjaa sisään.
+        // Register user/player and login
         $player = new Player(array(
           'firstname' => $firstname,
           'username' => $username,
-          'password' => $password
+          'password' => crypt($password)
         ));
         $player->save();
 
+        // POST params for signing in are the same in register.html and login.html
         self::handle_login();
       }
     }

@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 
+  {% if error %}
+    <div class="alert alert-danger">
+      {{error}}
+    </div>
+  {% endif %}
+
+  {% if message %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+
   <section>
   	<h3>Tilastoja</h3>
 
@@ -44,7 +56,7 @@
 
         <h4>Ennätykset</h4>
 
-        <table style="width:400px">
+        <table style="width:500px">
           <tr>
             <th><b>Päivämäärä</b></th>
             <th><b>Rata</b></th>
@@ -57,7 +69,10 @@
               <td>{{high_score[0].gamedate}}</td>
               <td>{{high_score[1].name}}</td>
               <td>{{high_score[2]}}</td>
-              <td align="right">{{high_score[3]}}</td></td>
+              <td align="right">{{high_score[3]}}</td>
+              <td style="padding-left:30px">
+                <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+              </td>
             </tr>
           {% endfor %}
         </table>
