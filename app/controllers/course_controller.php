@@ -82,11 +82,12 @@
         $hole_num++;
       }
 
-      View::make('course/edit.html', array('attributes' => $attributes));
+      View::make('course/edit.html', array('attributes' => $attributes, 'hole_count' => $course->number_of_holes));
     }
 
     public static function update($courseid) {
       $params = $_POST;
+      $params['courseid'] = $courseid;
 
       $course_params = array(
         'courseid' => $courseid,
@@ -114,7 +115,9 @@
 
         Redirect::to('/course/'. $courseid, array('message' => 'Rata ja sen väylät päivitetty.'));
       } else {
-        View::make('course/edit.html', array('errors' => $errors, 'attributes' => $params));
+        View::make('course/edit.html', array('errors' => $errors,
+                                            'attributes' => $params,
+                                            'hole_count' => $params['hole_count']));
       }
     }
 

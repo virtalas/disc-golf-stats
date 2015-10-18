@@ -42,6 +42,8 @@
 
       if (!is_numeric($integer)) {
         $errors[] = $type. ' pitää olla numero.';
+      } else if ($integer <= 0) {
+        $errors[] = $type. ' pitää olla suurempi kuin 0.';
       }
 
       return $errors;

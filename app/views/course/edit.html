@@ -28,7 +28,7 @@
 
     <label>Par-tulokset</label>
 
-    <table>
+    <!-- <table>
         <tr>
           <td>1</td>
           <td>2</td>
@@ -69,7 +69,24 @@
           <td><input class="form-control" name="hole17" value="{% if attributes.hole17 %}{{attributes.hole17}}{% else %}3{% endif %}"></td>
           <td><input class="form-control" name="hole18" value="{% if attributes.hole18 %}{{attributes.hole18}}{% else %}3{% endif %}"></td>
         </tr>
-      </table>
+      </table> -->
+
+    <table>
+      <tr>
+        {% for i in 1..hole_count %}
+          <td>{{i}}</td>
+        {% endfor %}
+      </tr>
+      <tr>
+        {% for i in 1..hole_count %}
+          <td><input class="form-control" name="hole{{i}}" value="{% if attribute(attributes, 'hole' ~ i) %}{{attribute(attributes, 'hole' ~ i)}}{% else %}3{% endif %}"></td>
+        {% endfor %}
+      </tr>
+    </table>
+
+    <br>
+
+    <input type="hidden" name="hole_count" value="{{hole_count}}">
 
     <br>
 
