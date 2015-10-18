@@ -5,7 +5,8 @@ Yleisiä linkkejä:
 * [Linkki sovellukseeni](http://lassvirt.users.cs.helsinki.fi/tsoha)
 * [Linkki dokumentaatiooni](https://github.com/virtalas/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
-Sisäänkirjautuminen onnistuu käyttäjätunnuksella 'teppo' ja salasanalla 'salasana'.
+Sisäänkirjautuminen käyttäjänä onnistuu käyttäjätunnuksella 'teppo' ja salasanalla 'salasana'.
+Sisäänkirjautuminen ylläpitäjänä onnistuu käyttäjätunnuksella 'admin' ja salasanalla 'salasana'.
 
 Suunnitelmasivut:
 
