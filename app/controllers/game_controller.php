@@ -9,7 +9,6 @@
       $pages = ceil($games_count/$page_size);
 
       $games = Game::all(array(
-        'playerid' => $player->playerid,
         'page' => $page,
         'page_size' => $page_size
       ));
@@ -28,19 +27,28 @@
 
       View::make('game/index.html', array(
         'games' => $games,
-        'courses' => Course::all(),
         'prev_page' => $prev_page,
         'curr_page' => $page,
         'next_page' => $next_page,
-        'pages' => $pages
+        'pages' => $pages,
+        'courses' => Course::all(),
+        'players' => Player::all()
       ));
     }
 
     public static function create() {
-      $params = $_GET;
-      $course = Course::find($params['course']);
+      $course = Course::find($_GET['course']);
 
-      View::make('game/new.html', array('course' => $course));
+      $players = array();
+
+      foreach (Player::all() as $player) {
+        if (isset($_GET['player'. $player->playerid])) {
+          $players[] = $player;
+        }
+      }
+
+      View::make('game/new.html', array('course' => $course,
+                                        'players' => $players));
     }
 
     public static function store() {
@@ -53,6 +61,7 @@
       $dark = isset($_POST['dark']) && $_POST['dark']  ? "1" : "0"; // checked=1, unchecked=0
       $led = isset($_POST['led']) && $_POST['led']  ? "1" : "0"; // checked=1, unchecked=0
       $snow = isset($_POST['snow']) && $_POST['snow']  ? "1" : "0"; // checked=1, unchecked=0
+      $doubles = isset($_POST['doubles']) && $_POST['doubles']  ? "1" : "0"; // checked=1, unchecked=0
       $date = $_POST['date'];
       $time = $_POST['time'];
       $comment = $_POST['comment'];
@@ -70,28 +79,39 @@
         'variant' => $variant,
         'dark' => $dark,
         'led' => $led,
-        'snow' => $snow
+        'snow' => $snow,
+        'doubles' => $doubles
       ));
       $errors = $game->errors();
 
       $course = Course::find($courseid);
       $scores = array();
-      // When implementing multiple players per game, cycle through playerid's here
-      $playerid = $_POST['playerid'];
 
-      foreach ($course->holes as $hole) {
-        $stroke = $_POST['hole'. $hole->hole_num]; // 'holeN' will be something like 'playername-holeN'
-        $ob = $_POST['obhole'. $hole->hole_num];
+      // Game's players
+      $players = array();
+      foreach (Player::all() as $player) {
+        if (isset($_POST['player'. $player->playerid])) {
+          $players[] = $player;
+        }
+      }
 
-        $score = new Score(array(
-          'holeid' => $hole->holeid,
-          'playerid' => $playerid,
-          'stroke' => $stroke,
-          'ob' => $ob
-        ));
+      // Cycle through players
+      foreach ($players as $player) {
+        foreach ($course->holes as $hole) {
+          // inputs are in format 'player1-hole1'
+          $stroke = $_POST['player'. $player->playerid. '-hole'. $hole->hole_num];
+          $ob = $_POST['player'. $player->playerid. '-obhole'. $hole->hole_num];
 
-        $errors = array_merge($errors, $score->errors());
-        $scores[] = $score;
+          $score = new Score(array(
+            'holeid' => $hole->holeid,
+            'playerid' => $player->playerid,
+            'stroke' => $stroke,
+            'ob' => $ob
+          ));
+
+          $errors = array_merge($errors, $score->errors());
+          $scores[] = $score;
+        }
       }
 
       if (count($errors) == 0) {
@@ -127,6 +147,7 @@
       $dark = isset($_POST['dark']) && $_POST['dark']  ? "1" : "0"; // checked=1, unchecked=0
       $led = isset($_POST['led']) && $_POST['led']  ? "1" : "0"; // checked=1, unchecked=0
       $snow = isset($_POST['snow']) && $_POST['snow']  ? "1" : "0"; // checked=1, unchecked=0
+      $doubles = isset($_POST['doubles']) && $_POST['doubles']  ? "1" : "0"; // checked=1, unchecked=0
       $date = $_POST['date'];
       $time = $_POST['time'];
       $comment = $_POST['comment'];
@@ -145,7 +166,8 @@
         'variant' => $variant,
         'dark' => $dark,
         'led' => $led,
-        'snow' => $snow
+        'snow' => $snow,
+        'doubles' => $doubles
       ));
       $errors = $game->errors();
 
@@ -188,7 +210,8 @@
 
       View::make('game/show.html', array(
         'games' => $games,
-        'courses' => Course::all()
+        'courses' => Course::all(),
+        'players' => Player::all()
       ));
     }
 

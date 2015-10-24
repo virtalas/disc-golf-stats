@@ -14,7 +14,96 @@
 	margin: 0px auto;
 }*/
 
+td.td1 {
+	text-align: center;
+}
+
+a.hidden_link_black {
+	color: black;
+	text-decoration: underline;
+}
+
 /*
+	Score card displaying
+*/
+
+#card {
+	font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+	width: 700px;
+	border-collapse: collapse;
+}
+
+#card th {
+	font-size: 1.4em;
+	text-align: center;
+	border-right: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-top: 1px solid #000000;
+	padding-top: 5px;
+	padding-bottom: 4px;
+	background-color: #3087C1;
+	color: #ffffff;
+}
+
+#card th.date, a.hidden_link_score_card {
+	font-size: 1.0em;
+	/*text-align: left;*/
+	border-top: 0px;
+	padding-top: 5px;
+	padding-bottom: 4px;
+	background-color: #3087C1;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+#card td {
+	font-size: 1.0em;
+	border: 1px solid #000000;
+	width: 20px;
+	text-align: center;
+	height: 24px;
+}
+
+#card td.names {
+	padding-left: 4px;
+	font-size: 1.0em;
+	border: 1px solid #000000;
+	width: 60px;
+	text-align: left;
+}
+
+#card td.ob {
+	height: 7px;
+	width: 7px;
+	border-radius:100%;
+	border: 0px;
+	background-color: black;
+}
+
+#card td.hole_in_one {
+	background-color: red;
+}
+
+#card td.birdie {
+	background-color: #00FF00;
+}
+
+#card td.par {
+	background-color: #A7C942;
+}
+
+#card td.bogey {
+	background-color: orange;
+}
+
+#card td.over_bogey {
+	background-color: #8E668E;
+}
+
+
+
+/*
+	Navigation bar CSS
   http://work.smarchal.com/twbscolor/css/5cb85c449d44ffffffd1ffed1
 */
 
@@ -90,7 +179,7 @@
     color: #d1ffed;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #d1ffed;	
+    color: #d1ffed;
     background-color: #449d44;
   }
 }
@@ -110,83 +199,4 @@ margin-right: -15px !important;
 
 .navbar-right {
 float: right!important;
-}
-
-
-td.td1 {
-	text-align: center;
-}
-
-/* Score card displaying */
-#card {
-	font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
-	width: 700px;
-	border-collapse: collapse;
-}
-
-#card th {
-	font-size: 1.4em;
-	text-align: center;
-	border-right: 1px solid #000000;
-	border-left: 1px solid #000000;
-	border-top: 1px solid #000000;
-	padding-top: 5px;
-	padding-bottom: 4px;
-	background-color: #3087C1;
-	color: #ffffff;
-}
-
-#card th.date, a.hidden_link {
-	font-size: 1.0em;
-	/*text-align: left;*/
-	border-top: 0px;
-	padding-top: 5px;
-	padding-bottom: 4px;
-	background-color: #3087C1;
-	color: #ffffff;
-	text-decoration: none;
-}
-
-#card td {
-	font-size: 1.0em;
-	border: 1px solid #000000;
-	width: 20px;
-	text-align: center;
-	height: 24px;
-}
-
-#card td.names {
-	padding-left: 4px;
-	font-size: 1.0em;
-	border: 1px solid #000000;
-	width: 60px;
-	text-align: left;
-}
-
-#card td.ob {
-	height: 7px;
-	width: 7px;
-	border-radius:100%;
-	border: 0px;
-	background-color: black;
-}
-
-#card td.hole_in_one {
-	background-color: red;
-}
-
-#card td.birdie {
-	background-color: #00FF00;
-}
-
-#card td.par {
-	background-color: #A7C942;
-}
-
-#card td.bogey {
-	background-color: orange;
-}
-
-#card td.over_bogey {
-	background-color: #8E668E;
 }

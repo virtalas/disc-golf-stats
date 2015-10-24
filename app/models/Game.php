@@ -2,7 +2,7 @@
   class Game extends BaseModel {
 
     public $gameid, $courseid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
-            $variant, $dark, $led, $snow, // Ready to use after creation
+            $variant, $dark, $led, $snow, $doubles, // Ready to use after creation
             $course, $scores, $conditions; // Need to be prepared via prepare()
 
     public function __construct($attributes) {
@@ -12,43 +12,45 @@
 
     public function save() {
       $sql = "INSERT INTO game (courseid, gamedate, comment, rain, wet_no_rain,
-              windy, variant, dark, led, snow) 
+              windy, variant, dark, led, snow, doubles)
               VALUES (:courseid, :gamedate, :comment, :rain, :wet_no_rain, :windy,
-              :variant, :dark, :led, :snow) RETURNING gameid";
+              :variant, :dark, :led, :snow, :doubles) RETURNING gameid";
       $query = DB::connection()->prepare($sql);
-      $query->execute(array('courseid' => $this->courseid, 
-                            'gamedate' => $this->gamedate, 
-                            'comment' => $this->comment, 
-                            'rain' => $this->rain, 
-                            'wet_no_rain' => $this->wet_no_rain, 
+      $query->execute(array('courseid' => $this->courseid,
+                            'gamedate' => $this->gamedate,
+                            'comment' => $this->comment,
+                            'rain' => $this->rain,
+                            'wet_no_rain' => $this->wet_no_rain,
                             'windy' => $this->windy,
-                            'variant' => $this->variant, 
-                            'dark' => $this->dark, 
-                            'led' => $this->led, 
-                            'snow' => $this->snow
+                            'variant' => $this->variant,
+                            'dark' => $this->dark,
+                            'led' => $this->led,
+                            'snow' => $this->snow,
+                            'doubles' => $this->doubles
                             ));
       $row = $query->fetch();
       $this->gameid = $row['gameid'];
-      
+
       return $this->gameid;
     }
 
     public function update() {
       $sql = "UPDATE game SET gamedate = :gamedate, comment = :comment, rain = :rain,
               wet_no_rain = :wet_no_rain, windy = :windy, variant = :variant,
-              dark = :dark, led = :led, snow = :snow 
+              dark = :dark, led = :led, snow = :snow, doubles = :doubles
               WHERE gameid = :gameid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('gameid' => $this->gameid,
-                            'gamedate' => $this->gamedate, 
-                            'comment' => $this->comment, 
-                            'rain' => $this->rain, 
-                            'wet_no_rain' => $this->wet_no_rain, 
+                            'gamedate' => $this->gamedate,
+                            'comment' => $this->comment,
+                            'rain' => $this->rain,
+                            'wet_no_rain' => $this->wet_no_rain,
                             'windy' => $this->windy,
-                            'variant' => $this->variant, 
-                            'dark' => $this->dark, 
-                            'led' => $this->led, 
-                            'snow' => $this->snow
+                            'variant' => $this->variant,
+                            'dark' => $this->dark,
+                            'led' => $this->led,
+                            'snow' => $this->snow,
+                            'doubles' => $this->doubles
                             ));
       return $this->gameid;
     }
@@ -98,6 +100,9 @@
       if ($this->snow) {
         array_push($conditions_array, "lunta");
       }
+      if ($this->doubles) {
+        array_push($conditions_array, "parigolf");
+      }
 
       $i = 1;
       $condtitions_string = "";
@@ -114,7 +119,7 @@
 
     public static function all_player_games($playerid) {
       $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-              comment, rain, wet_no_rain, windy, variant, dark, led, snow
+              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
               FROM game
               WHERE gameid IN
               (SELECT gameid FROM score WHERE playerid = :playerid)
@@ -122,13 +127,11 @@
       $query = DB::connection()->prepare($sql);
       $query->execute(array('playerid' => $playerid));
       $rows = $query->fetchAll();
-      
+
       return self::get_games_from_rows($rows);
     }
 
     public static function all($options) {
-      $playerid = $options['playerid'];
-
       if (isset($options['page']) && isset($options['page_size'])) {
         $page_size = $options['page_size'];
         $page = $options['page'];
@@ -139,19 +142,16 @@
       $offset = (int)$page_size * ((int)$page - 1);
 
       $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-              comment, rain, wet_no_rain, windy, variant, dark, led, snow
+              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
               FROM game
-              WHERE gameid IN
-              (SELECT gameid FROM score WHERE playerid = :playerid)
               ORDER BY game.gamedate DESC
               LIMIT :limit OFFSET :offset";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('limit' => $page_size,
-                            'playerid' => $playerid,
                             'offset' => $offset));
 
       $rows = $query->fetchAll();
-      
+
       return self::get_games_from_rows($rows);
     }
 
@@ -180,7 +180,7 @@
 
     public static function find_format_gamedate($gameid){
       $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-              comment, rain, wet_no_rain, windy, variant, dark, led, snow
+              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
               FROM game WHERE gameid = :gameid LIMIT 1";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('gameid' => $gameid));
@@ -262,11 +262,12 @@
         $query->execute(array('playerid' => $playerid, 'courseid' => $course->courseid));
         $row = $query->fetch();
 
+        // Array to be passed to the HTML template
         $high_score = array();
         $high_score[] = self::find_format_gamedate($row['gameid']); // index 0: game
         $high_score[] = $course; // index 1: course
         $high_score[] = $row['total_score']; // index 2: total score
-        
+
         // index 3: to par
         if ($row['to_par'] > 0) {
           $high_score[] = "+". $row['to_par'];
@@ -284,16 +285,17 @@
       if ($row) {
         $game = new Game(array(
           'gameid' => $row['gameid'],
-          'courseid' => $row['courseid'], 
-          'gamedate' => $row['gamedate'], 
-          'comment' => $row['comment'], 
-          'rain' => $row['rain'], 
-          'wet_no_rain' => $row['wet_no_rain'], 
+          'courseid' => $row['courseid'],
+          'gamedate' => $row['gamedate'],
+          'comment' => $row['comment'],
+          'rain' => $row['rain'],
+          'wet_no_rain' => $row['wet_no_rain'],
           'windy' => $row['windy'],
-          'variant' => $row['variant'], 
-          'dark' => $row['dark'], 
-          'led' => $row['led'], 
-          'snow' => $row['snow']
+          'variant' => $row['variant'],
+          'dark' => $row['dark'],
+          'led' => $row['led'],
+          'snow' => $row['snow'],
+          'doubles' => $row['doubles']
         ));
         $game->prepare();
 

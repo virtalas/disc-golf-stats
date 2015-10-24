@@ -118,33 +118,3 @@
   $routes->post('/register', function(){
     UserController::handle_register();
   });
-
-  // Suunnitelmasivut
-
-  $routes->get('/games', 'check_logged_in', function() {
-    HelloWorldController::games();
-  });
-
-  $routes->get('/courses', 'check_logged_in', function() {
-    HelloWorldController::courses();
-  });
-
-  $routes->get('/sign_in', function() {
-    HelloWorldController::sign_in();
-  });
-
-  $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
-  });
-
-  $routes->get('/courses/1', function() {
-    HelloWorldController::course_info();
-  });
-
-  $routes->get('/games/edit/1', function() {
-    HelloWorldController::game_edit();
-  });
-
-  $routes->get('/courses/edit/1', function() {
-    HelloWorldController::course_edit();
-  });

@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <h2>Lisää peli radalle {{course.name}}, {{course.city}}</h2>
+  <h2>Uuden pelin tiedot</h2>
 
   {% if errors %}
     <div class="alert alert-danger">
@@ -18,8 +18,21 @@
 
   <br>
 
-  <form method="post" action="{{base_path}}/game">
+  <form method="post" action="{{base_path}}/game/new_data">
     <div class="form-group">
+      <label>Valitse rata</label>
+      <div class="row">
+        <div class="col-xs-2">
+          <select class="form-control" name="course">
+            {% for course in courses %}
+              <option value="{{course.courseid}}">{{course.name}}, {{course.city}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <br>
+
       <label>Valitse olosuhteet</label>
       <div class="checkbox">
         <label>
@@ -90,6 +103,16 @@
           > Lunta (snow)
         </label>
       </div>
+
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="doubles" value="1"
+            {% if game.doubles %}
+              checked
+            {% endif %}
+          > Parigolf (doubles)
+        </label>
+      </div>
     </div>
 
     <div class="form-group">
@@ -111,74 +134,44 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-4">
-        <label>Kommentit</label>
-        <textarea class="form-control" name="comment" width="100px" value="{{attributes.comment}}"></textarea>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-xs-4">
+          <label>Kommentit</label>
+          <textarea class="form-control" name="comment" width="100px" value="{{attributes.comment}}"></textarea>
+        </div>
       </div>
+    </div>
+
+    <div class="form-group">
+        <label>
+          Lähetä csv-tiedosto, mikä noudattaa
+          <a href="{{base_path}}/doc/Sample_18_hole.csv" class="hidden_link_black">tätä</a> formaattia
+        </label>
+        <input type="file" name="csv" value="">
+    </div>
+
+    <div class="form-group">
+        <label>TAI valitse pelin pelaajat</label>
+        {% for player in players %}
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="player{{player.playerid}}" value="1"
+                {% if attribute(attributes, 'player' ~ player.playerid) %}
+                  checked
+                {% endif %}
+              > {{player.firstname}}
+            </label>
+          </div>
+        {% endfor %}
     </div>
 
     <br>
 
-    <!-- CSV-file import option will be shown only if no players were selected for the game -->
-    {% if not players %}
-
-      <div class="form-group">
-          <label>Lähetä csv-tiedosto</label>
-          <input type="file" name="csv" value="">
-      </div>
-      <br>
-
-    {% else %}
-
-      {% for player in players %}
-
-        <h4>Pelaajan {{player.firstname}} tulokset</h4>
-
-        <div class="form-group">
-          <label></label>
-          <label>Heitot</label>
-          <table>
-            <tr>
-              {% for hole in course.holes %}
-                <td>{{hole.hole_num}}</td>
-              {% endfor %}
-            </tr>
-            <tr>
-              {% for hole in course.holes %}
-                <td><input class="form-control" type="text" name="player{{player.playerid}}-hole{{hole.hole_num}}" value="{% if attribute(attributes, 'hole' ~ hole.hole_num) %}{{attribute(attributes, 'hole' ~ hole.hole_num)}}{% else %}3{% endif %}"></td>
-              {% endfor %}
-            </tr>
-          </table>
-        </div>
-
-        <div class="form-group">
-          <label>OB:t</label>
-          <table>
-            <tr>
-              {% for hole in course.holes %}
-                <td>{{hole.hole_num}}</td>
-              {% endfor %}
-            </tr>
-            <tr>
-              {% for hole in course.holes %}
-                <td><input class="form-control" type="text" name="player{{player.playerid}}-obhole{{hole.hole_num}}" value="{% if attribute(attributes, 'obhole' ~ hole.hole_num) %}{{attribute(attributes, 'obhole' ~ hole.hole_num)}}{% else %}0{% endif %}"></td>
-              {% endfor %}
-            </tr>
-          </table>
-        </div>
-
-        <br>
-
-        <input type="hidden" name="player{{player.playerid}}" value="{{player.playerid}}">
-
-      {% endfor %}
-
-    {% endif %}
-
     <input type="hidden" name="courseid" value="{{course.courseid}}">
+    <input type="hidden" name="playerid" value="{{user_logged_in.playerid}}">
 
-    <button type="submit" class="btn btn-primary">Lähetä</button>
+    <button type="submit" class="btn btn-primary">Seuraava</button>
     <a href="{{base_path}}/game"><button type="button" class="btn btn-default">Peruuta</button></a>
   </form>
 

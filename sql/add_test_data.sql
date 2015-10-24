@@ -1,5 +1,7 @@
 INSERT INTO player (firstname, username, password) VALUES ('Teppo', 'teppo', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
 INSERT INTO player (firstname, username, password) VALUES ('Matti', 'matti', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
+INSERT INTO player (firstname, username, password) VALUES ('Seppo', 'seppo', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
+INSERT INTO player (firstname, username, password) VALUES ('Esko', 'esko', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
 
 INSERT INTO player (admin, firstname, username, password) VALUES (true, 'Admin', 'admin', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
 

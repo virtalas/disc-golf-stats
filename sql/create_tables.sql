@@ -31,7 +31,8 @@ windy boolean DEFAULT FALSE,
 variant boolean DEFAULT FALSE,
 dark boolean DEFAULT FALSE,
 led boolean DEFAULT FALSE,
-snow boolean DEFAULT FALSE
+snow boolean DEFAULT FALSE,
+doubles boolean DEFAULT FALSE
 );
 
 CREATE TABLE Score(
@@ -40,5 +41,6 @@ gameid INTEGER REFERENCES Game(gameid),
 holeid INTEGER REFERENCES Hole(holeid),
 playerid INTEGER REFERENCES Player(playerid),
 stroke smallint NOT NULL,
-ob smallint DEFAULT 0
+ob smallint DEFAULT 0,
+legal boolean DEFAULT TRUE
 );

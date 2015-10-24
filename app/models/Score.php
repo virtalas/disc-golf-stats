@@ -1,33 +1,35 @@
 <?php
   class Score extends BaseModel {
 
-    public $scoreid, $gameid, $holeid, $playerid, $stroke, $ob, // Ready to use after creation
+    public $scoreid, $gameid, $holeid, $playerid, $stroke, $ob, $legal, // Ready to use after creation
             $player, $hole; // Need to be prepared via prepare()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
-      $this->validators = array('validate_stroke', 'validate_ob');
+      $this->validators = array('validate_stroke', 'validate_ob', 'validate_score_legal');
     }
 
     public function save() {
-      $sql = "INSERT INTO score (gameid, holeid, playerid, stroke, ob) 
-              VALUES (:gameid, :holeid, :playerid, :stroke, :ob) RETURNING scoreid";
+      $sql = "INSERT INTO score (gameid, holeid, playerid, stroke, ob, legal)
+              VALUES (:gameid, :holeid, :playerid, :stroke, :ob, :legal) RETURNING scoreid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('gameid' => $this->gameid,
                             'holeid' => $this->holeid,
                             'playerid' => $this->playerid,
                             'stroke' => $this->stroke,
-                            'ob' => $this->ob));
+                            'ob' => $this->ob,
+                            'legal' => $this->legal));
       $row = $query->fetch();
       $this->scoreid = $row['scoreid'];
     }
 
     public function update() {
-      $sql = "UPDATE score SET stroke = :stroke, ob = :ob WHERE scoreid = :scoreid";
+      $sql = "UPDATE score SET stroke = :stroke, ob = :ob, legal = :legal WHERE scoreid = :scoreid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array(
         'stroke' => $this->stroke,
         'ob' => $this->ob,
+        'legal' => $this->legal,
         'scoreid' => $this->scoreid
       ));
     }
@@ -69,7 +71,8 @@
             'holeid' => $row['holeid'],
             'playerid' => $row['playerid'],
             'stroke' => $row['stroke'],
-            'ob' => $row['ob']
+            'ob' => $row['ob'],
+            'legal' => $row['legal']
           ));
           $score->prepare();
           $scores[] = $score;
@@ -104,11 +107,22 @@
     // Validators
 
     public function validate_stroke() {
-      return $this->validate_integer($this->stroke, "Tuloksen");
+      $errors = $this->validate_integer($this->stroke, "Tuloksen");
+
+      if ($this->stroke == null) {
+        $errors[] = "Skipattu väylä merkataan nollalla.";
+      }
+
+      return $errors;
     }
 
     public function validate_ob() {
       return $this->validate_integer($this->ob, "OB:n");
     }
+
+    public function validate_score_legal() {
+      // Check if game has conditions variant or doubles
+      $errors = array();
+      return $errors;
+    }
   }
-  

@@ -36,7 +36,7 @@
           > Sadetta (rain)
         </label>
       </div>
-      
+
       <div class="checkbox">
         <label>
           <input type="checkbox" name="wet_no_rain" value="1"
@@ -46,7 +46,7 @@
           > Märkää (ei sadetta) (wet_no_rain)
         </label>
       </div>
-      
+
       <div class="checkbox">
         <label>
           <input type="checkbox" name="windy" value="1"
@@ -66,7 +66,7 @@
           > Poikkeava rata (variant)
         </label>
       </div>
-      
+
       <div class="checkbox">
         <label>
           <input type="checkbox" name="dark" value="1"
@@ -86,7 +86,7 @@
           > LED (led)
         </label>
       </div>
-      
+
       <div class="checkbox">
         <label>
           <input type="checkbox" name="snow" value="1"
@@ -94,6 +94,16 @@
               checked
             {% endif %}
           > Lunta (snow)
+        </label>
+      </div>
+
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="doubles" value="1"
+            {% if game.doubles %}
+              checked
+            {% endif %}
+          > Parigolf (doubles)
         </label>
       </div>
     </div>

@@ -2,17 +2,13 @@
 
   class DatabaseConfig{
 
-    // PostgreSQL (psql) or MySQL (mysql)
+    // PostgreSQL (psql)
     private static $use_database = 'psql';
 
+    // Add config here after pgsql:
     private static $connection_config = array(
       'psql' => array(
         'resource' => 'pgsql:'
-      ),
-      'mysql' => array(
-        'resource' => 'mysql:unix_socket=/home/USERNAME/mysql/socket;dbname=mysql',
-        'username' => 'root',
-        'password' => 'PASSWORD'
       )
     );
 
