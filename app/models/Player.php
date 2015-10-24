@@ -9,7 +9,7 @@
   	}
 
     public function save() {
-      $sql = "INSERT INTO player (firstname, username, password) 
+      $sql = "INSERT INTO player (firstname, username, password)
               VALUES (:firstname, :username, :password) RETURNING playerid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('firstname' => $this->firstname,
@@ -57,7 +57,7 @@
     }
 
   	public static function all() {
-  		$query = DB::connection()->prepare('SELECT * FROM player');
+  		$query = DB::connection()->prepare('SELECT * FROM player ORDER BY playerid ASC');
   		$query->execute();
   		$rows = $query->fetchAll();
   		$players = array();

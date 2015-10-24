@@ -136,9 +136,9 @@
 
     <br>
 
-    {% for playername,scores in game.scores %}
+    {% for playerid,scores in game.scores %}
 
-      <h4>Pelaajan {{playername}} tulokset</h4>
+      <h4>Pelaajan {{players[playerid - 1].firstname}} tulokset</h4>
 
       <div class="form-group">
         <label>Heitot</label>
@@ -150,7 +150,7 @@
           </tr>
           <tr>
             {% for score in scores %}
-              <td><input class="form-control" type="text" name="hole{{score.hole.hole_num}}" value="{{score.stroke}}"></td>
+              <td><input class="form-control" type="text" name="player{{playerid}}-hole{{score.hole.hole_num}}" value="{{score.stroke}}"></td>
             {% endfor %}
           </tr>
         </table>
@@ -166,18 +166,19 @@
           </tr>
           <tr>
             {% for score in scores %}
-              <td><input class="form-control" type="text" name="obhole{{score.hole.hole_num}}" value="{{score.ob}}"></td>
+              <td><input class="form-control" type="text" name="player{{playerid}}-obhole{{score.hole.hole_num}}" value="{{score.ob}}"></td>
             {% endfor %}
           </tr>
         </table>
       </div>
+
+      <input type="hidden" name="player{{playerid}}" value="{{playerid}}">
 
     {% endfor %}
 
     <br>
 
     <input type="hidden" name="courseid" value="{{game.course.courseid}}">
-    <input type="hidden" name="playerid" value="{{user_logged_in.playerid}}">
 
     <button type="submit" class="btn btn-primary">Lähetä</button>
     <a href="{{base_path}}/game"><button type="button" class="btn btn-default">Peruuta</button></a>

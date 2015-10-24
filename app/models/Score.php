@@ -78,7 +78,7 @@
           $scores[] = $score;
         }
 
-        $player_scores[$player->firstname] = $scores;
+        $player_scores[$player->playerid] = $scores;
       }
 
       return $player_scores;

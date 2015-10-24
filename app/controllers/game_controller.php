@@ -131,12 +131,13 @@
 
     public static function edit($gameid) {
       $game = Game::find($gameid);
+      $players = Player::all();
 
       $gamedate = explode(' ', $game->gamedate);
       $date = $gamedate[0];
       $time = substr($gamedate[1], 0, 5);
 
-      View::make('game/edit.html', array('game' => $game, 'date' => $date, 'time' => $time));
+      View::make('game/edit.html', array('game' => $game, 'date' => $date, 'time' => $time, 'players' => $players));
     }
 
     public static function update($gameid) {
@@ -172,14 +173,23 @@
       $errors = $game->errors();
 
       $course = Course::find($courseid);
-      // When implementing multiple players per game, cycle through playerid's here
-      $playerid = $_POST['playerid'];
+
+      // Game's players
+      // $players = array();
+      // foreach (Player::all() as $player) {
+      //   if (isset($_POST['player'. $player->playerid])) {
+      //     $players[] = $player;
+      //   }
+      // }
 
       $player_scores = Score::all_game_scores($gameid);
-      foreach ($player_scores as $playername => $scores) {
+
+      // Cycle through players
+      foreach ($player_scores as $playerid => $scores) {
         foreach ($scores as $score) {
-          $stroke = $_POST['hole'. $score->hole->hole_num]; // 'holeN' will be something like 'playername-holeN'
-          $ob = $_POST['obhole'. $score->hole->hole_num];
+          // inputs are in format 'player1-hole1'
+          $stroke = $_POST['player'. $playerid. '-hole'. $score->hole->hole_num];
+          $ob = $_POST['player'. $playerid. '-obhole'. $score->hole->hole_num];
 
           $score->stroke = $stroke;
           $score->ob = $ob;
@@ -200,7 +210,11 @@
 
         Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset päivitetty.'));
       } else {
-        View::make('game/edit.html', array('errors' => $errors, 'game' => $game, 'date' => $date, 'time' => $time));
+        View::make('game/edit.html', array('errors' => $errors,
+                                          'game' => $game,
+                                          'date' => $date,
+                                          'time' => $time,
+                                          'players' => Player::all()));
       }
     }
 

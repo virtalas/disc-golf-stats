@@ -45,7 +45,7 @@
 
 
 
-{% macro list_games(games, base_path) %}
+{% macro list_games(games, players, base_path) %}
   <table width=60%>
     <tr>
       <td>Olosuhteina voi olla:</td>
@@ -110,8 +110,9 @@
       <tr>
 
         <!-- Cycle through every player's scores in the game and display them on their own row -->
-        {% for playername,scores in game.scores %}
-          <td class='names'>{{playername}}</td>
+        {% for playerid,scores in game.scores %}
+          <!-- Array 'players' is ordered by playerid ASC, so to get the player by id: players[playerid - 1] -->
+          <td class='names'>{{players[playerid - 1].firstname}}</td>
 
           {% set total_score = 0 %}
 
