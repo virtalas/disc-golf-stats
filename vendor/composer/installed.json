@@ -1,65 +1,5 @@
 [
     {
-        "name": "filp/whoops",
-        "version": "1.1.5",
-        "version_normalized": "1.1.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/filp/whoops.git",
-            "reference": "c982fe62c44798c433229cb0425c61b487cc1883"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/filp/whoops/zipball/c982fe62c44798c433229cb0425c61b487cc1883",
-            "reference": "c982fe62c44798c433229cb0425c61b487cc1883",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "mockery/mockery": "0.9.*"
-        },
-        "time": "2015-03-30 15:26:59",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Whoops": "src/"
-            },
-            "classmap": [
-                "src/deprecated"
-            ]
-        },
-        "notification-url": "http://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Filipe Dobreira",
-                "homepage": "https://github.com/filp",
-                "role": "Developer"
-            }
-        ],
-        "description": "php error handling for cool kids",
-        "homepage": "https://github.com/filp/whoops",
-        "keywords": [
-            "error",
-            "exception",
-            "handling",
-            "library",
-            "silex-provider",
-            "whoops",
-            "zf2"
-        ]
-    },
-    {
         "name": "raveren/kint",
         "version": "v0.9",
         "version_normalized": "0.9.0.0",
@@ -85,7 +25,7 @@
                 "Kint.class.php"
             ]
         },
-        "notification-url": "http://packagist.org/downloads/",
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
@@ -105,6 +45,119 @@
             "debug",
             "kint",
             "php"
+        ]
+    },
+    {
+        "name": "filp/whoops",
+        "version": "1.1.7",
+        "version_normalized": "1.1.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/filp/whoops.git",
+            "reference": "72538eeb70bbfb11964412a3d098d109efd012f7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/filp/whoops/zipball/72538eeb70bbfb11964412a3d098d109efd012f7",
+            "reference": "72538eeb70bbfb11964412a3d098d109efd012f7",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "0.9.*"
+        },
+        "time": "2015-06-29 05:42:04",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Whoops": "src/"
+            },
+            "classmap": [
+                "src/deprecated"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Filipe Dobreira",
+                "homepage": "https://github.com/filp",
+                "role": "Developer"
+            }
+        ],
+        "description": "php error handling for cool kids",
+        "homepage": "https://github.com/filp/whoops",
+        "keywords": [
+            "error",
+            "exception",
+            "handling",
+            "library",
+            "silex-provider",
+            "whoops",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zeuxisoo/slim-whoops",
+        "version": "0.3.0",
+        "version_normalized": "0.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zeuxisoo/php-slim-whoops.git",
+            "reference": "da0250b0d1211bd90c5ab7e8cf7c3925e8376095"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zeuxisoo/php-slim-whoops/zipball/da0250b0d1211bd90c5ab7e8cf7c3925e8376095",
+            "reference": "da0250b0d1211bd90c5ab7e8cf7c3925e8376095",
+            "shasum": ""
+        },
+        "require": {
+            "filp/whoops": "1.*",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "filp/whoops": "1.*",
+            "phpunit/phpunit": "3.7.*@dev",
+            "slim/slim": "2.*"
+        },
+        "time": "2014-11-06 06:47:24",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Zeuxisoo\\Whoops\\Provider\\Slim\\WhoopsMiddleware": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-2-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Zeuxis Lo",
+                "email": "seekstudio@gmail.com",
+                "homepage": "http://www.chair.im/",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP whoops error on slim framework",
+        "homepage": "https://github.com/zeuxisoo/php-slim-whoops/",
+        "keywords": [
+            "error",
+            "exception",
+            "slim",
+            "whoops"
         ]
     },
     {
@@ -136,7 +189,7 @@
                 "Slim": "."
             }
         },
-        "notification-url": "http://packagist.org/downloads/",
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
@@ -157,27 +210,31 @@
     },
     {
         "name": "twig/twig",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.21.1",
+        "version_normalized": "1.21.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf"
+            "reference": "ca8d3aa90b6a01c82e07909fe815d6b443e75a23"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/4cf7464348e7f9893a93f7096a90b73722be99cf",
-            "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/ca8d3aa90b6a01c82e07909fe815d6b443e75a23",
+            "reference": "ca8d3aa90b6a01c82e07909fe815d6b443e75a23",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.2.4"
+            "php": ">=5.2.7"
         },
-        "time": "2015-01-25 17:32:08",
+        "require-dev": {
+            "symfony/debug": "~2.7",
+            "symfony/phpunit-bridge": "~2.7"
+        },
+        "time": "2015-08-26 08:58:31",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.18-dev"
+                "dev-master": "1.21-dev"
             }
         },
         "installation-source": "dist",
@@ -186,7 +243,7 @@
                 "Twig_": "lib/"
             }
         },
-        "notification-url": "http://packagist.org/downloads/",
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "BSD-3-Clause"
         ],

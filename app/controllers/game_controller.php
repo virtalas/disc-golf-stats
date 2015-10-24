@@ -1,7 +1,7 @@
 <?php
   class GameController extends BaseController {
 
-    public function index() {
+    public static function index() {
       $page = isset($_GET['page']) && $_GET['page']  ? $_GET['page'] : 1;
       $player = self::get_user_logged_in();
       $games_count = Game::count_all_player_games($player->playerid);
@@ -136,15 +136,15 @@
 
       $game = new Game(array(
         'gameid' => $gameid,
-        'courseid' => $courseid, 
-        'gamedate' => $gamedate, 
-        'comment' => $comment, 
-        'rain' => $rain, 
-        'wet_no_rain' => $wet_no_rain, 
+        'courseid' => $courseid,
+        'gamedate' => $gamedate,
+        'comment' => $comment,
+        'rain' => $rain,
+        'wet_no_rain' => $wet_no_rain,
         'windy' => $windy,
-        'variant' => $variant, 
-        'dark' => $dark, 
-        'led' => $led, 
+        'variant' => $variant,
+        'dark' => $dark,
+        'led' => $led,
         'snow' => $snow
       ));
       $errors = $game->errors();
