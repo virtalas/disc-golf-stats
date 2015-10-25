@@ -34,6 +34,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
           </button>
           <!-- Sovelluksen nimi -->
           <a class="navbar-brand" href="{{base_path}}">Frisbeegolf-tulospalvelu</a>
@@ -53,7 +54,13 @@
             {% else %}
               <li><a href="{{base_path}}/game">Pelit</a></li>
             {% endif %}
-            
+
+            {% if current_page == 'player' %}
+              <li class="active"><a href="{{base_path}}/player">Pelaajat</a></li>
+            {% else %}
+              <li><a href="{{base_path}}/player">Pelaajat</a></li>
+            {% endif %}
+
             {% if current_page == 'course' %}
               <li class="active"><a href="{{base_path}}/course">Radat</a></li>
             {% else %}

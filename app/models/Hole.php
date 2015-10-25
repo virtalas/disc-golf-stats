@@ -1,7 +1,7 @@
 <?php
 
   class Hole extends BaseModel {
-  	
+
   	public $holeid, $courseid, $hole_num, $par; // Ready to use after creation
 
   	public function __construct($attributes) {
@@ -10,7 +10,7 @@
   	}
 
     public function save() {
-      $sql = "INSERT INTO hole (courseid, hole_num, par) 
+      $sql = "INSERT INTO hole (courseid, hole_num, par)
               VALUES (:courseid, :hole_num, :par) RETURNING holeid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $this->courseid,
@@ -36,7 +36,7 @@
   		$query = DB::connection()->prepare('SELECT * FROM hole');
   		$query->execute();
   		$rows = $query->fetchAll();
-  		
+
       return Hole::get_holes_from_rows($rows);
   	}
 
@@ -60,11 +60,11 @@
     }
 
     public static function course_holes($courseid) {
-      $sql = "SELECT * FROM hole WHERE courseid = :courseid ORDER BY hole_num";
+      $sql = "SELECT holeid, hole_num, par FROM hole WHERE courseid = :courseid ORDER BY hole_num";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $courseid));
       $rows = $query->fetchAll();
-      
+
       return self::get_holes_from_rows($rows);
     }
 
@@ -74,7 +74,6 @@
       foreach ($rows as $row) {
         $holes[] = new Hole(array(
           'holeid' => $row['holeid'],
-          'courseid' => $row['courseid'],
           'hole_num' => $row['hole_num'],
           'par' => $row['par']
         ));

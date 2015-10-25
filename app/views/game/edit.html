@@ -139,19 +139,19 @@
     <!-- Array scores is ordered by hole_num -->
     {% for playerid,scores in game.scores %}
 
-      <h4>Pelaajan {{players[playerid - 1].firstname}} tulokset</h4>
+      <h4>Pelaajan {{players[playerid|trim('player') - 1].firstname}} tulokset</h4>
 
       <div class="form-group">
         <label>Heitot</label>
         <table>
           <tr>
             {% for score in scores %}
-              <td>{{score.hole.hole_num}}</td>
+              <td>{{score.hole_num}}</td>
             {% endfor %}
           </tr>
           <tr>
             {% for score in scores %}
-              <td><input class="form-control" type="text" name="player{{playerid}}-hole{{score.hole.hole_num}}" value="{{score.stroke}}"></td>
+              <td><input class="form-control" type="text" name="player{{playerid}}-hole{{score.hole_num}}" value="{{score.stroke}}"></td>
             {% endfor %}
           </tr>
         </table>
@@ -162,12 +162,12 @@
         <table>
           <tr>
             {% for score in scores %}
-              <td>{{score.hole.hole_num}}</td>
+              <td>{{score.hole_num}}</td>
             {% endfor %}
           </tr>
           <tr>
             {% for score in scores %}
-              <td><input class="form-control" type="text" name="player{{playerid}}-obhole{{score.hole.hole_num}}" value="{{score.ob}}"></td>
+              <td><input class="form-control" type="text" name="player{{playerid}}-obhole{{score.hole_num}}" value="{{score.ob}}"></td>
             {% endfor %}
           </tr>
         </table>

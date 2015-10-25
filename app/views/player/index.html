@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% set current_page = 'player' %}
+
+{% block content %}
+
+  {% import "macros/forms.html" as forms %}
+
+  {% if message is not null %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+
+  <h2>Pelaajat</h2>
+
+{% endblock %}

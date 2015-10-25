@@ -87,9 +87,16 @@
     GameController::update($gameid);
   });
 
-  // Radan poisto
+  // Pelin poisto
   $routes->post('/game/:gameid/destroy', 'check_logged_in', function($gameid){
     GameController::destroy($gameid);
+  });
+
+  // Pelaaja
+
+  // Pelaajien lisaussivu ja esittelysivu
+  $routes->get('/player', 'check_logged_in', function() {
+    PlayerController::index();
   });
 
   // Käyttäjä
@@ -110,11 +117,11 @@
   });
 
   // Rekisteröitymislomakkeen esittäminen
-  $routes->get('/register', function(){
-    UserController::register();
-  });
+  // $routes->get('/register', function(){
+  //   UserController::register();
+  // });
 
   // Rekisteröitymisen käsittely
-  $routes->post('/register', function(){
-    UserController::handle_register();
-  });
+  // $routes->post('/register', function(){
+  //   UserController::handle_register();
+  // });

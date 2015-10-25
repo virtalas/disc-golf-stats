@@ -18,6 +18,7 @@ return array(
     'HelloWorldController' => $baseDir . '/app/controllers/hello_world_controller.php',
     'Hole' => $baseDir . '/app/models/Hole.php',
     'Player' => $baseDir . '/app/models/Player.php',
+    'PlayerController' => $baseDir . '/app/controllers/player_controller.php',
     'Redirect' => $baseDir . '/lib/redirect.php',
     'Score' => $baseDir . '/app/models/Score.php',
     'StatsController' => $baseDir . '/app/controllers/stats_controller.php',

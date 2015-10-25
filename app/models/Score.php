@@ -2,7 +2,7 @@
   class Score extends BaseModel {
 
     public $scoreid, $gameid, $holeid, $playerid, $stroke, $ob, $legal, // Ready to use after creation
-            $player, $hole; // Need to be prepared via prepare()
+            $hole_par, $hole_num; // Needs to be prepared in all_game_scores()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -40,49 +40,84 @@
       $query->execute(array('scoreid' => $this->scoreid));
     }
 
-    public function prepare() {
-      $this->load_player();
-      $this->load_hole();
-    }
-
-    private function load_player() {
-      $this->player = Player::find($this->playerid);
-    }
-
-    private function load_hole() {
-      $this->hole = Hole::find($this->holeid);
-    }
-
+    // public static function all_game_scores($gameid) {
+    //   $players = Game::games_players($gameid);
+    //   $player_scores = array();
+    //
+    //   foreach ($players as $player) {
+    //     $sql = "SELECT hole.par, score.stroke, score.ob, score.legal FROM score
+    //             JOIN hole ON score.holeid = hole.holeid
+    //             WHERE score.gameid = :gameid AND score.playerid = :playerid
+    //             ORDER BY hole.hole_num ASC";
+    //     $query = DB::connection()->prepare($sql);
+    //     $query->execute(array('gameid' => $gameid, 'playerid' => $player->playerid));
+    //     $rows = $query->fetchAll();
+    //     $scores = array();
+    //
+    //     foreach ($rows as $row) {
+    //       $score = new Score(array(
+    //         'hole_par' => $row['par'],
+    //         'stroke' => $row['stroke'],
+    //         'ob' => $row['ob'],
+    //         'legal' => $row['legal']
+    //       ));
+    //       $scores[] = $score;
+    //     }
+    //
+    //     $player_scores[$player->playerid] = $scores;
+    //   }
+    //
+    //   return $player_scores;
+    // }
     public static function all_game_scores($gameid) {
       $players = Game::games_players($gameid);
       $player_scores = array();
 
       foreach ($players as $player) {
-        $sql = "SELECT * FROM score
+        $sql = "SELECT hole.hole_num, hole.par, score.scoreid, score.stroke, score.ob, score.legal FROM score
                 JOIN hole ON score.holeid = hole.holeid
                 WHERE score.gameid = :gameid AND score.playerid = :playerid
                 ORDER BY hole.hole_num ASC";
         $query = DB::connection()->prepare($sql);
         $query->execute(array('gameid' => $gameid, 'playerid' => $player->playerid));
         $rows = $query->fetchAll();
+
         $scores = array();
+        $total_score = 0;
 
         foreach ($rows as $row) {
           $score = new Score(array(
+            'hole_num' => $row['hole_num'],
+            'hole_par' => $row['par'],
             'scoreid' => $row['scoreid'],
-            'gameid' => $row['gameid'],
-            'holeid' => $row['holeid'],
-            'playerid' => $row['playerid'],
             'stroke' => $row['stroke'],
             'ob' => $row['ob'],
             'legal' => $row['legal']
           ));
-          $score->prepare();
           $scores[] = $score;
+          $total_score += (int) $row['stroke'];
+          $total_score += (int) $row['ob'];
         }
 
-        $player_scores[$player->playerid] = $scores;
+        $player_scores['player'. $player->playerid] = $scores;
       }
+
+      // Sort array by total score
+      uasort($player_scores, function($a, $b) {
+        $a_total_score = 0;
+        foreach ($a as $score) {
+          $a_total_score += $score->stroke;
+          $a_total_score += $score->ob;
+        }
+
+        $b_total_score = 0;
+        foreach ($b as $score) {
+          $b_total_score += $score->stroke;
+          $b_total_score += $score->ob;
+        }
+
+        return $a_total_score - $b_total_score;
+      });
 
       return $player_scores;
     }

@@ -3,7 +3,7 @@
 
     public $gameid, $courseid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
             $variant, $dark, $led, $snow, $doubles, // Ready to use after creation
-            $course, $scores, $conditions; // Need to be prepared via prepare()
+            $course, $scores, $conditions; // Need to be prepared via prepare_var()
 
     public function __construct($attributes) {
       parent::__construct($attributes);

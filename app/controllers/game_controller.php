@@ -47,6 +47,10 @@
         }
       }
 
+      // $attributes = array();
+      // $attributes['date'] = date('Y-m-d');
+      // $attributes['time'] = date('H:i');
+
       View::make('game/new.html', array('course' => $course,
                                         'players' => $players));
     }
@@ -188,8 +192,8 @@
       foreach ($player_scores as $playerid => $scores) {
         foreach ($scores as $score) {
           // inputs are in format 'player1-hole1'
-          $stroke = $_POST['player'. $playerid. '-hole'. $score->hole->hole_num];
-          $ob = $_POST['player'. $playerid. '-obhole'. $score->hole->hole_num];
+          $stroke = $_POST['player'. $playerid. '-hole'. $score->hole_num];
+          $ob = $_POST['player'. $playerid. '-obhole'. $score->hole_num];
 
           $score->stroke = (int) $stroke;
           $score->ob = (int) $ob;

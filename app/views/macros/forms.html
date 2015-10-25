@@ -112,7 +112,8 @@
         <!-- Cycle through every player's scores in the game and display them on their own row -->
         {% for playerid,scores in game.scores %}
           <!-- Array 'players' is ordered by playerid ASC, so to get the player by id: players[playerid - 1] -->
-          <td class='names'>{{players[playerid - 1].firstname}}</td>
+          <!-- <td class='names'>{{players[playerid].firstname}}</td> -->
+          <td class='names'>{{players[playerid|trim('player') - 1].firstname}}</td>
 
           {% set total_score = 0 %}
 
@@ -123,11 +124,11 @@
               <td>
             {% elseif score.stroke == 1 %}
               <td class='hole_in_one'>
-            {% elseif score.stroke + score.ob < score.hole.par %}
+            {% elseif score.stroke + score.ob < score.hole_par %}
               <td class='birdie'>
-            {% elseif score.stroke + score.ob == score.hole.par %}
+            {% elseif score.stroke + score.ob == score.hole_par %}
               <td class='par'>
-            {% elseif score.stroke + score.ob - score.hole.par == 1 %}
+            {% elseif score.stroke + score.ob - score.hole_par == 1 %}
               <td class='bogey'>
             {% else %}
               <td class='over_bogey'>
