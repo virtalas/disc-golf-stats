@@ -58,7 +58,10 @@
       $player_scores = array();
 
       foreach ($players as $player) {
-        $sql = "SELECT * FROM score WHERE gameid = :gameid AND playerid = :playerid";
+        $sql = "SELECT * FROM score
+                JOIN hole ON score.holeid = hole.holeid
+                WHERE score.gameid = :gameid AND score.playerid = :playerid
+                ORDER BY hole.hole_num ASC";
         $query = DB::connection()->prepare($sql);
         $query->execute(array('gameid' => $gameid, 'playerid' => $player->playerid));
         $rows = $query->fetchAll();

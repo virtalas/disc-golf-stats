@@ -136,6 +136,7 @@
 
     <br>
 
+    <!-- Array scores is ordered by hole_num -->
     {% for playerid,scores in game.scores %}
 
       <h4>Pelaajan {{players[playerid - 1].firstname}} tulokset</h4>
@@ -144,8 +145,8 @@
         <label>Heitot</label>
         <table>
           <tr>
-            {% for hole in game.course.holes %}
-              <td>{{hole.hole_num}}</td>
+            {% for score in scores %}
+              <td>{{score.hole.hole_num}}</td>
             {% endfor %}
           </tr>
           <tr>
@@ -160,8 +161,8 @@
         <label>OB:t</label>
         <table>
           <tr>
-            {% for hole in game.course.holes %}
-              <td>{{hole.hole_num}}</td>
+            {% for score in scores %}
+              <td>{{score.hole.hole_num}}</td>
             {% endfor %}
           </tr>
           <tr>

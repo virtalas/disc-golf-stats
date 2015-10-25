@@ -191,8 +191,8 @@
           $stroke = $_POST['player'. $playerid. '-hole'. $score->hole->hole_num];
           $ob = $_POST['player'. $playerid. '-obhole'. $score->hole->hole_num];
 
-          $score->stroke = $stroke;
-          $score->ob = $ob;
+          $score->stroke = (int) $stroke;
+          $score->ob = (int) $ob;
 
           $errors = array_merge($errors, $score->errors());
         }
@@ -202,7 +202,7 @@
         // Game and scores were all valid
         $gameid = $game->update();
 
-        foreach ($player_scores as $playername => $scores) {
+        foreach ($player_scores as $playerid => $scores) {
           foreach ($scores as $score) {
             $score->update();
           }
