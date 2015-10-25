@@ -2,6 +2,20 @@
 
 {% set current_page = 'player' %}
 
+{% block sidebar %}
+  <li class="sidebar-brand">
+      <a href="{{base_path}}/player/list">
+          Pelaajat
+      </a>
+  </li>
+
+  {% for curr_player in players %}
+    <li>
+        <a href="{{base_path}}/player?player={{curr_player.playerid}}">{{curr_player.firstname}}</a>
+    </li>
+  {% endfor %}
+{% endblock %}
+
 {% block content %}
 
   {% import "macros/forms.html" as forms %}
@@ -12,6 +26,91 @@
     </div>
   {% endif %}
 
-  <h2>Pelaajat</h2>
+  <h2>{{player.firstname}}</h2>
+
+  <br>
+
+  <table style="width:530px">
+    <tr>
+      <td>Pelatut pelit:</td>
+      <td>{{game_count}}</td>
+    </tr>
+    <tr>
+      <td>Viimeisin peli:</td>
+      <td>{{latest_game}}</td>
+    </tr>
+    <tr>
+      <td>Holareita:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Birdiejä:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Suosituin rata (eniten pelejä):</td>
+      <td>1. {{popular_courses[0].name}} ({{popular_courses[0].occurance}})</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2. {{popular_courses[1].name}} ({{popular_courses[1].occurance}})</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>3. {{popular_courses[2].name}} ({{popular_courses[2].occurance}})</td>
+    </tr>
+  </table>
+
+  <br>
+
+  <a href="#" class="btn btn-default" role="button">Kaikki pelaajan pelit</a>
+
+  <br><br>
+
+  <h3>Ennätykset</h3>
+  <br>
+
+  <table style="width:700px">
+    <tr>
+      <th><b>Päivämäärä</b></th>
+      <th><b>Rata</b></th>
+      <th><b>Tulos</b></th>
+      <td align="right"><b>Par</b></td>
+      <th></th>
+    </tr>
+    {% for high_score in high_scores %}
+      <tr>
+        <td>{{high_score[0].gamedate}}</td>
+        <td>{{high_score[1].name}}</td>
+        <td>{{high_score[2]}}</td>
+        <td align="right">{{high_score[3]}}</td>
+        <td style="padding-left:30px">
+          <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <br>
+
+  <h3>Ratojen tulosten keskiarvot</h3>
+
+  Keskiarvot joka vuodelta. Esitetty muodossa "Tulos (Par)".
+
+  <br><br>
+
+  <table style="width:500px">
+    <tr>
+      <td><b>Rata</b></td>
+      <td><b>year</b></td>
+      <td><b>year</b></td>
+    </tr>
+      <tr>
+        <td>course_name</td>
+        <td>60.00 (+12.00)</td>
+        <td>57.67 (+4.67)</td>
+      </tr>
+    <?php endforeach; ?>
+  </table>
 
 {% endblock %}

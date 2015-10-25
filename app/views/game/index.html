@@ -5,6 +5,7 @@
 {% block content %}
 
   {% import "macros/forms.html" as forms %}
+  {% import "macros/list_games.html" as list_games %}
 
   {% if message is not null %}
     <div class="alert alert-success">
@@ -24,7 +25,7 @@
     Tuloskortit ovat päivämäärän perusteella laskevassa järjestyksessä.
   </p>
 
-  {{forms.list_games(games, players, base_path)}}
+  {{list_games.list_games(games, players, base_path)}}
 
   <nav>
     <ul class="pagination">

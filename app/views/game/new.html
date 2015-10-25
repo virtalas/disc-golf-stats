@@ -90,13 +90,23 @@
           > Lunta (snow)
         </label>
       </div>
+
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="doubles" value="1"
+            {% if attributes.doubles %}
+              checked
+            {% endif %}
+          > Parigolf (doubles)
+        </label>
+      </div>
     </div>
 
     <div class="form-group">
       <label>Päivämäärä ja pelin päättymisaika</label>
 
       <div class="row">
-        <div class="col-xs-1">
+        <div class="col-xs-2">
           Päivämäärä
         </div>
         <div class="col-xs-2">
@@ -112,7 +122,7 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-4">
+      <div class="col-xs-5">
         <label>Kommentit</label>
         <textarea class="form-control" name="comment" width="100px" value="{{attributes.comment}}"></textarea>
       </div>

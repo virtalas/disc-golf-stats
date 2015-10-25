@@ -2,8 +2,9 @@
 
   class Course extends BaseModel {
 
-    public $courseid, $name, $city, // Ready to use after creation
-            $holes, $number_of_holes; // Need to be prepared via prepare()
+    public $courseid, $name, $city, $map, // Ready to use after creation
+            $holes, $number_of_holes, // Need to be prepared via prepare()
+            $occurance; // used for popular_courses()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -11,9 +12,9 @@
     }
 
     public function save() {
-      $sql = "INSERT INTO course (name, city) VALUES (:name, :city) RETURNING courseid";
+      $sql = "INSERT INTO course (name, city, map) VALUES (:name, :city, :map) RETURNING courseid";
       $query = DB::connection()->prepare($sql);
-      $query->execute(array('name' => $this->name, 'city' => $this->city));
+      $query->execute(array('name' => $this->name, 'city' => $this->city, 'map' => $this->map));
 
       $row = $query->fetch();
       $this->courseid = $row['courseid'];
@@ -22,11 +23,12 @@
     }
 
     public function update() {
-      $sql = "UPDATE course SET name = :name, city = :city WHERE courseid = :courseid";
+      $sql = "UPDATE course SET name = :name, city = :city, map = :map WHERE courseid = :courseid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array(
         'name' => $this->name,
         'city' => $this->city,
+        'map' => $this->map,
         'courseid' => $this->courseid
       ));
     }
@@ -51,7 +53,7 @@
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
-      
+
       return self::get_courses_from_rows($rows);
     }
 
@@ -60,7 +62,7 @@
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
-      
+
       return self::get_courses_from_rows($rows);
     }
 
@@ -101,6 +103,60 @@
       return null;
     }
 
+    public static function popular_courses($playerid) {
+      $sql = "SELECT course.name, course.city, COUNT(game.courseid) AS course_occurance
+              FROM game
+              JOIN course ON game.courseid = course.courseid
+              WHERE game.gameid IN
+              (SELECT gameid FROM score
+              JOIN player ON score.playerid = player.playerid
+              WHERE player.playerid = :playerid)
+              GROUP BY game.courseid, course.name, course.city
+              ORDER BY course_occurance DESC
+              LIMIT 3";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $rows = $query->fetchAll();
+      $courses = array();
+
+      foreach ($rows as $row) {
+        $course = new Course(array(
+          'name' => $row['name'],
+          'city' => $row['city'],
+          'occurance' => $row['course_occurance']
+        ));
+        $course->prepare();
+        $courses[] = $course;
+      }
+
+      return $courses;
+    }
+
+    public static function popular_courses_all_players() {
+      $sql = "SELECT course.name, course.city, COUNT(game.courseid) AS course_occurance
+              FROM game
+              JOIN course ON game.courseid = course.courseid
+              GROUP BY game.courseid, course.name, course.city
+              ORDER BY course_occurance DESC
+              LIMIT 3";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+      $courses = array();
+
+      foreach ($rows as $row) {
+        $course = new Course(array(
+          'name' => $row['name'],
+          'city' => $row['city'],
+          'occurance' => $row['course_occurance']
+        ));
+        $course->prepare();
+        $courses[] = $course;
+      }
+
+      return $courses;
+    }
+
     public static function player_courses($playerid) {
       $sql = "SELECT courseid, name, city
               FROM course
@@ -121,7 +177,8 @@
         $course = new Course(array(
           'courseid' => $row['courseid'],
           'name' => $row['name'],
-          'city' => $row['city']
+          'city' => $row['city'],
+          'map' => $row['map']
         ));
         $course->prepare();
 
@@ -138,7 +195,8 @@
         $course = new Course(array(
           'courseid' => $row['courseid'],
           'name' => $row['name'],
-          'city' => $row['city']
+          'city' => $row['city'],
+          'map' => $row['map']
         ));
         $course->prepare();
         $courses[] = $course;

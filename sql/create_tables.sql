@@ -10,7 +10,8 @@ password varchar(100) NOT NULL
 CREATE TABLE Course(
 courseid SERIAL PRIMARY KEY,
 name varchar(50) NOT NULL,
-city varchar(50)
+city varchar(50),
+map varchar(300)
 );
 
 CREATE TABLE Hole(

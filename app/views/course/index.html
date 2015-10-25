@@ -2,7 +2,23 @@
 
 {% set current_page = 'course' %}
 
+{% block sidebar %}
+  <li class="sidebar-brand">
+      <a href="{{base_path}}/course/list">
+          Radat
+      </a>
+  </li>
+
+  {% for curr_course in courses %}
+    <li>
+        <a href="{{base_path}}/course?course={{curr_course.courseid}}">{{curr_course.name}}</a>
+    </li>
+  {% endfor %}
+{% endblock %}
+
 {% block content %}
+
+  {% import "macros/forms.html" as forms %}
 
   {% if message is not null %}
     <div class="alert alert-success">
@@ -10,53 +26,47 @@
     </div>
   {% endif %}
 
-	<h1>Radat</h1>
+  <h2>{{course.name}}, {{course.city}}</h2>
 
-  <p>
-    <form method="get" action="{{base_path}}/course/new">
-      <label>Lisää rata valitsemalla ensin väylien määrä</label>
-      <div class="row">
-        <div class="col-xs-1">
-          <select class="form-control" name="hole_count">
-            {% for i in 1..30 %}
-              <option value="{{i}}"{% if i == 18 %}selected{% endif %}>{{i}}</option>
-            {% endfor %}
-          </select>
-        </div>
-      
-        <button type="submit" class="btn btn-default">Uusi rata</button>
-      </div>
-    </form>
-  </p>
-  
-  <!-- <p>
-    <a href="{{base_path}}/course/new" class="btn btn-default">Lisää rata</a>
-  </p> -->
+  {% if admin_logged_in %}
+    <p>
+      {{forms.destroy_button("#{base_path}/course/#{course.courseid}/destroy", "Poista", "Oletko varma että haluat poistaa radan? Radan poistaminen poistaa myös kaikki sillä pelatut pelit.")}}
+      <a href="{{base_path}}/course/{{course.courseid}}/edit" class="btn btn-default">Muokkaa</a>
+    </p>
+  {% endif %}
 
-  <table class="table table-striped table-bordered">
-    <thead>
-      <tr>
-        <th>Nimi</th>
-        <th>Kaupunki</th>
-        <th>Väylien määrä</th>
-        {% if admin_logged_in %}
-          <th></th>
-        {% endif %}
-      </tr>
-    </thead>
+  <table style="width:300px">
+    <tr>
+      <td>Pelatut pelit:</td>
+      <td>{{games_played}}</td>
+    </tr>
+    <tr>
+      <td>Viimeisin peli:</td>
+      <td>{{latest_game_date}}</td>
+    </tr>
+  </table>
 
-    <tbody>
-      {% for course in courses %}
-        <tr>
-          <td><a href="{{base_path}}/course/{{course.courseid}}">{{course.name}}</a></td>
-          <td>{{course.city}}</td>
-          <td>{{course.number_of_holes}}</td>
-          {% if admin_logged_in %}
-            <td><a class="btn btn-default btn-sm" href="{{base_path}}/course/{{course.courseid}}/edit">Muokkaa</a></td>
-          {% endif %}
-        </tr>
+  <br><br>
+
+  <a href="{{course.map}}" class="btn btn-default" role="button">Katso ratakartta</a>
+
+  <br><br>
+
+  <h3>Väylät</h3>
+
+  <table class="course_holes" width='530px'>
+    <tr>
+      <th class="course_holes">Väylä</th>
+      {% for hole in course.holes %}
+        <td class="course_holes">{{hole.hole_num}}</td>
       {% endfor %}
-    </tbody>
+    </tr>
+    <tr>
+      <th class="course_holes">Par</th>
+      {% for hole in course.holes %}
+        <td class="course_holes">{{hole.par}}</td>
+      {% endfor %}
+    </tr>
   </table>
 
 {% endblock %}

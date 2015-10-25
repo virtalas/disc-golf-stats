@@ -20,9 +20,14 @@
 
   // Radat
 
-  // Ratojen listaussivu
+  // Ratojen listaus- ja esittelysivu
   $routes->get('/course', 'check_logged_in', function() {
     CourseController::index();
+  });
+
+  // Ratojen listaussivu
+  $routes->get('/course/list', 'check_logged_in', function() {
+    CourseController::list_courses();
   });
 
   // Radan lisääminen tietokantaan
@@ -94,9 +99,14 @@
 
   // Pelaaja
 
-  // Pelaajien lisaussivu ja esittelysivu
+  // Pelaajien listaussivu ja esittelysivu
   $routes->get('/player', 'check_logged_in', function() {
     PlayerController::index();
+  });
+
+  // Pelaajien traditionaalinen listaussivu
+  $routes->get('/player/list', 'check_logged_in', function() {
+    // PlayerController::list_players();
   });
 
   // Käyttäjä

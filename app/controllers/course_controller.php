@@ -3,9 +3,29 @@
   class CourseController extends BaseController {
 
     public static function index() {
+      $course = null;
+
+      if (isset($_GET['course'])) {
+        $course = Course::find($_GET['course']);
+      } else {
+        $player = self::get_user_logged_in();
+        $popular_courses = Course::popular_courses($player->playerid);
+
+        if ($popular_courses) {
+          $course = $popular_courses[0];
+        } else {
+          $course = Course::find(1);
+        }
+      }
+
       $courses = Course::all();
 
-      View::make('course/index.html', array('courses' => $courses));
+      View::make('course/index.html', array('course' => $course, 'courses' => $courses));
+    }
+
+    public static function list_courses() {
+      $courses = Course::all();
+      View::make('course/list.html', array('courses' => $courses));
     }
 
     public static function show($courseid) {
@@ -31,7 +51,8 @@
 
       $course_params = array(
         'name' => $params['name'],
-        'city' => $params['city']
+        'city' => $params['city'],
+        'map' => $params['map']
       );
       $course = new Course($course_params);
       $errors = $course->errors();
@@ -73,7 +94,8 @@
       $attributes = array(
         'courseid' => $course->courseid,
         'name' => $course->name,
-        'city' => $course->city
+        'city' => $course->city,
+        'map' => $course->map
       );
 
       $hole_num = 1;
@@ -92,7 +114,8 @@
       $course_params = array(
         'courseid' => $courseid,
         'name' => $params['name'],
-        'city' => $params['city']
+        'city' => $params['city'],
+        'map' => $params['map']
       );
       $course = new Course($course_params);
       $errors = $course->errors();

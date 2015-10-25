@@ -24,8 +24,9 @@
   </head>
 
   <body id="{% block body_id %}{% endblock %}">
+  <div id="fake-wrapper">
 
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
 
         <div class="navbar-header">
@@ -56,9 +57,9 @@
             {% endif %}
 
             {% if current_page == 'player' %}
-              <li class="active"><a href="{{base_path}}/player">Pelaajat</a></li>
+              <li class="active"><a href="{{base_path}}/player?player={{user_logged_in.playerid}}">Pelaajat</a></li>
             {% else %}
-              <li><a href="{{base_path}}/player">Pelaajat</a></li>
+              <li><a href="{{base_path}}/player?player={{user_logged_in.playerid}}">Pelaajat</a></li>
             {% endif %}
 
             {% if current_page == 'course' %}
@@ -83,8 +84,30 @@
     </nav>
 
     <div id="main-container">
-      <!-- Dynaaminen sisältö tulee tähän -->
-      {% block content %}{% endblock %}
+      <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+
+                {% block sidebar %}{% endblock %}
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+
+              <!-- Dynaaminen sisältö tulee tähän -->
+              {% block content %}{% endblock %}
+
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+      </div>
     </div>
 
     {% block body %}
@@ -97,5 +120,6 @@
       <!-- Oma skriptitiedostomme -->
       <script src="{{base_path}}/assets/js/site.js"></script>
     {% endblock %}
+  </div>
   </body>
 </html>

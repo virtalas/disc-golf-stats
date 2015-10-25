@@ -32,27 +32,25 @@
     </tr>
   </table>
 
-  <!-- <br><br>
+  <br><br>
 
-  <a href="#">Kaikki pelit radalla</a> -->
+  <a href="{{course.map}}" class="btn btn-default" role="button">Katso ratakartta</a>
 
   <br><br>
 
   <h3>Väylät</h3>
 
-  <table width='350px'>
+  <table class="course_holes" width='530px'>
     <tr>
-      <td>Väylä</td>
-      <td>&nbsp;</td>
+      <th class="course_holes">Väylä</th>
       {% for hole in holes %}
-        <td class='td1'>{{hole.hole_num}}</td>
+        <td class="course_holes">{{hole.hole_num}}</td>
       {% endfor %}
     </tr>
     <tr>
-      <td>Par</td>
-      <td>&nbsp;</td>
+      <th class="course_holes">Par</th>
       {% for hole in holes %}
-        <td class='td1'>{{hole.par}}</td>
+        <td class="course_holes">{{hole.par}}</td>
       {% endfor %}
     </tr>
   </table>
