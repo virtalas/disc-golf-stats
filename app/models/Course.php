@@ -158,7 +158,7 @@
     }
 
     public static function player_courses($playerid) {
-      $sql = "SELECT courseid, name, city
+      $sql = "SELECT courseid, name, city, map
               FROM course
               WHERE courseid IN
               (SELECT hole.courseid FROM hole

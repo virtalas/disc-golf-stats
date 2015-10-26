@@ -89,47 +89,75 @@
       $errors = $game->errors();
 
       $course = Course::find($courseid);
-      $scores = array();
 
-      // Game's players
-      $players = array();
-      foreach (Player::all() as $player) {
-        if (isset($_POST['player'. $player->playerid])) {
-          $players[] = $player;
+      if (isset($_FILES['csv']['tmp_name'])) {
+        // Scores will be read from a CSV file.
+        $tmpName = $_FILES['csv']['tmp_name'];
+        $csvAsArray = array_map('str_getcsv', file($tmpName));
+
+        if (count($errors) == 0) {
+          // Game was valid
+          $gameid = $game->save();
+
+          // Read and save scores
+          $score_errors = CSVScoreProcessor::process($csvAsArray, $gameid, $course);
+
+          if (count($score_errors) == 0) {
+            // Scores were valid as well
+            Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
+          } else {
+            // Scores had errors, nothing was saved
+            $errors = array_merge($errors, $score_errors);
+            View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
+          }
+        } else {
+          View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
         }
-      }
-
-      // Cycle through players
-      foreach ($players as $player) {
-        foreach ($course->holes as $hole) {
-          // inputs are in format 'player1-hole1'
-          $stroke = $_POST['player'. $player->playerid. '-hole'. $hole->hole_num];
-          $ob = $_POST['player'. $player->playerid. '-obhole'. $hole->hole_num];
-
-          $score = new Score(array(
-            'holeid' => $hole->holeid,
-            'playerid' => $player->playerid,
-            'stroke' => $stroke,
-            'ob' => $ob
-          ));
-
-          $errors = array_merge($errors, $score->errors());
-          $scores[] = $score;
-        }
-      }
-
-      if (count($errors) == 0) {
-        // Game and scores were all valid
-        $gameid = $game->save();
-
-        foreach ($scores as $score) {
-          $score->gameid = $gameid;
-          $score->save();
-        }
-
-        Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
       } else {
-        View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
+        // Scores will be read from input forms.
+
+        $scores = array();
+
+        // Game's players
+        $players = array();
+        foreach (Player::all() as $player) {
+          if (isset($_POST['player'. $player->playerid])) {
+            $players[] = $player;
+          }
+        }
+
+        // Cycle through players
+        foreach ($players as $player) {
+          foreach ($course->holes as $hole) {
+            // inputs are in format 'player1-hole1'
+            $stroke = $_POST['player'. $player->playerid. '-hole'. $hole->hole_num];
+            $ob = $_POST['player'. $player->playerid. '-obhole'. $hole->hole_num];
+
+            $score = new Score(array(
+              'holeid' => $hole->holeid,
+              'playerid' => $player->playerid,
+              'stroke' => $stroke,
+              'ob' => $ob
+            ));
+
+            $errors = array_merge($errors, $score->errors());
+            $scores[] = $score;
+          }
+        }
+
+        if (count($errors) == 0) {
+          // Game and scores were all valid
+          $gameid = $game->save();
+
+          foreach ($scores as $score) {
+            $score->gameid = $gameid;
+            $score->save();
+          }
+
+          Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
+        } else {
+          View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
+        }
       }
     }
 

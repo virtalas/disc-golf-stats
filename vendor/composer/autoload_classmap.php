@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'BaseController' => $baseDir . '/lib/base_controller.php',
     'BaseModel' => $baseDir . '/lib/base_model.php',
+    'CSVScoreProcessor' => $baseDir . '/lib/process_csv_scores.php',
     'Course' => $baseDir . '/app/models/Course.php',
     'CourseController' => $baseDir . '/app/controllers/course_controller.php',
     'DB' => $baseDir . '/lib/database.php',

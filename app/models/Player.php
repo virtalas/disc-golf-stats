@@ -74,7 +74,21 @@
   		return $players;
   	}
 
-  	public static function find($playerid){
+    public static function all_firstnames() {
+      $sql = "SELECT firstname FROM player";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+      $firstnames = array();
+
+      foreach ($rows as $row) {
+        $firstnames[] = $row['firstname'];
+      }
+
+      return $firstnames;
+    }
+
+  	public static function find($playerid) {
       $sql = "SELECT * FROM player WHERE playerid = :playerid LIMIT 1";
 	    $query = DB::connection()->prepare($sql);
 	    $query->execute(array('playerid' => $playerid));
@@ -95,6 +109,28 @@
 
   		return null;
   	}
+
+    public static function find_by_firstname($firstname) {
+      $sql = "SELECT * FROM player WHERE firstname = :firstname LIMIT 1";
+	    $query = DB::connection()->prepare($sql);
+	    $query->execute(array('firstname' => $firstname));
+	    $row = $query->fetch();
+
+      if ($row) {
+  			$player = new Player(array(
+  				'playerid' => $row['playerid'],
+          'admin' => $row['admin'],
+  				'firstname' => $row['firstname'],
+  				'lastname' => $row['lastname'],
+  				'username' => $row['username'],
+  				'password' => $row['password']
+  			));
+
+  			return $player;
+  		}
+
+  		return null;
+    }
   }
 
 // function hash_equals used for verifying crypted passwords
