@@ -18,7 +18,7 @@
 
 {% block content %}
 
-  {% import "macros/forms.html" as forms %}
+  {% import "macros/course_show.html" as course_show %}
 
   {% if message is not null %}
     <div class="alert alert-success">
@@ -28,45 +28,6 @@
 
   <h2>{{course.name}}, {{course.city}}</h2>
 
-  {% if admin_logged_in %}
-    <p>
-      {{forms.destroy_button("#{base_path}/course/#{course.courseid}/destroy", "Poista", "Oletko varma että haluat poistaa radan? Radan poistaminen poistaa myös kaikki sillä pelatut pelit.")}}
-      <a href="{{base_path}}/course/{{course.courseid}}/edit" class="btn btn-default">Muokkaa</a>
-    </p>
-  {% endif %}
-
-  <table style="width:300px">
-    <tr>
-      <td>Pelatut pelit:</td>
-      <td>{{games_played}}</td>
-    </tr>
-    <tr>
-      <td>Viimeisin peli:</td>
-      <td>{{latest_game_date}}</td>
-    </tr>
-  </table>
-
-  <br><br>
-
-  <a href="{{course.map}}" class="btn btn-default" role="button">Katso ratakartta</a>
-
-  <br><br>
-
-  <h3>Väylät</h3>
-
-  <table class="course_holes" width='530px'>
-    <tr>
-      <th class="course_holes">Väylä</th>
-      {% for hole in course.holes %}
-        <td class="course_holes">{{hole.hole_num}}</td>
-      {% endfor %}
-    </tr>
-    <tr>
-      <th class="course_holes">Par</th>
-      {% for hole in course.holes %}
-        <td class="course_holes">{{hole.par}}</td>
-      {% endfor %}
-    </tr>
-  </table>
+  {{course_show.course_show(course)}}
 
 {% endblock %}

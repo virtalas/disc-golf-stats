@@ -1,6 +1,8 @@
 <?php
   class CSVScoreProcessor {
 
+    // See doc/Sample_18_holes.csv for reference
+
     public static function process($csvAsArray, $gameid, $course) {
       if (!empty($csvAsArray)) {
 

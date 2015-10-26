@@ -9,6 +9,7 @@
       $latest_game = Game::latest_player_game($player->playerid);
       $high_scores = Game::player_high_scores($player->playerid);
       $popular_courses = Course::popular_courses($player->playerid);
+      $birdies = Score::players_birdies($player->playerid);
 
       View::make('player/index.html', array(
         'player' => $player,
@@ -17,7 +18,8 @@
         'throw_count' => $throw_count,
         'latest_game' => $latest_game,
         'high_scores' => $high_scores,
-        'popular_courses' => $popular_courses
+        'popular_courses' => $popular_courses,
+        'birdies' => $birdies
       ));
     }
   }

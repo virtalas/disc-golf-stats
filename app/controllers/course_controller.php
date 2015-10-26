@@ -30,12 +30,10 @@
 
     public static function show($courseid) {
       $course = Course::find($courseid);
-      $holes = Hole::course_holes($courseid);
       $games_played = Course::number_of_games_played($courseid);
       $latest_game_date = Course::latest_game_date($courseid);
 
       View::make('course/show.html', array('course' => $course,
-                                          'holes' => $holes,
                                           'games_played' => $games_played,
                                           'latest_game_date' => $latest_game_date));
     }

@@ -1,0 +1,45 @@
+{% macro course_show(course) %}
+
+  <table style="width:300px">
+    <tr>
+      <td>Pelatut pelit:</td>
+      <td>{{games_played}}</td>
+    </tr>
+    <tr>
+      <td>Viimeisin peli:</td>
+      <td>{{latest_game_date}}</td>
+    </tr>
+  </table>
+
+  <br><br>
+
+  <a href="#" class="btn btn-default" role="button">Kaikki pelit radalla</a>
+
+  <br><br>
+
+  <h3>Väylät</h3>
+
+  <table class="course_holes" width='530px'>
+    <tr>
+      <th class="course_holes">Väylä</th>
+      {% for hole in course.holes %}
+        <td class="course_holes">{{hole.hole_num}}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <th class="course_holes">Par</th>
+      {% for hole in course.holes %}
+        <td class="course_holes">{{hole.par}}</td>
+      {% endfor %}
+    </tr>
+  </table>
+
+  <br><br>
+
+  <a href="{{course.map}}" class="btn btn-default btn-sm" role="button">Katso ratakartta</a>
+
+  <br><br>
+
+  <h3>Parhaat tulokset</h3>
+
+{% endmacro %}

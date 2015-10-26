@@ -5,6 +5,7 @@
 {% block content %}
 
   {% import "macros/forms.html" as forms %}
+  {% import "macros/course_show.html" as course_show %}
 
   {% if message is not null %}
     <div class="alert alert-success">
@@ -21,38 +22,6 @@
     </p>
   {% endif %}
 
-  <table style="width:300px">
-    <tr>
-      <td>Pelatut pelit:</td>
-      <td>{{games_played}}</td>
-    </tr>
-    <tr>
-      <td>Viimeisin peli:</td>
-      <td>{{latest_game_date}}</td>
-    </tr>
-  </table>
-
-  <br><br>
-
-  <a href="{{course.map}}" class="btn btn-default" role="button">Katso ratakartta</a>
-
-  <br><br>
-
-  <h3>Väylät</h3>
-
-  <table class="course_holes" width='530px'>
-    <tr>
-      <th class="course_holes">Väylä</th>
-      {% for hole in holes %}
-        <td class="course_holes">{{hole.hole_num}}</td>
-      {% endfor %}
-    </tr>
-    <tr>
-      <th class="course_holes">Par</th>
-      {% for hole in holes %}
-        <td class="course_holes">{{hole.par}}</td>
-      {% endfor %}
-    </tr>
-  </table>
+  {{course_show.course_show(course)}}
 
 {% endblock %}

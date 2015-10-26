@@ -40,35 +40,23 @@
       $query->execute(array('scoreid' => $this->scoreid));
     }
 
-    // public static function all_game_scores($gameid) {
-    //   $players = Game::games_players($gameid);
-    //   $player_scores = array();
-    //
-    //   foreach ($players as $player) {
-    //     $sql = "SELECT hole.par, score.stroke, score.ob, score.legal FROM score
-    //             JOIN hole ON score.holeid = hole.holeid
-    //             WHERE score.gameid = :gameid AND score.playerid = :playerid
-    //             ORDER BY hole.hole_num ASC";
-    //     $query = DB::connection()->prepare($sql);
-    //     $query->execute(array('gameid' => $gameid, 'playerid' => $player->playerid));
-    //     $rows = $query->fetchAll();
-    //     $scores = array();
-    //
-    //     foreach ($rows as $row) {
-    //       $score = new Score(array(
-    //         'hole_par' => $row['par'],
-    //         'stroke' => $row['stroke'],
-    //         'ob' => $row['ob'],
-    //         'legal' => $row['legal']
-    //       ));
-    //       $scores[] = $score;
-    //     }
-    //
-    //     $player_scores[$player->playerid] = $scores;
-    //   }
-    //
-    //   return $player_scores;
-    // }
+    public static function players_birdies($playerid) {
+      $sql = "SELECT COUNT(*) as birdies
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              WHERE score.playerid = :playerid
+              AND hole.par - (score.stroke + score.ob) = 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $row = $query->fetch();
+
+      return $row['birdies'];
+    }
+
+    public static function players_aces($playerid) {
+      
+    }
+
     public static function all_game_scores($gameid) {
       $players = Game::games_players($gameid);
       $player_scores = array();
