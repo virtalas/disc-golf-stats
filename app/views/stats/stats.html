@@ -14,7 +14,9 @@
   {% endif %}
 
   <section>
-  	<h3>Tilastoja</h3>
+  	<h2>Tilastoja</h2>
+
+    <br>
 
   	<table style="width:530px">
           <tr>
@@ -28,6 +30,10 @@
           <tr>
             	<td>Viimeisin peli: </td>
             	<td>{{latest_game}}</td>
+          </tr>
+          <tr>
+            <!-- Empty row -->
+            <td height=30></td>
           </tr>
           <tr>
             <td>Suosituin rata (eniten pelejä):</td>
@@ -44,5 +50,10 @@
     	</table>
 
   </section>
+
+  <br>
+
+  <a href="{{base_path}}/info" class="btn btn-default btn-sm" role="button">Tietoa</a>
+
 
 {% endblock %}

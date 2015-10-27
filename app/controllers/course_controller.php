@@ -3,12 +3,12 @@
   class CourseController extends BaseController {
 
     public static function index() {
+      $player = self::get_user_logged_in();
       $course = null;
 
       if (isset($_GET['course'])) {
         $course = Course::find($_GET['course']);
       } else {
-        $player = self::get_user_logged_in();
         $popular_courses = Course::popular_courses($player->playerid);
 
         if ($popular_courses) {
@@ -18,24 +18,43 @@
         }
       }
 
+      $courseid = $course->courseid;
       $courses = Course::all();
+      $games_played = Course::number_of_games_played($courseid);
+      $latest_game = Course::latest_game_date($courseid);
+      $avg_score = Course::average_scoring($courseid);
+      $par = Course::par($courseid);
 
-      View::make('course/index.html', array('course' => $course, 'courses' => $courses));
-    }
-
-    public static function list_courses() {
-      $courses = Course::all();
-      View::make('course/list.html', array('courses' => $courses));
+      View::make('course/index.html', array(
+        'course' => $course,
+        'courses' => $courses,
+        'player' => $player,
+        'games_played' => $games_played,
+        'latest_game' => $latest_game,
+        'avg_score' => $avg_score,
+        'par' => $par
+      ));
     }
 
     public static function show($courseid) {
       $course = Course::find($courseid);
       $games_played = Course::number_of_games_played($courseid);
-      $latest_game_date = Course::latest_game_date($courseid);
+      $latest_game = Course::latest_game_date($courseid);
+      $avg_score = Course::average_scoring($courseid);
+      $par = Course::par($courseid);
 
-      View::make('course/show.html', array('course' => $course,
-                                          'games_played' => $games_played,
-                                          'latest_game_date' => $latest_game_date));
+      View::make('course/show.html', array(
+        'course' => $course,
+        'games_played' => $games_played,
+        'latest_game' => $latest_game,
+        'avg_score' => $avg_score,
+        'par' => $par
+      ));
+    }
+
+    public static function list_courses() {
+      $courses = Course::all();
+      View::make('course/list.html', array('courses' => $courses));
     }
 
     public static function create() {

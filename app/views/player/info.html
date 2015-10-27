@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h2>Tietoa</h2>
+
+  <br>
+  <h4>Pelien laillisuudesta</h4>
+
+    <p>
+      Poikkeava rata tarkoittaa, että ratajärjestelyt erosivat normaalista.
+      Pelaajan tulos on "laiton", jos hän on jättänyt normaalisti heitettävän väylän heittämättä.
+    </p>
+    <p>
+      Poikkeava rata, sekä parigolf-pelien tuloksia ja laittomia tuloksia ei huomioida ennätystuloksissa,
+      eikä lasketa laillisiin peleihin.
+    </p>
+    <p>
+      Vain tietokannassa olevat pelit (vuosi 2014 eteenpäin) vaikuttavat sivulla esitettyihin tilastoihin.
+    </p>
+
+  <br>
+  <h4>Käyttöoikeutesi</h4>
+
+    <p style="text-indent: 25px">
+      <b>Käyttäjä</b> voi lisätä pelejä ja ratoja.
+    </p>
+    <p style="text-indent: 25px">
+      <b>Admin</b> voi pelien ja ratojen lisäämisen lisäksi muokata ja poistaa niitä.
+    </p>
+    <p>
+      {% if admin_logged_in %}
+        Sinä olet <b>admin</b>.
+      {% elseif user_logged_in %}
+        Sinä olet <b>käyttäjä</b>.
+      {% endif %}
+      Henkilökohtaisen tunnuksen etuihin kuuluu oman sivun valitseminen pelaajat-sivulla automaattisesti.
+      Lisäksi radat-sivulla valitaan automattisesti sinun eniten pelaamasi rata.
+      Voit katsoa myös omat pelisi tietyllä radalla radat-sivun painikkeella.
+    </p>
+
+  <br>
+  <h4>GitHub</h4>
+
+    <p>
+      Projekti <a href="https://github.com/virtalas/disc-golf-stats">GitHubissa.</a>
+    </p>
+
+{% endblock %}

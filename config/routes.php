@@ -109,6 +109,11 @@
     // PlayerController::list_players();
   });
 
+  // Infosivu
+  $routes->get('/info', function(){
+    PlayerController::info();
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen

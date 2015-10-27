@@ -1,4 +1,7 @@
-{% macro course_show(course) %}
+
+<!-- When updating this macro's parameters, update also macro calls in course/index.html and course/show.html -->
+
+{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par) %}
 
   <table style="width:300px">
     <tr>
@@ -7,30 +10,38 @@
     </tr>
     <tr>
       <td>Viimeisin peli:</td>
-      <td>{{latest_game_date}}</td>
+      <td>{{latest_game}}</td>
+    </tr>
+    <tr>
+      <td>Tulosten keskiarvo:</td>
+      <td>{{avg_score}}</td>
     </tr>
   </table>
 
   <br><br>
 
-  <a href="#" class="btn btn-default" role="button">Kaikki pelit radalla</a>
+  <a href="{{base_path}}/game?course={{course.courseid}}" class="btn btn-default" role="button">Kaikki pelit radalla</a>
+  <br><br>
+  <a href="{{base_path}}/game?course={{course.courseid}}&player={{player.playerid}}" class="btn btn-default btn-sm" role="button">Omat pelisi radalla</a>
 
   <br><br>
 
   <h3>Väylät</h3>
 
-  <table class="course_holes" width='530px'>
+  <table class="course_holes" width='550px'>
     <tr>
       <th class="course_holes">Väylä</th>
       {% for hole in course.holes %}
         <td class="course_holes">{{hole.hole_num}}</td>
       {% endfor %}
+      <td>Σ</td>
     </tr>
     <tr>
       <th class="course_holes">Par</th>
       {% for hole in course.holes %}
         <td class="course_holes">{{hole.par}}</td>
       {% endfor %}
+      <td class="course_holes">{{par}}</td>
     </tr>
   </table>
 

@@ -117,6 +117,20 @@
       $this->conditions = $condtitions_string;
     }
 
+    public static function game_years() {
+      $sql = "SELECT DISTINCT to_char(game.gamedate, 'YYYY') as year FROM game ORDER BY year ASC";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+      $years = array();
+
+      foreach ($rows as $row) {
+        $years[] = $row['year'];
+      }
+
+      return $years;
+    }
+
     public static function all_player_games($playerid) {
       $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
               comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
@@ -136,23 +150,89 @@
         $page_size = $options['page_size'];
         $page = $options['page'];
       } else {
-        $page_size = 10;
+        $page_size = 15;
         $page = 1;
       }
       $offset = (int)$page_size * ((int)$page - 1);
 
-      $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
-              FROM game
-              ORDER BY game.gamedate DESC
-              LIMIT :limit OFFSET :offset";
-      $query = DB::connection()->prepare($sql);
-      $query->execute(array('limit' => $page_size,
-                            'offset' => $offset));
+      // 'course' and 'player' parameters determine what games are fetched
 
-      $rows = $query->fetchAll();
+      if (isset($options['playerid']) && isset($options['courseid'])) {
+        // Fetch this player's games on this course
+        $playerid = $options['playerid'];
+        $courseid = $options['courseid'];
 
-      return self::get_games_from_rows($rows);
+        $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+                game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
+                game.snow, game.doubles
+                FROM game
+                JOIN score ON score.gameid = game.gameid
+                WHERE score.playerid = :playerid AND game.courseid = :courseid
+                GROUP BY game.gameid
+                ORDER BY game.gamedate DESC
+                LIMIT :limit OFFSET :offset";
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('playerid' => $playerid,
+                              'courseid' => $courseid,
+                              'limit' => $page_size,
+                              'offset' => $offset));
+        $rows = $query->fetchAll();
+
+        return self::get_games_from_rows($rows);
+
+      } else if (isset($options['playerid'])) {
+        // Fetch only this player's games
+        $playerid = $options['playerid'];
+        $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+                game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
+                game.snow, game.doubles
+                FROM game
+                JOIN score ON score.gameid = game.gameid
+                WHERE score.playerid = :playerid
+                GROUP BY game.gameid
+                ORDER BY game.gamedate DESC
+                LIMIT :limit OFFSET :offset";
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('playerid' => $playerid,
+                              'limit' => $page_size,
+                              'offset' => $offset));
+        $rows = $query->fetchAll();
+
+        return self::get_games_from_rows($rows);
+
+      } else if (isset($options['courseid'])) {
+        // Fetch this games on this course
+        $courseid = $options['courseid'];
+        $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+                comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
+                FROM game
+                WHERE courseid = :courseid
+                ORDER BY game.gamedate DESC
+                LIMIT :limit OFFSET :offset";
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('courseid' => $courseid,
+                              'limit' => $page_size,
+                              'offset' => $offset));
+
+        $rows = $query->fetchAll();
+
+        return self::get_games_from_rows($rows);
+
+      } else {
+        // Fetch all games
+        $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+                comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
+                FROM game
+                ORDER BY game.gamedate DESC
+                LIMIT :limit OFFSET :offset";
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('limit' => $page_size,
+                              'offset' => $offset));
+
+        $rows = $query->fetchAll();
+
+        return self::get_games_from_rows($rows);
+      }
     }
 
     public static function games_players($gameid) {
@@ -195,6 +275,28 @@
               (SELECT gameid FROM score WHERE playerid = :playerid)";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('playerid' => $playerid));
+      $row = $query->fetch();
+
+      return $row['gamecount'];
+    }
+
+    public static function count_all_course_games($courseid) {
+      $sql = "SELECT COUNT(*) gamecount FROM game
+              WHERE courseid = :courseid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+      $row = $query->fetch();
+
+      return $row['gamecount'];
+    }
+
+    public static function count_all_player_games_on_course($playerid, $courseid) {
+      $sql = "SELECT COUNT(*) gamecount FROM game
+              WHERE courseid = :courseid
+              AND gameid IN
+              (SELECT gameid FROM score WHERE playerid = :playerid)";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid, 'courseid' => $courseid));
       $row = $query->fetch();
 
       return $row['gamecount'];

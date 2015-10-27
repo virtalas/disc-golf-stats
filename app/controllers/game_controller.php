@@ -3,15 +3,55 @@
 
     public static function index() {
       $page = isset($_GET['page']) && $_GET['page']  ? $_GET['page'] : 1;
-      $player = self::get_user_logged_in();
-      $games_count = Game::count_all_player_games($player->playerid);
-      $page_size = 10;
-      $pages = ceil($games_count/$page_size);
+      $page_size = 15;
+      $games = array();
+      $playerid = null;
+      $courseid = null;
 
-      $games = Game::all(array(
-        'page' => $page,
-        'page_size' => $page_size
-      ));
+      // GET-parameters determine what games are shown:
+
+      if (isset($_GET['player']) && isset($_GET['course'])) {
+        // Show this player's games on this course
+        $playerid = $_GET['player'];
+        $courseid = $_GET['course'];
+        $games_count = Game::count_all_player_games_on_course($playerid, $courseid);
+        $games = Game::all(array(
+          'page' => $page,
+          'page_size' => $page_size,
+          'playerid' => $playerid,
+          'courseid' => $courseid
+        ));
+
+      } else if (isset($_GET['player'])) {
+        // Show this player's games
+        $playerid = $_GET['player'];
+        $games_count = Game::count_all_player_games($playerid);
+        $games = Game::all(array(
+          'page' => $page,
+          'page_size' => $page_size,
+          'playerid' => $playerid
+        ));
+
+      } else if (isset($_GET['course'])) {
+        // Show games on this course
+        $courseid = $_GET['course'];
+        $games_count = Game::count_all_course_games($courseid);
+        $games = Game::all(array(
+          'page' => $page,
+          'page_size' => $page_size,
+          'courseid' => $courseid
+        ));
+
+      } else {
+        // Show all games
+        $games_count = Game::count_all();
+        $games = Game::all(array(
+          'page' => $page,
+          'page_size' => $page_size
+        ));
+      }
+
+      $pages = ceil($games_count/$page_size);
 
       if ($page > 1) {
         $prev_page = (int)$page - 1;
@@ -32,7 +72,9 @@
         'next_page' => $next_page,
         'pages' => $pages,
         'courses' => Course::all(),
-        'players' => Player::all()
+        'players' => Player::all(),
+        'playerid_param' => $playerid,
+        'courseid_param' => $courseid
       ));
     }
 

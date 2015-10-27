@@ -45,7 +45,7 @@
     </tr>
     <tr>
       <td>Holareita:</td>
-      <td></td>
+      <td>{{aces}}</td>
     </tr>
     <tr>
       <td>Birdiejä:</td>
@@ -67,7 +67,7 @@
 
   <br>
 
-  <a href="#" class="btn btn-default" role="button">Kaikki pelaajan pelit</a>
+  <a href="{{base_path}}/game?player={{player.playerid}}" class="btn btn-default" role="button">Kaikki pelaajan pelit</a>
 
   <br><br>
 
@@ -106,15 +106,18 @@
   <table style="width:500px">
     <tr>
       <td><b>Rata</b></td>
-      <td><b>year</b></td>
-      <td><b>year</b></td>
+      {% for year in years %}
+        <td><b>{{year}}</b></td>
+      {% endfor %}
     </tr>
+    {% for course_averages in courses_avg_scores %}
       <tr>
-        <td>course_name</td>
-        <td>60.00 (+12.00)</td>
-        <td>57.67 (+4.67)</td>
+        <!-- First value in the array is the course's name -->
+        {% for average_scoring in course_averages %}
+          <td>{{average_scoring}}</td>
+        {% endfor %}
       </tr>
-    <?php endforeach; ?>
+    {% endfor %}
   </table>
 
 {% endblock %}

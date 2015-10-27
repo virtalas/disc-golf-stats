@@ -89,6 +89,19 @@
       return null;
     }
 
+    public static function par($courseid) {
+      $sql = "SELECT SUM(hole.par) as total_par FROM hole WHERE hole.courseid = :courseid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+      $row = $query->fetch();
+
+      if ($row) {
+        return $row['total_par'];
+      }
+
+      return null;
+    }
+
     public static function latest_game_date($courseid) {
       $sql = "SELECT to_char(gamedate, 'HH24:MI DD.MM.YYYY') AS gamedate
               FROM game WHERE courseid = :courseid LIMIT 1";
@@ -103,8 +116,60 @@
       return null;
     }
 
+    public static function average_scoring($courseid) {
+      $sql = "SELECT to_char(AVG(score_sum), '999D99') as avg_score
+              FROM (SELECT SUM(score.stroke + score.ob) as score_sum
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              JOIN game ON score.gameid = game.gameid
+              JOIN course ON hole.courseid = course.courseid
+              WHERE course.courseid = :courseid
+              GROUP BY game.gameid, score.playerid) t1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+      $row = $query->fetch();
+
+      $to_par = (double) $row['avg_score'] - self::par($courseid);
+      $to_par = round($to_par, 2);
+
+      if ($to_par > 0) {
+        return $row['avg_score']. " (+". $to_par. ")";
+      } else {
+        return $row['avg_score']. " (". $to_par. ")";
+      }
+    }
+
+    public static function average_player_scoring_by_year($courseid, $playerid, $year) {
+      $sql = "SELECT to_char(AVG(score_sum), '999D99') as avg_score
+              FROM (SELECT SUM(score.stroke + score.ob) as score_sum
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              JOIN game ON score.gameid = game.gameid
+              JOIN course ON hole.courseid = course.courseid
+              WHERE course.courseid = :courseid
+              AND score.playerid = :playerid
+              AND to_char(game.gamedate, 'YYYY') = :year
+              GROUP BY game.gameid, score.playerid) t1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid, 'playerid' => $playerid, 'year' => $year));
+      $row = $query->fetch();
+
+      if ($row['avg_score'] != null) {
+        $to_par = (double) $row['avg_score'] - self::par($courseid);
+        $to_par = round($to_par, 2);
+
+        if ($to_par > 0) {
+          return $row['avg_score']. " (+". $to_par. ")";
+        } else {
+          return $row['avg_score']. " (". $to_par. ")";
+        }
+      } else {
+        return null;
+      }
+    }
+
     public static function popular_courses($playerid) {
-      $sql = "SELECT course.name, course.city, COUNT(game.courseid) AS course_occurance
+      $sql = "SELECT game.courseid, course.name, course.city, COUNT(game.courseid) AS course_occurance
               FROM game
               JOIN course ON game.courseid = course.courseid
               WHERE game.gameid IN
@@ -121,6 +186,7 @@
 
       foreach ($rows as $row) {
         $course = new Course(array(
+          'courseid' => $row['courseid'],
           'name' => $row['name'],
           'city' => $row['city'],
           'occurance' => $row['course_occurance']

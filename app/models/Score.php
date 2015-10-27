@@ -54,7 +54,16 @@
     }
 
     public static function players_aces($playerid) {
-      
+      $sql = "SELECT COUNT(*) as aces
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              WHERE score.playerid = :playerid
+              AND score.stroke = 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $row = $query->fetch();
+
+      return $row['aces'];
     }
 
     public static function all_game_scores($gameid) {
