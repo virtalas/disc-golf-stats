@@ -97,6 +97,11 @@
     GameController::destroy($gameid);
   });
 
+  // Näytä tuloskortti-kuvat
+  $routes->get('/game/old/:year', 'check_logged_in', function($year){
+    GameController::display_score_card_pictures_by_year($year);
+  });
+
   // Pelaaja
 
   // Pelaajien listaussivu ja esittelysivu

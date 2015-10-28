@@ -1,7 +1,7 @@
 
 <!-- When updating this macro's parameters, update also macro calls in course/index.html and course/show.html -->
 
-{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par) %}
+{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores) %}
 
   <table style="width:300px">
     <tr>
@@ -52,5 +52,27 @@
   <br><br>
 
   <h3>Parhaat tulokset</h3>
+
+  <table style="width:700px">
+    <tr>
+      <td><b>Sija</b></td>
+      <td><b>Päivämäärä</b></td>
+      <td><b>Pelaaja</b></td>
+      <td><b>Tulos</b></td>
+      <td align="right"><b>Par</b></td>
+    </tr>
+    {% for i in 0..high_scores|length - 1 %}
+      <tr>
+        <td>{{i + 1}}.</td>
+        <td>{{high_scores[i][0]}}</td>
+        <td>{{high_scores[i][1]}}</td>
+        <td>{{high_scores[i][2]}}</td>
+        <td align="right">{{high_scores[i][3]}}</td></td>
+        <td style="padding-left:30px">
+          <a href="{{base_path}}/game/{{high_score[i][4]}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
 
 {% endmacro %}

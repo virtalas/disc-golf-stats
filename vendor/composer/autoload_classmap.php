@@ -18,6 +18,7 @@ return array(
     'HelloWorld' => $baseDir . '/app/models/hello_world.php',
     'HelloWorldController' => $baseDir . '/app/controllers/hello_world_controller.php',
     'Hole' => $baseDir . '/app/models/Hole.php',
+    'ImageDisplayer' => $baseDir . '/lib/ins-imgs.php',
     'Player' => $baseDir . '/app/models/Player.php',
     'PlayerController' => $baseDir . '/app/controllers/player_controller.php',
     'Redirect' => $baseDir . '/lib/redirect.php',

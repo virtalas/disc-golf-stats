@@ -81,11 +81,13 @@
     public static function create() {
       $course = Course::find($_GET['course']);
 
+      $attributes = array();
       $players = array();
 
       foreach (Player::all() as $player) {
         if (isset($_GET['player'. $player->playerid])) {
           $players[] = $player;
+          $attributes["legal-player". $player->playerid] = 1;
         }
       }
 
@@ -94,7 +96,8 @@
       // $attributes['time'] = date('H:i');
 
       View::make('game/new.html', array('course' => $course,
-                                        'players' => $players));
+                                        'players' => $players,
+                                        'attributes' => $attributes));
     }
 
     public static function store() {
@@ -170,6 +173,8 @@
 
         // Cycle through players
         foreach ($players as $player) {
+          $legal = $_POST['legal-player'. $player->playerid];
+
           foreach ($course->holes as $hole) {
             // inputs are in format 'player1-hole1'
             $stroke = $_POST['player'. $player->playerid. '-hole'. $hole->hole_num];
@@ -179,7 +184,8 @@
               'holeid' => $hole->holeid,
               'playerid' => $player->playerid,
               'stroke' => $stroke,
-              'ob' => $ob
+              'ob' => $ob,
+              'legal' => $legal
             ));
 
             $errors = array_merge($errors, $score->errors());
@@ -260,6 +266,8 @@
 
       // Cycle through players
       foreach ($player_scores as $playerid => $scores) {
+        $legal_index = 'legal-player'. $playerid;
+        $legal = isset($_POST[$legal_index]) && $_POST[$legal_index]  ? "1" : "0"; // checked=1, unchecked=0
         foreach ($scores as $score) {
           // inputs are in format 'player1-hole1'
           $stroke = $_POST['player'. $playerid. '-hole'. $score->hole_num];
@@ -267,6 +275,7 @@
 
           $score->stroke = (int) $stroke;
           $score->ob = (int) $ob;
+          $score->legal = $legal;
 
           $errors = array_merge($errors, $score->errors());
         }
@@ -301,6 +310,17 @@
         'courses' => Course::all(),
         'players' => Player::all()
       ));
+    }
+
+    // Used for displaying score card images that are not in the database
+    public static function display_score_card_pictures_by_year($year) {
+    $full_path = getcwd();
+    $path = str_replace("/disc-golf-stats/app/controllers", "", $full_path);
+    $path = str_replace("/xamppfiles", "", $path);
+
+    $echo = ImageDisplayer::display($path. "/score_cards", $year);
+
+    View::make('game/score_card_images.html', array('year' => $year, 'images' => $echo));
     }
 
     public static function destroy($gameid) {

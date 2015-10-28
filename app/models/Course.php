@@ -11,6 +11,8 @@
       $this->validators = array('validate_name', 'validate_city');
     }
 
+    // Database functions
+
     public function save() {
       $sql = "INSERT INTO course (name, city, map) VALUES (:name, :city, :map) RETURNING courseid";
       $query = DB::connection()->prepare($sql);
@@ -39,13 +41,13 @@
       $query->execute(array('courseid' => $this->courseid));
     }
 
-    public function prepare() {
-      $this->load_holes();
-    }
+    public static function find($courseid){
+      $sql = "SELECT * FROM course WHERE courseid = :courseid LIMIT 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+      $row = $query->fetch();
 
-    private function load_holes() {
-      $this->holes = Hole::course_holes($this->courseid);
-      $this->number_of_holes = count($this->holes);
+      return self::get_course_from_row($row);
     }
 
     public static function all() {
@@ -66,13 +68,57 @@
       return self::get_courses_from_rows($rows);
     }
 
-    public static function find($courseid){
-      $sql = "SELECT * FROM course WHERE courseid = :courseid LIMIT 1";
+    // Prepare functions
+
+    public function prepare() {
+      $this->load_holes();
+    }
+
+    private function load_holes() {
+      $this->holes = Hole::course_holes($this->courseid);
+      $this->number_of_holes = count($this->holes);
+    }
+
+    // Information
+
+    public static function high_scores($courseid) {
+      $sql = "SELECT gameid, gamedate, firstname, total_score, total_score - total_par as to_par
+              FROM (
+              SELECT score.gameid, to_char(game.gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, player.firstname, SUM(score.stroke) + SUM(score.ob) as total_score, SUM(hole.par) as total_par
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              JOIN course ON hole.courseid = course.courseid
+              JOIN game ON score.gameid = game.gameid
+              JOIN player ON player.playerid = score.playerid
+              WHERE hole.courseid = :courseid
+              GROUP BY score.gameid, gamedate, firstname
+              ) t1
+              ORDER BY total_score ASC, gamedate DESC LIMIT 5";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $courseid));
-      $row = $query->fetch();
+      $rows = $query->fetchAll();
+      $high_scores = array();
 
-      return self::get_course_from_row($row);
+      foreach ($rows as $row) {
+        // Array to be passed to the HTML template
+        $high_score = array();
+        $high_score[] = $row['gamedate']; // index 0: gamedate
+        $high_score[] = $row['firstname']; // index 1: player's name
+        $high_score[] = $row['total_score']; // index 2: total score
+
+        // index 3: to par
+        if ($row['to_par'] > 0) {
+          $high_score[] = "+". $row['to_par'];
+        } else {
+          $high_score[] = $row['to_par'];
+        }
+
+        $high_score[] = $row['gameid']; // index 4: gameid
+
+        $high_scores[] = $high_score;
+      }
+
+      return $high_scores;
     }
 
     public static function number_of_games_played($courseid) {
@@ -237,6 +283,8 @@
 
       return self::get_courses_from_rows($rows);
     }
+
+    // Get from row(s)
 
     public static function get_course_from_row($row) {
       if ($row) {

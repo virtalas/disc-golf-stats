@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% set current_page = 'game' %}
+
+{% block content %}
+
+  <p>
+    Tuloskortit ovat päivämäärän perusteella laskevassa järjestyksessä.
+  </p>
+  <p>
+    Vuoden {{year}} pelejä ei ole tietokannassa. Tällä sivulla on kuitenkin kaikki sen vuoden tuloskortit.
+  </p>
+
+  {{images|raw}}
+
+{% endblock %}

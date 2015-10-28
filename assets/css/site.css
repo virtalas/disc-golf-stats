@@ -25,10 +25,22 @@ table.course_holes, td.course_holes {
 	text-align: center;
 }
 
+td, th {
+	height: 23px
+}
+
 th.course_holes {
 	border: 1px solid lightgrey;
 	border-collapse: collapse;
 	font-weight: lighter;
+}
+
+div.ins-imgs-img img {
+		max-width: 800px;
+		outline: none;
+		/*-webkit-box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.5);
+		-moz-box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.5);
+		box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.5);*/
 }
 
 /*

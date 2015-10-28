@@ -24,6 +24,7 @@
       $latest_game = Course::latest_game_date($courseid);
       $avg_score = Course::average_scoring($courseid);
       $par = Course::par($courseid);
+      $high_scores = Course::high_scores($courseid);
 
       View::make('course/index.html', array(
         'course' => $course,
@@ -32,7 +33,8 @@
         'games_played' => $games_played,
         'latest_game' => $latest_game,
         'avg_score' => $avg_score,
-        'par' => $par
+        'par' => $par,
+        'high_scores' => $high_scores
       ));
     }
 

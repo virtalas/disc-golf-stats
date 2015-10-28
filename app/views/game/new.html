@@ -146,6 +146,18 @@
         <h4>Pelaajan {{player.firstname}} tulokset</h4>
 
         <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="legal-player{{player.playerid}}" value="1"
+                {% if attribute(attributes, 'legal-player' ~ player.playerid) %}
+                  checked
+                {% endif %}
+              > Laillinen peli
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label></label>
           <label>Heitot</label>
           <table>
