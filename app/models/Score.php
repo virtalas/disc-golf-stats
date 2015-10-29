@@ -119,6 +119,40 @@
       return $player_scores;
     }
 
+    public static function new_high_score($gameid, $playerid) {
+      if (self::legal($gameid, $playerid)) {
+        $total_score = self::total_score($gameid, $playerid);
+        $gamedate = Game::get_gamedate($gameid);
+
+        $sql = "SELECT total_score
+                FROM (
+                SELECT SUM(score.stroke) + SUM(score.ob) as total_score
+                FROM score
+                JOIN hole ON score.holeid = hole.holeid
+                JOIN course ON hole.courseid = course.courseid
+                JOIN game ON score.gameid = game.gameid
+                JOIN player ON player.playerid = score.playerid
+                WHERE score.legal = TRUE
+                AND player.playerid = :playerid
+                AND game.gamedate < to_timestamp(:gamedate, 'YYYY-MM-dd HH24:MI:SS')
+                GROUP BY score.gameid, gamedate, firstname
+                ) t1
+                WHERE total_score <= :total_score LIMIT 1";
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('playerid' => $playerid, 'total_score' => $total_score, 'gamedate' => $gamedate));
+        $row = $query->fetch();
+
+        if ($row) {
+          return false;
+        } else {
+          return true;
+        }
+
+      } else {
+        return false;
+      }
+    }
+
     public static function count_all() {
       $sql = "SELECT SUM(stroke) AS score_count FROM score";
       $query = DB::connection()->prepare($sql);
@@ -139,12 +173,46 @@
       return $row['score_count'];
     }
 
+    private static function total_score($gameid, $playerid) {
+      $sql = "SELECT SUM(score.stroke) + SUM(score.ob) as total_score
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              JOIN course ON hole.courseid = course.courseid
+              JOIN game ON score.gameid = game.gameid
+              JOIN player ON player.playerid = score.playerid
+              WHERE game.gameid = :gameid
+              AND player.playerid = :playerid
+              GROUP BY score.gameid, gamedate, firstname";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid, 'gameid' => $gameid));
+      $row = $query->fetch();
+
+      return $row['total_score'];
+    }
+
+    private static function legal($gameid, $playerid) {
+      $sql = "SELECT score.gameid
+              FROM score
+              WHERE playerid = :playerid
+              AND gameid = :gameid
+              AND legal = TRUE LIMIT 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid, 'gameid' => $gameid));
+      $row = $query->fetch();
+
+      if ($row) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     // Validators
 
     public function validate_stroke() {
       $errors = $this->validate_integer($this->stroke, "Tuloksen");
 
-      if ($this->stroke == null) {
+      if ($this->stroke == null && $this->stroke != 0) {
         $errors[] = "Skipattu väylä merkataan nollalla.";
       }
 

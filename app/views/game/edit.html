@@ -136,16 +136,15 @@
 
     <br>
 
-    <!-- Array scores is ordered by hole_num -->
-    {% for playerid,scores in game.scores %}
+    {% for player in players %}
 
-      <h4>Pelaajan {{players[playerid|trim('player') - 1].firstname}} tulokset</h4>
+      <h4>Pelaajan {{player.firstname}} tulokset</h4>
 
       <div class="form-group">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="legal-player{{playerid}}" value="1"
-              {% if scores[0].legal %}
+            <input type="checkbox" name="legal-player{{player.playerid}}" value="1"
+              {% if attribute(attributes, 'legal-player' ~ player.playerid) %}
                 checked
               {% endif %}
             > Laillinen peli
@@ -154,16 +153,17 @@
       </div>
 
       <div class="form-group">
+        <label></label>
         <label>Heitot</label>
         <table>
           <tr>
-            {% for score in scores %}
-              <td>{{score.hole_num}}</td>
+            {% for hole in course.holes %}
+              <td>{{hole.hole_num}}</td>
             {% endfor %}
           </tr>
           <tr>
-            {% for score in scores %}
-              <td><input class="form-control" type="text" name="player{{playerid}}-hole{{score.hole_num}}" value="{{score.stroke}}"></td>
+            {% for hole in course.holes %}
+              <td><input class="form-control" type="text" name="player{{player.playerid}}-hole{{hole.hole_num}}" value="{{attribute(attributes, 'player' ~ player.playerid ~ '-hole' ~ hole.hole_num)}}"></td>
             {% endfor %}
           </tr>
         </table>
@@ -173,19 +173,21 @@
         <label>OB:t</label>
         <table>
           <tr>
-            {% for score in scores %}
-              <td>{{score.hole_num}}</td>
+            {% for hole in course.holes %}
+              <td>{{hole.hole_num}}</td>
             {% endfor %}
           </tr>
           <tr>
-            {% for score in scores %}
-              <td><input class="form-control" type="text" name="player{{playerid}}-obhole{{score.hole_num}}" value="{{score.ob}}"></td>
+            {% for hole in course.holes %}
+              <td><input class="form-control" type="text" name="player{{player.playerid}}-obhole{{hole.hole_num}}" value="{{attribute(attributes, 'player' ~ player.playerid ~ '-obhole' ~ hole.hole_num)}}"></td>
             {% endfor %}
           </tr>
         </table>
       </div>
 
-      <input type="hidden" name="player{{playerid}}" value="{{playerid}}">
+      <br>
+
+      <input type="hidden" name="player{{player.playerid}}" value="{{player.playerid}}">
 
     {% endfor %}
 

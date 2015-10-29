@@ -3,7 +3,7 @@
 
     public $gameid, $courseid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
             $variant, $dark, $led, $snow, $doubles, // Ready to use after creation
-            $course, $scores, $conditions; // Need to be prepared via prepare_var()
+            $course, $scores, $conditions, $illegal_scorers, $high_scorers; // Need to be prepared via prepare_var()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -65,6 +65,8 @@
       $this->load_course();
       $this->load_scores();
       $this->load_conditions();
+      $this->load_illegal_scorers();
+      $this->load_high_scorers();
     }
 
     private function load_course() {
@@ -115,6 +117,56 @@
       }
 
       $this->conditions = $condtitions_string;
+    }
+
+    public function load_illegal_scorers() {
+      $illegal_scorers_array = array();
+
+      foreach ($this->scores as $playerid => $scores) {
+        // playerid is i.e. 'player4'
+        if (!$scores[0]->legal) {
+          $playerid_int = (int) str_replace("player", "", $playerid);
+          $player = Player::find($playerid_int);
+          $illegal_scorers_array[] = $player->firstname;
+        }
+      }
+
+      $i = 1;
+      $illegal_scorers_string = "";
+      foreach ($illegal_scorers_array as $illegal_scorer) {
+        $illegal_scorers_string .= $illegal_scorer;
+        if ($i < count($illegal_scorers_array)) {
+          $illegal_scorers_string .= ", ";
+        }
+        $i++;
+      }
+
+      $this->illegal_scorers = $illegal_scorers_string;
+    }
+
+    public function load_high_scorers() {
+      $high_scorers_array = array();
+
+      foreach ($this->scores as $playerid => $scores) {
+        // playerid is i.e. 'player4'
+        $playerid_int = (int) str_replace("player", "", $playerid);
+        if (Score::new_high_score($this->gameid, $playerid_int)) {
+          $player = Player::find($playerid_int);
+          $high_scorers_array[] = $player->firstname;
+        }
+      }
+
+      $i = 1;
+      $high_scorers_string = "";
+      foreach ($high_scorers_array as $high_scorer) {
+        $high_scorers_string .= $high_scorer;
+        if ($i < count($high_scorers_array)) {
+          $high_scorers_string .= ", ";
+        }
+        $i++;
+      }
+
+      $this->high_scorers = $high_scorers_string;
     }
 
     public static function game_years() {
@@ -353,10 +405,13 @@
       foreach ($player_courses as $course) {
         $sql = "SELECT gameid, total_score, total_score - total_par as to_par
                 FROM (
-                SELECT score.gameid, SUM(score.stroke) + SUM(score.ob) as total_score, SUM(hole.par) as total_par
+                SELECT score.gameid, SUM(score.stroke) + SUM(score.ob) as total_score,
+                SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
                 FROM score
                 JOIN hole ON score.holeid = hole.holeid
-                WHERE score.playerid = :playerid AND hole.courseid = :courseid
+                WHERE score.legal = TRUE
+                AND score.playerid = :playerid
+                AND hole.courseid = :courseid
                 GROUP BY score.gameid
                 ) t1
                 ORDER BY total_score ASC LIMIT 1";
@@ -381,6 +436,15 @@
       }
 
       return $high_scores;
+    }
+
+    public static function get_gamedate($gameid) {
+      $sql = "SELECT gamedate FROM game WHERE gameid = :gameid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('gameid' => $gameid));
+      $row = $query->fetch();
+
+      return $row['gamedate'];
     }
 
     private static function get_game_from_row($row) {

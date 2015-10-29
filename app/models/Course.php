@@ -84,13 +84,16 @@
     public static function high_scores($courseid) {
       $sql = "SELECT gameid, gamedate, firstname, total_score, total_score - total_par as to_par
               FROM (
-              SELECT score.gameid, to_char(game.gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, player.firstname, SUM(score.stroke) + SUM(score.ob) as total_score, SUM(hole.par) as total_par
+              SELECT score.gameid, to_char(game.gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, player.firstname,
+              SUM(score.stroke) + SUM(score.ob) as total_score,
+              SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
               FROM score
               JOIN hole ON score.holeid = hole.holeid
               JOIN course ON hole.courseid = course.courseid
               JOIN game ON score.gameid = game.gameid
               JOIN player ON player.playerid = score.playerid
-              WHERE hole.courseid = :courseid
+              WHERE score.legal = TRUE
+              AND hole.courseid = :courseid
               GROUP BY score.gameid, gamedate, firstname
               ) t1
               ORDER BY total_score ASC, gamedate DESC LIMIT 5";
@@ -169,7 +172,8 @@
               JOIN hole ON score.holeid = hole.holeid
               JOIN game ON score.gameid = game.gameid
               JOIN course ON hole.courseid = course.courseid
-              WHERE course.courseid = :courseid
+              WHERE score.legal = TRUE
+              AND course.courseid = :courseid
               GROUP BY game.gameid, score.playerid) t1";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $courseid));
@@ -192,7 +196,8 @@
               JOIN hole ON score.holeid = hole.holeid
               JOIN game ON score.gameid = game.gameid
               JOIN course ON hole.courseid = course.courseid
-              WHERE course.courseid = :courseid
+              WHERE score.legal = TRUE
+              AND course.courseid = :courseid
               AND score.playerid = :playerid
               AND to_char(game.gamedate, 'YYYY') = :year
               GROUP BY game.gameid, score.playerid) t1";

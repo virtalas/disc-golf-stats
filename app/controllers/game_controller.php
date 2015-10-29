@@ -95,9 +95,11 @@
       // $attributes['date'] = date('Y-m-d');
       // $attributes['time'] = date('H:i');
 
-      View::make('game/new.html', array('course' => $course,
-                                        'players' => $players,
-                                        'attributes' => $attributes));
+      View::make('game/new.html', array(
+        'course' => $course,
+        'players' => $players,
+        'attributes' => $attributes,
+      ));
     }
 
     public static function store() {
@@ -173,7 +175,8 @@
 
         // Cycle through players
         foreach ($players as $player) {
-          $legal = $_POST['legal-player'. $player->playerid];
+          $legal_index = 'legal-player'. $player->playerid;
+          $legal = isset($_POST[$legal_index]) && $_POST[$legal_index]  ? "1" : "0"; // checked=1, unchecked=0
 
           foreach ($course->holes as $hole) {
             // inputs are in format 'player1-hole1'
@@ -204,23 +207,48 @@
 
           Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
         } else {
-          View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
+          View::make('game/new.html', array(
+            'errors' => $errors,
+            'attributes' => $params,
+            'course' => $course,
+            'players' => $players
+          ));
         }
       }
     }
 
     public static function edit($gameid) {
       $game = Game::find($gameid);
-      $players = Player::all();
+      $game->prepare();
+      $players = Game::games_players($gameid);
+
+      $attributes = array();
+      foreach ($game->scores as $playerid => $scores) {
+        // playerid is i.e. 'player4'
+        $attributes["legal-". $playerid] = $scores[0]->legal;
+        foreach ($scores as $score) {
+          $attributes[$playerid. '-hole'. $score->hole_num] = $score->stroke;
+          $attributes[$playerid. '-obhole'. $score->hole_num] = $score->ob;
+        }
+      }
 
       $gamedate = explode(' ', $game->gamedate);
       $date = $gamedate[0];
       $time = substr($gamedate[1], 0, 5);
 
-      View::make('game/edit.html', array('game' => $game, 'date' => $date, 'time' => $time, 'players' => $players));
+      View::make('game/edit.html', array(
+        'game' => $game,
+        'date' => $date,
+        'time' => $time,
+        'players' => $players,
+        'attributes' => $attributes,
+        'course' => $game->course
+      ));
     }
 
     public static function update($gameid) {
+      $attributes = $_POST;
+
       $rain = isset($_POST['rain']) && $_POST['rain']  ? "1" : "0"; // checked=1, unchecked=0
       $wet_no_rain = isset($_POST['wet_no_rain']) && $_POST['wet_no_rain']  ? "1" : "0"; // checked=1, unchecked=0
       $windy = isset($_POST['windy']) && $_POST['windy']  ? "1" : "0"; // checked=1, unchecked=0
@@ -266,12 +294,13 @@
 
       // Cycle through players
       foreach ($player_scores as $playerid => $scores) {
-        $legal_index = 'legal-player'. $playerid;
+        // playerid is i.e. 'player4'
+        $legal_index = 'legal-'. $playerid;
         $legal = isset($_POST[$legal_index]) && $_POST[$legal_index]  ? "1" : "0"; // checked=1, unchecked=0
         foreach ($scores as $score) {
           // inputs are in format 'player1-hole1'
-          $stroke = $_POST['player'. $playerid. '-hole'. $score->hole_num];
-          $ob = $_POST['player'. $playerid. '-obhole'. $score->hole_num];
+          $stroke = $_POST[$playerid. '-hole'. $score->hole_num];
+          $ob = $_POST[$playerid. '-obhole'. $score->hole_num];
 
           $score->stroke = (int) $stroke;
           $score->ob = (int) $ob;
@@ -293,11 +322,16 @@
 
         Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset päivitetty.'));
       } else {
-        View::make('game/edit.html', array('errors' => $errors,
-                                          'game' => $game,
-                                          'date' => $date,
-                                          'time' => $time,
-                                          'players' => Player::all()));
+        $game->prepare();
+        View::make('game/edit.html', array(
+          'errors' => $errors,
+          'game' => $game,
+          'date' => $date,
+          'time' => $time,
+          'players' => Game::games_players($gameid),
+          'attributes' => $attributes,
+          'course' => $game->course
+        ));
       }
     }
 

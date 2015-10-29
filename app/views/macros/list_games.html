@@ -1,4 +1,4 @@
-{% macro list_games(games, players, base_path) %}
+{% macro list_games(games, players, base_path, admin_logged_in) %}
   <table width=60%>
     <tr>
       <td>Olosuhteina voi olla:</td>
@@ -50,11 +50,11 @@
       <tr>
         <td class='names'>PAR</td>
 
-        {% set total_par = 0 %}
+        <!-- {% set total_par = 0 %} -->
 
         {% for hole in game.course.holes %}
           <td>{{hole.par}}</td>
-          {% set total_par = total_par + hole.par %}
+          <!-- {% set total_par = total_par + hole.par %} -->
         {% endfor %}
 
         <td>{{total_par}}</td>
@@ -69,6 +69,7 @@
           <td class='names'>{{players[playerid|trim('player') - 1].firstname}}</td>
 
           {% set total_score = 0 %}
+          {% set total_par = 0 %}
 
           {% for score in scores %}
 
@@ -91,6 +92,7 @@
               -
             {% else %}
               {{score.stroke}}
+              {% set total_par = total_par + score.hole_par %}
             {% endif %}
 
             <!-- Display OB strokes -->
@@ -124,10 +126,27 @@
 
         {% endfor %}
 
+      <!-- Display illegal scorers if there are any -->
+      {% if game.illegal_scorers %}
+        <tr>
+          <td class="names">Laiton peli</td>
+          <td colspan="30" class="names">{{game.illegal_scorers}}</td>
+        </tr>
+      {% endif %}
+
+      <!-- Display high scorers if there are any -->
+      {% if game.high_scorers %}
+        <tr>
+          <td class="names">Ennätys</td>
+          <td colspan="30" class="names">{{game.high_scorers}}</td>
+        </tr>
+      {% endif %}
+
       <!-- Display game conditions if there are any -->
       {% if game.conditions %}
         <tr>
-          <td class='names'>Olosuhteet</td><td colspan=30 class='names'>{{game.conditions}}</td>
+          <td class='names'>Olosuhteet</td>
+          <td colspan=30 class='names'>{{game.conditions}}</td>
         </tr>
       {% endif %}
 
@@ -141,7 +160,9 @@
 
     </table>
 
-    <a href="{{base_path}}/game/{{game.gameid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
+    {% if admin_logged_in %}
+      <a href="{{base_path}}/game/{{game.gameid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
+    {% endif %}
 
   {% endfor %}
 

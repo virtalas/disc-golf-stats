@@ -168,7 +168,7 @@
             </tr>
             <tr>
               {% for hole in course.holes %}
-                <td><input class="form-control" type="text" name="player{{player.playerid}}-hole{{hole.hole_num}}" value="{% if attribute(attributes, 'hole' ~ hole.hole_num) %}{{attribute(attributes, 'hole' ~ hole.hole_num)}}{% else %}3{% endif %}"></td>
+                <td><input class="form-control" type="text" name="player{{player.playerid}}-hole{{hole.hole_num}}" value="{% if attribute(attributes, 'player' ~ player.playerid ~ '-hole' ~ hole.hole_num) %}{{attribute(attributes, 'player' ~ player.playerid ~ '-hole' ~ hole.hole_num)}}{% else %}3{% endif %}"></td>
               {% endfor %}
             </tr>
           </table>
@@ -184,7 +184,7 @@
             </tr>
             <tr>
               {% for hole in course.holes %}
-                <td><input class="form-control" type="text" name="player{{player.playerid}}-obhole{{hole.hole_num}}" value="{% if attribute(attributes, 'obhole' ~ hole.hole_num) %}{{attribute(attributes, 'obhole' ~ hole.hole_num)}}{% else %}0{% endif %}"></td>
+                <td><input class="form-control" type="text" name="player{{player.playerid}}-obhole{{hole.hole_num}}" value="{% if attribute(attributes, 'player' ~ player.playerid ~ '-obhole' ~ hole.hole_num) %}{{attribute(attributes, 'player' ~ player.playerid ~ '-obhole' ~ hole.hole_num)}}{% else %}0{% endif %}"></td>
               {% endfor %}
             </tr>
           </table>
