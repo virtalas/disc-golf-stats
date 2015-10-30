@@ -4,7 +4,8 @@ admin boolean DEFAULT false,
 firstname varchar(50) NOT NULL,
 lastname varchar(50),
 username varchar(50) UNIQUE NOT NULL,
-password varchar(100) NOT NULL
+password varchar(100) NOT NULL,
+salt varchar(100)
 );
 
 CREATE TABLE Course(

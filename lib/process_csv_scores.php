@@ -81,7 +81,8 @@
                 'holeid' => $course->holes[$i]->holeid,
                 'playerid' => $current_playerid,
                 'stroke' => $score_array[$i],
-                'ob' => $ob_array[$i]
+                'ob' => $ob_array[$i],
+                'legal' => 1
               ));
               $ready_scores[] = $new_score;
               Kint::dump($new_score);

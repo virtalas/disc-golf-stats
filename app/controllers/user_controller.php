@@ -59,10 +59,15 @@
                                               'firstname' => $firstname));
       } else {
         // Register user/player and login
+        // Not the best security solution
+        $salt = mcrypt_create_iv(50, MCRYPT_DEV_URANDOM);
+        $salt = mb_convert_encoding($salt, "UTF-8", "auto");
+
         $player = new Player(array(
           'firstname' => $firstname,
           'username' => $username,
-          'password' => crypt($password)
+          'password' => crypt($password, $salt),
+          'salt' => $salt
         ));
         $player->save();
 

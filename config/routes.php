@@ -138,11 +138,11 @@
   });
 
   // Rekisteröitymislomakkeen esittäminen
-  // $routes->get('/register', function(){
-  //   UserController::register();
-  // });
+  $routes->get('/register', function(){
+    UserController::register();
+  });
 
   // Rekisteröitymisen käsittely
-  // $routes->post('/register', function(){
-  //   UserController::handle_register();
-  // });
+  $routes->post('/register', function(){
+    UserController::handle_register();
+  });

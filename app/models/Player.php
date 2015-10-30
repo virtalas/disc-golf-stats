@@ -2,19 +2,20 @@
 
   class Player extends BaseModel {
 
-  	public $playerid, $admin, $firstname, $lastname, $username, $password; // Ready to use after creation
+  	public $playerid, $admin, $firstname, $lastname, $username, $password, $salt; // Ready to use after creation
 
   	public function __construct($attributes) {
   		parent::__construct($attributes);
   	}
 
     public function save() {
-      $sql = "INSERT INTO player (firstname, username, password)
-              VALUES (:firstname, :username, :password) RETURNING playerid";
+      $sql = "INSERT INTO player (firstname, username, password, salt)
+              VALUES (:firstname, :username, :password, :salt) RETURNING playerid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('firstname' => $this->firstname,
                             'username' => $this->username,
-                            'password' => $this->password));
+                            'password' => $this->password,
+                            'salt' => $this->salt));
       $row = $query->fetch();
       $this->playerid = $row['playerid'];
     }
@@ -25,7 +26,8 @@
       $query->execute(array('username' => $username));
       $row = $query->fetch();
 
-      if ($row && hash_equals($row['password'], crypt($password, $row['password']))) {
+      // Not the best security solution
+      if ($row && hash_equals($row['password'], crypt($password, $row['salt']))) {
         $player = new Player(array(
           'playerid' => $row['playerid'],
           'firstname' => $row['firstname'],
@@ -133,7 +135,7 @@
     }
   }
 
-// function hash_equals used for verifying crypted passwords
+// function hash_equals used for verifying crypted passwords (Not the best way)
 if(!function_exists('hash_equals')) {
   function hash_equals($str1, $str2) {
     if(strlen($str1) != strlen($str2)) {

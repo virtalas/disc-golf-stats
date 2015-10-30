@@ -20,7 +20,7 @@
         {% endfor %}
       </div>
       <div class="col-xs-2">
-        {% for i in players|length / 2 + 1..players|length %}
+        {% for i in players|length / 2 + 1..players|length - 1 %}
           <div class="checkbox">
             <label>
               <input type="checkbox" name="player{{players[i].playerid}}" value="1"> {{players[i].firstname}}
