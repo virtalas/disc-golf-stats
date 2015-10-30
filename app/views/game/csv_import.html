@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% set current_page = 'game' %}
+
+{% block content %}
+
+  <h2>Import multiple games from multiple csv files</h2>
+
+  <form method="POST" action="{{base_path}}/csv_import" enctype="multipart/form-data">
+    <input type="file" name="file[]" multiple>
+    <br>
+    <input type="submit" value="Upload">
+  </form>
+
+{% endblock %}

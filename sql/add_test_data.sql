@@ -1,9 +1,18 @@
-INSERT INTO player (firstname, username, password) VALUES ('Teppo', 'teppo', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
-INSERT INTO player (firstname, username, password) VALUES ('Matti', 'matti', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
-INSERT INTO player (firstname, username, password) VALUES ('Seppo', 'seppo', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
-INSERT INTO player (firstname, username, password) VALUES ('Esko', 'esko', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
+-- COPY player (playerid, admin, firstname, lastname, username, password, salt) FROM stdin;
+-- 1	t	Admin	\N	admin	4f.qYxkLq6Kk	4?????????\b???!?1?i??i?K?\n?l0?^?=2\b???/yT?
+-- 2	f	Teppo	\N	teppo	4f.qYxkLq6Kk	4?????????\b???!?1?i??i?K?\n?l0?^?=2\b???/yT?
+-- 3	f	Seppo	\N	seppo	4f.qYxkLq6Kk	4?????????\b???!?1?i??i?K?\n?l0?^?=2\b???/yT?
+-- 4	f	Matti	\N	matti	4f.qYxkLq6Kk	4?????????\b???!?1?i??i?K?\n?l0?^?=2\b???/yT?
+-- 5	f	Esko	\N	esko	4f.qYxkLq6Kk	4?????????\b???!?1?i??i?K?\n?l0?^?=2\b???/yT?
+-- \.
 
-INSERT INTO player (admin, firstname, username, password) VALUES (true, 'Admin', 'admin', '$1$sG96z4A/$Z.QvqNw6Uj8R7OkKu2e8r1');
+
+INSERT INTO player (firstname, username, password) VALUES ('Teppo', 'teppo', 'salasana');
+INSERT INTO player (firstname, username, password) VALUES ('Matti', 'matti', 'salasana');
+INSERT INTO player (firstname, username, password) VALUES ('Seppo', 'seppo', 'salasana');
+INSERT INTO player (firstname, username, password) VALUES ('Esko', 'esko', 'salasana');
+
+INSERT INTO player (admin, firstname, username, password) VALUES (true, 'Admin', 'admin', 'salasana');
 
 INSERT INTO course (name, city) VALUES ('Tali', 'Helsinki');
 

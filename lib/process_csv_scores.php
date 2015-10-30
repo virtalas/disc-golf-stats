@@ -85,7 +85,6 @@
                 'legal' => 1
               ));
               $ready_scores[] = $new_score;
-              Kint::dump($new_score);
             }
           }
         }

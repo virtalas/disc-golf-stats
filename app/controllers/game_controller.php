@@ -346,6 +346,70 @@
       ));
     }
 
+    // Import multiple csv files
+    public static function csv_import_show() {
+      View::make('game/csv_import.html');
+    }
+
+    // Process multiple csv files
+    // Correct course assigning will work ONLY IF all course names are unique
+    // and csv filenames are like '2014-10-30 Coursename.csv'
+    public static function csv_import_process() {
+      $courses = Course::all();
+      $file_count = count($_FILES['file']['tmp_name']);
+
+      // Cycle through files
+      for ($i = 0; $i < $file_count; $i++) {
+        $original_filename = $_FILES['file']['name'][$i];
+        echo "<h3>Adding file: ". $original_filename. "</h3>";
+
+        // Find course name
+        $course_name = "NOT FOUND";
+        $game_course = null;
+        foreach ($courses as $course) {
+          // Check if filename contains coursename
+          if (strpos($original_filename, $course->name) !== false) {
+              $course_name = $course->name;
+              $game_course = $course;
+          }
+        }
+
+        // Game date
+        $gamedate = substr($original_filename, 0, 11);
+        $gamedate .= " 00:00:00";
+
+        echo "Course name: ". $course_name. "<br>";
+        echo "Game date: ". $gamedate. "<br>";
+
+        // Create game
+        $game = new Game(array(
+          'courseid' => $game_course->courseid,
+          'gamedate' => $gamedate,
+          'rain' => 0,
+          'wet_no_rain' => 0,
+          'windy' => 0,
+          'variant' => 0,
+          'dark' => 0,
+          'led' => 0,
+          'snow' => 0,
+          'doubles' => 0
+        ));
+        $gameid = $game->save();
+
+        // Create scores
+        $csvAsArray = array_map('str_getcsv', file($_FILES['file']['tmp_name'][$i]));
+        $score_errors = CSVScoreProcessor::process($csvAsArray, $gameid, $game_course);
+
+        if (count($score_errors)) {
+          echo "ERRORS: ";
+          print_r($score_errors);
+        }
+
+        echo "<br>Done!";
+        echo "<br>";
+      }
+    }
+
     // Used for displaying score card images that are not in the database
     public static function display_score_card_pictures_by_year($year) {
     $full_path = getcwd();

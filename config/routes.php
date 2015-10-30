@@ -146,3 +146,13 @@
   $routes->post('/register', function(){
     UserController::handle_register();
   });
+
+  // Add multiple csv files
+  $routes->get('/csv_import', 'check_admin_logged_in', function(){
+    GameController::csv_import_show();
+  });
+
+  // Process multiple csv files
+  $routes->post('/csv_import', 'check_admin_logged_in', function(){
+    GameController::csv_import_process();
+  });

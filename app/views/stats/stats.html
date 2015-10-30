@@ -57,29 +57,31 @@
 
   <br><br>
 
-  <h3>Pelaajan {{player.firstname}} ennätykset</h3>
+  {% if user_logged_in %}
+    <h3>Pelaajan {{player.firstname}} ennätykset</h3>
 
-  <br>
+    <br>
 
-  <table style="width:700px">
-    <tr>
-      <th><b>Päivämäärä</b></th>
-      <th><b>Rata</b></th>
-      <th><b>Tulos</b></th>
-      <td align="right"><b>Par</b></td>
-      <th></th>
-    </tr>
-    {% for high_score in high_scores %}
+    <table style="width:700px">
       <tr>
-        <td>{{high_score[0].gamedate}}</td>
-        <td>{{high_score[1].name}}</td>
-        <td>{{high_score[2]}}</td>
-        <td align="right">{{high_score[3]}}</td>
-        <td style="padding-left:30px">
-          <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
-        </td>
+        <th><b>Päivämäärä</b></th>
+        <th><b>Rata</b></th>
+        <th><b>Tulos</b></th>
+        <td align="right"><b>Par</b></td>
+        <th></th>
       </tr>
-    {% endfor %}
-  </table>
+      {% for high_score in high_scores %}
+        <tr>
+          <td>{{high_score[0].gamedate}}</td>
+          <td>{{high_score[1].name}}</td>
+          <td>{{high_score[2]}}</td>
+          <td align="right">{{high_score[3]}}</td>
+          <td style="padding-left:30px">
+            <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
 
 {% endblock %}

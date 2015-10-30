@@ -1,3 +1,5 @@
 .DS_Store
 config/database.php
 deploy.sh
+backup.sh
+get_backups.sh

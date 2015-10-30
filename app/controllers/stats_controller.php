@@ -4,7 +4,11 @@
 
     public static function stats() {
       $player = self::get_user_logged_in();
-      $high_scores = Game::player_high_scores($player->playerid);
+
+      $high_scores = null;
+      if ($player) {
+        $high_scores = Game::player_high_scores($player->playerid);
+      }
 
       $game_count = Game::count_all();
       $throw_count = Score::count_all();
