@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=800, maximum-scale=1.0">
+    <!-- <meta name="viewport" content="width=800, maximum-scale=1.0"> -->
+    <!-- Always in desktop mode -->
+    <meta name="viewport" content="width=1024">
     <!--<script type='text/javascript' src='ReView.js'>
       reView.setDefault();
     </script>-->
@@ -86,15 +88,17 @@
     <div id="main-container">
       <div id="wrapper">
 
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
+        {% if current_page == 'player' or current_page == 'course' %}
+          <!-- Sidebar -->
+          <div id="sidebar-wrapper">
+              <ul class="sidebar-nav">
 
-                {% block sidebar %}{% endblock %}
+                  {% block sidebar %}{% endblock %}
 
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
+              </ul>
+          </div>
+          <!-- /#sidebar-wrapper -->
+        {% endif %}
 
         <!-- Page Content -->
         <div id="page-content-wrapper">

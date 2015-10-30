@@ -2,7 +2,7 @@
 	max-width: 1200px;
 	padding: 10px 25px;
 	margin: 0px auto;
-	width: 85%;
+	/*width: 85%;*/
 	font-size: 15px;
 }
 
@@ -279,7 +279,7 @@ float: right!important;
     width: 100%;
     position: absolute;
 		top: -25px;
-		left: -170px;
+		left: -80px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -346,7 +346,7 @@ float: right!important;
     }
 
     #sidebar-wrapper {
-        width: 180px;
+        width: 160px;
     }
 
     #wrapper.toggled #sidebar-wrapper {
