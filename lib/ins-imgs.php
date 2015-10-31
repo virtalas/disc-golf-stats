@@ -61,6 +61,8 @@
           // writeHtml('<div class="ins-imgs-label">' . $name . ' ' . '</div>');
           // writeHtml('<div class="ins-imgs-img"><a name="' . $image . '" href="#' . $image . '">');
           $echo .= "<br><b>$name</b>";
+
+          $image = substr($image, 58, strlen($image) - 58);
           $to_be = '<br><img src="' . $image . '" alt="' . $name . '" title="' . $name . '" style="max-width:800px"><br>';
           $to_be_written = str_replace("/Applications/XAMPP/htdocs", "", $to_be);
 
@@ -72,7 +74,7 @@
       // writeHtml('</ul>');
 
       // writeHtml('<link rel="stylesheet" type="text/css" href="ins-imgs.css">');
-      $echo .= '<link rel="stylesheet" type="text/css" href="ins-imgs.css">';
+      // $echo .= '<link rel="stylesheet" type="text/css" href="ins-imgs.css">';
 
       return $echo;
     }
