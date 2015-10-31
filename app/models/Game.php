@@ -150,7 +150,7 @@
       foreach ($this->scores as $playerid => $scores) {
         // playerid is i.e. 'player4'
         $playerid_int = (int) str_replace("player", "", $playerid);
-        if (Score::new_high_score($this->gameid, $playerid_int)) {
+        if (Score::new_high_score($this->gameid, $playerid_int, $this->courseid)) {
           $player = Player::find($playerid_int);
           $high_scorers_array[] = $player->firstname;
         }

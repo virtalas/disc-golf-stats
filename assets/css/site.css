@@ -321,10 +321,6 @@ float: right!important;
     text-decoration: none;
 }
 
-#selected {
-		background: rgba(255,255,255,1.0);
-}
-
 .sidebar-nav > .sidebar-brand {
     height: 65px;
     font-size: 22px;
@@ -366,4 +362,9 @@ float: right!important;
         position: relative;
         margin-right: 0;
     }
+
+		/* Sidebar selection stays highlighted */
+		#selected {
+				background: rgba(255,255,255,1.0);
+		}
 }

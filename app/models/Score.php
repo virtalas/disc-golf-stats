@@ -119,7 +119,7 @@
       return $player_scores;
     }
 
-    public static function new_high_score($gameid, $playerid) {
+    public static function new_high_score($gameid, $playerid, $courseid) {
       if (self::legal($gameid, $playerid)) {
         $total_score = self::total_score($gameid, $playerid);
         $gamedate = Game::get_gamedate($gameid);
@@ -135,11 +135,17 @@
                 WHERE score.legal = TRUE
                 AND player.playerid = :playerid
                 AND game.gamedate < to_timestamp(:gamedate, 'YYYY-MM-dd HH24:MI:SS')
+                AND game.courseid = :courseid
                 GROUP BY score.gameid, gamedate, firstname
                 ) t1
                 WHERE total_score <= :total_score LIMIT 1";
         $query = DB::connection()->prepare($sql);
-        $query->execute(array('playerid' => $playerid, 'total_score' => $total_score, 'gamedate' => $gamedate));
+        $query->execute(array(
+          'playerid' => $playerid,
+          'total_score' => $total_score,
+          'gamedate' => $gamedate,
+          'courseid' => $courseid
+        ));
         $row = $query->fetch();
 
         if ($row) {
