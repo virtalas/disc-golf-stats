@@ -202,7 +202,7 @@
         $page_size = $options['page_size'];
         $page = $options['page'];
       } else {
-        $page_size = 15;
+        $page_size = 10;
         $page = 1;
       }
       $offset = (int)$page_size * ((int)$page - 1);

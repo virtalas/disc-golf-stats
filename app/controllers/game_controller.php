@@ -3,7 +3,7 @@
 
     public static function index() {
       $page = isset($_GET['page']) && $_GET['page']  ? $_GET['page'] : 1;
-      $page_size = 15;
+      $page_size = 10;
       $games = array();
       $playerid = null;
       $courseid = null;
