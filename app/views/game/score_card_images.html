@@ -4,12 +4,39 @@
 
 {% block content %}
 
+  {% import "macros/forms.html" as forms %}
+
+  <h2>Pelatut pelit vuonna {{current_year}}</h2>
+
+  {{forms.new_game(courses, players, base_path)}}
+
+  <br>
+
   <p>
     Tuloskortit ovat päivämäärän perusteella laskevassa järjestyksessä.
   </p>
   <p>
-    Vuoden {{year}} pelejä ei ole tietokannassa. Tällä sivulla on kuitenkin kaikki sen vuoden tuloskortit.
+    Vuoden {{current_year}} pelejä ei ole tietokannassa. Tällä sivulla on kuitenkin kaikki sen vuoden tuloskortit.
   </p>
+
+  Katso pelit vuodelta:
+  {% if current_year == 2012 %}
+    <a href="{{base_path}}/game/old/2012" class="btn btn-primary btn-xs disabled_link">2012</a>
+    <a href="{{base_path}}/game/old/2013" class="btn btn-default btn-xs">2013</a>
+  {% else %}
+    <a href="{{base_path}}/game/old/2012" class="btn btn-default btn-xs">2012</a>
+    <a href="{{base_path}}/game/old/2013" class="btn btn-primary btn-xs disabled_link">2013</a>
+  {% endif %}
+
+  {% for year in game_years %}
+    {% if year == current_year %}
+      <a class="btn btn-primary btn-xs disabled_link">{{year}}</a>
+    {% else %}
+      <a href="{{base_path}}/game?year={{year}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}" class="btn btn-default btn-xs">{{year}}</a>
+    {% endif %}
+  {% endfor %}
+
+  <br>
 
   {{images|raw}}
 

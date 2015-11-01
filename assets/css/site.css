@@ -20,6 +20,11 @@ a.hidden_link_black {
 	text-decoration: underline;
 }
 
+a.disabled_link {
+	pointer-events: none;
+  cursor: default;
+}
+
 table.course_holes, td.course_holes {
 	border: 1px solid lightgrey;
 	border-collapse: collapse;

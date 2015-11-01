@@ -7,6 +7,13 @@
       $games = array();
       $playerid = null;
       $courseid = null;
+      $game_years = Game::game_years();
+
+      if (isset($_GET['year'])) {
+        $year = $_GET['year'];
+      } else {
+        $year = $game_years[count($game_years) - 1];
+      }
 
       // GET-parameters determine what games are shown:
 
@@ -14,40 +21,44 @@
         // Show this player's games on this course
         $playerid = $_GET['player'];
         $courseid = $_GET['course'];
-        $games_count = Game::count_all_player_games_on_course($playerid, $courseid);
+        $games_count = Game::count_all_player_games_on_course($playerid, $courseid, $year);
         $games = Game::all(array(
           'page' => $page,
           'page_size' => $page_size,
           'playerid' => $playerid,
-          'courseid' => $courseid
+          'courseid' => $courseid,
+          'year' => $year
         ));
 
       } else if (isset($_GET['player'])) {
         // Show this player's games
         $playerid = $_GET['player'];
-        $games_count = Game::count_all_player_games($playerid);
+        $games_count = Game::count_all_player_games_by_year($playerid, $year);
         $games = Game::all(array(
           'page' => $page,
           'page_size' => $page_size,
-          'playerid' => $playerid
+          'playerid' => $playerid,
+          'year' => $year
         ));
 
       } else if (isset($_GET['course'])) {
         // Show games on this course
         $courseid = $_GET['course'];
-        $games_count = Game::count_all_course_games($courseid);
+        $games_count = Game::count_all_course_games_by_year($courseid, $year);
         $games = Game::all(array(
           'page' => $page,
           'page_size' => $page_size,
-          'courseid' => $courseid
+          'courseid' => $courseid,
+          'year' => $year
         ));
 
       } else {
         // Show all games
-        $games_count = Game::count_all();
+        $games_count = Game::count_all_by_year($year);
         $games = Game::all(array(
           'page' => $page,
-          'page_size' => $page_size
+          'page_size' => $page_size,
+          'year' => $year
         ));
       }
 
@@ -74,7 +85,9 @@
         'courses' => Course::all(),
         'players' => Player::all(),
         'playerid_param' => $playerid,
-        'courseid_param' => $courseid
+        'courseid_param' => $courseid,
+        'game_years' => $game_years,
+        'current_year' => $year
       ));
     }
 
@@ -94,11 +107,10 @@
       // $attributes = array();
       // $attributes['date'] = date('Y-m-d');
       // $attributes['time'] = date('H:i');
-
       View::make('game/new.html', array(
         'course' => $course,
         'players' => $players,
-        'attributes' => $attributes,
+        'attributes' => $attributes
       ));
     }
 
@@ -412,13 +424,19 @@
 
     // Used for displaying score card images that are not in the database
     public static function display_score_card_pictures_by_year($year) {
-    $full_path = getcwd();
-    $path = str_replace("/disc-golf-stats/app/controllers", "", $full_path);
-    $path = str_replace("/xamppfiles", "", $path);
+      $full_path = getcwd();
+      $path = str_replace("/disc-golf-stats/app/controllers", "", $full_path);
+      $path = str_replace("/xamppfiles", "", $path);
 
-    $echo = ImageDisplayer::display($path. "/score_cards", $year);
+      $echo = ImageDisplayer::display($path. "/score_cards", $year);
 
-    View::make('game/score_card_images.html', array('year' => $year, 'images' => $echo));
+      View::make('game/score_card_images.html', array(
+        'current_year' => $year,
+        'images' => $echo,
+        'players' => Player::all(),
+        'courses' => Course::all(),
+        'game_years' => Game::game_years()
+      ));
     }
 
     public static function destroy($gameid) {

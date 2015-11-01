@@ -198,13 +198,16 @@
     }
 
     public static function all($options) {
-      if (isset($options['page']) && isset($options['page_size'])) {
-        $page_size = $options['page_size'];
-        $page = $options['page'];
-      } else {
-        $page_size = 10;
-        $page = 1;
-      }
+      // if (isset($options['page']) && isset($options['page_size'])) {
+      //   $page_size = $options['page_size'];
+      //   $page = $options['page'];
+      // } else {
+      //   $page_size = 10;
+      //   $page = 1;
+      // }
+      $page_size = $options['page_size'];
+      $page = $options['page'];
+      $year = $options['year'];
       $offset = (int)$page_size * ((int)$page - 1);
 
       // 'course' and 'player' parameters determine what games are fetched
@@ -219,7 +222,9 @@
                 game.snow, game.doubles
                 FROM game
                 JOIN score ON score.gameid = game.gameid
-                WHERE score.playerid = :playerid AND game.courseid = :courseid
+                WHERE score.playerid = :playerid
+                AND game.courseid = :courseid
+                AND to_char(gamedate, 'YYYY') = :year
                 GROUP BY game.gameid
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
@@ -227,7 +232,8 @@
         $query->execute(array('playerid' => $playerid,
                               'courseid' => $courseid,
                               'limit' => $page_size,
-                              'offset' => $offset));
+                              'offset' => $offset,
+                              'year' => $year));
         $rows = $query->fetchAll();
 
         return self::get_games_from_rows($rows);
@@ -241,13 +247,15 @@
                 FROM game
                 JOIN score ON score.gameid = game.gameid
                 WHERE score.playerid = :playerid
+                AND to_char(gamedate, 'YYYY') = :year
                 GROUP BY game.gameid
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
         $query = DB::connection()->prepare($sql);
         $query->execute(array('playerid' => $playerid,
                               'limit' => $page_size,
-                              'offset' => $offset));
+                              'offset' => $offset,
+                              'year' => $year));
         $rows = $query->fetchAll();
 
         return self::get_games_from_rows($rows);
@@ -259,12 +267,14 @@
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
                 FROM game
                 WHERE courseid = :courseid
+                AND to_char(gamedate, 'YYYY') = :year
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
         $query = DB::connection()->prepare($sql);
         $query->execute(array('courseid' => $courseid,
                               'limit' => $page_size,
-                              'offset' => $offset));
+                              'offset' => $offset,
+                              'year' => $year));
 
         $rows = $query->fetchAll();
 
@@ -275,11 +285,13 @@
         $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
                 FROM game
+                WHERE to_char(gamedate, 'YYYY') = :year
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
         $query = DB::connection()->prepare($sql);
         $query->execute(array('limit' => $page_size,
-                              'offset' => $offset));
+                              'offset' => $offset,
+                              'year' => $year));
 
         $rows = $query->fetchAll();
 
@@ -321,6 +333,18 @@
       return self::get_game_from_row($row);
     }
 
+    public static function count_all_player_games_by_year($playerid, $year) {
+      $sql = "SELECT COUNT(*) gamecount FROM game
+              WHERE to_char(gamedate, 'YYYY') = :year
+              AND gameid IN
+              (SELECT gameid FROM score WHERE playerid = :playerid)";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid, 'year' => $year));
+      $row = $query->fetch();
+
+      return $row['gamecount'];
+    }
+
     public static function count_all_player_games($playerid) {
       $sql = "SELECT COUNT(*) gamecount FROM game
               WHERE gameid IN
@@ -342,13 +366,25 @@
       return $row['gamecount'];
     }
 
-    public static function count_all_player_games_on_course($playerid, $courseid) {
+    public static function count_all_course_games_by_year($courseid, $year) {
       $sql = "SELECT COUNT(*) gamecount FROM game
               WHERE courseid = :courseid
+              AND to_char(gamedate, 'YYYY') = :year";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid, 'year' => $year));
+      $row = $query->fetch();
+
+      return $row['gamecount'];
+    }
+
+    public static function count_all_player_games_on_course($playerid, $courseid, $year) {
+      $sql = "SELECT COUNT(*) gamecount FROM game
+              WHERE courseid = :courseid
+              AND to_char(gamedate, 'YYYY') = :year
               AND gameid IN
               (SELECT gameid FROM score WHERE playerid = :playerid)";
       $query = DB::connection()->prepare($sql);
-      $query->execute(array('playerid' => $playerid, 'courseid' => $courseid));
+      $query->execute(array('playerid' => $playerid, 'courseid' => $courseid, 'year' => $year));
       $row = $query->fetch();
 
       return $row['gamecount'];
@@ -358,6 +394,17 @@
       $sql = "SELECT COUNT(*) gamecount FROM game";
       $query = DB::connection()->prepare($sql);
       $query->execute();
+      $row = $query->fetch();
+
+      return $row['gamecount'];
+    }
+
+    public static function count_all_by_year($year) {
+      $sql = "SELECT COUNT(*) gamecount
+              FROM game
+              WHERE to_char(gamedate, 'YYYY') = :year";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('year' => $year));
       $row = $query->fetch();
 
       return $row['gamecount'];
