@@ -4,6 +4,7 @@
 	margin: 0px auto;
 	/*width: 85%;*/
 	font-size: 15px;
+	height: inherit;
 }
 
 * {
@@ -240,9 +241,10 @@ float: right!important;
 #fake-wrapper {
 	/* Have sidebar always extend to the bottom of the window */
 	position: relative;
-	height: 100%;
-	min-height: 1000px;
-	overflow: hidden;
+	height: inherit;
+	/*min-height: 1000px;*/
+	/*overflow: hidden;*/
+	/*overflow: auto;*/
 }
 
 #wrapper {
@@ -251,10 +253,16 @@ float: right!important;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+		height: 100%;
 }
 
 #wrapper.toggled {
     padding-left: 250px;
+}
+
+body {
+	height: 100%;
+	/*overflow: auto;*/
 }
 
 #sidebar-wrapper {
@@ -266,9 +274,14 @@ float: right!important;
 		margin-top: 51px;
     left: 250px;
     width: 0;
-    height: 300%;
+    /*height: 300%;*/
+		/*height: 100%;*/
+		/*height: 1300px;*/
+		height: 100%;
     margin-left: -250px;
-    overflow-y: auto;
+    /*overflow-y: visible;
+		overflow-x: visible;*/
+		overflow: inherit;
     background: #EEEEEE;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;

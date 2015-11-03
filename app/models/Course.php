@@ -153,7 +153,9 @@
 
     public static function latest_game_date($courseid) {
       $sql = "SELECT to_char(gamedate, 'HH24:MI DD.MM.YYYY') AS gamedate
-              FROM game WHERE courseid = :courseid LIMIT 1";
+              FROM game
+              WHERE courseid = :courseid
+              ORDER BY game.gamedate DESC LIMIT 1";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $courseid));
       $row = $query->fetch();

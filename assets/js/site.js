@@ -22,3 +22,9 @@ $( document ).ready(function() {
    		event.preventDefault();
 	});
 });
+
+// Set sidebar's grey background equal to window's scrollable area height
+$(window).load(function() {
+  var scroll_height = document.getElementById('fake-wrapper').scrollHeight;
+  document.getElementById('sidebar-wrapper').setAttribute('style','height:'+scroll_height+'px;');
+});
