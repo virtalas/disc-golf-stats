@@ -82,9 +82,9 @@
     // Information
 
     public static function high_scores($courseid) {
-      $sql = "SELECT gameid, gamedate, firstname, total_score, total_score - total_par as to_par
+      $sql = "SELECT gameid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, firstname, total_score, total_score - total_par as to_par
               FROM (
-              SELECT score.gameid, to_char(game.gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, player.firstname,
+              SELECT score.gameid, gamedate, player.firstname,
               SUM(score.stroke) + SUM(score.ob) as total_score,
               SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
               FROM score
@@ -96,7 +96,7 @@
               AND hole.courseid = :courseid
               GROUP BY score.gameid, gamedate, firstname
               ) t1
-              ORDER BY total_score ASC, gamedate DESC LIMIT 5";
+              ORDER BY total_score ASC, t1.gamedate DESC LIMIT 5";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $courseid));
       $rows = $query->fetchAll();
