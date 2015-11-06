@@ -8,8 +8,8 @@
 }
 
 * {
-    /*font-family: Georgia, serif;*/
-    font-family: Arial, Helvetica, sans-serif;
+  /*font-family: Georgia, serif;*/
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 td.td1 {
@@ -24,6 +24,10 @@ a.hidden_link_black {
 a.disabled_link {
 	pointer-events: none;
   cursor: default;
+}
+
+p.fancy {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 table.course_holes, td.course_holes {
