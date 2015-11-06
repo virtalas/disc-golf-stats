@@ -49,6 +49,8 @@ chuckles.data = (function (displayHook) {
 
             var res = JSON.parse(req.responseText);
             joke = res.value.joke;
+            // Correct quotes
+            joke = joke.replace(/&quot;/g,'"');
 
             displayHook();
         }
