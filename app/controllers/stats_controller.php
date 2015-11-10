@@ -7,7 +7,10 @@
       $url = $_SERVER['REQUEST_URI'];
       $stripped_url = preg_replace("/[^A-Za-z0-9 ]/", '', $url);
 
-      $stripped_url .= $player->playerid;
+
+      if ($player) {
+        $stripped_url .= $player->playerid;
+      }
 
       // Fetch page from cache
       $cached_page = Cache::getPage($stripped_url);
@@ -15,7 +18,7 @@
       if ($cached_page != null) {
         // Use cached page (which is up to date because outdated pages are deleted)
         echo $cached_page;
-        
+
       } else {
         // Make page from scratch
 
