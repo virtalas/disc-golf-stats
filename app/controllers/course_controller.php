@@ -100,6 +100,9 @@
           $hole->save();
         }
 
+        // Clear cached pages
+        Cache::clear();
+
         Redirect::to('/course/'. $courseid, array('message' => 'Rata ja sen väylät lisätty.'));
       } else {
         View::make('course/new.html', array('errors' => $errors,
@@ -155,6 +158,9 @@
           $hole->update();
         }
 
+        // Clear cached pages
+        Cache::clear();
+
         Redirect::to('/course/'. $courseid, array('message' => 'Rata ja sen väylät päivitetty.'));
       } else {
         View::make('course/edit.html', array('errors' => $errors,
@@ -179,6 +185,9 @@
       }
 
       $course->destroy();
+
+      // Clear cached pages
+      Cache::clear();
 
       Redirect::to('/course', array('message' => 'Rata ja sen väylät poistettu. Kaikki radan pelit poistettu.'));
     }

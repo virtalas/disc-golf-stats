@@ -5,6 +5,7 @@
     public static function make($view, $content = array()){
       // Alustetaan Twig
       $twig = self::get_twig();
+      $rendered_page = "";
 
       try{
         // Asetetaan uudelleenohjauksen yhteydessä lisätty viesti
@@ -24,12 +25,14 @@
         }
 
         // Tulostetaan Twig:n renderöimä näkymä
-        echo $twig->render($view, $content);
+        $rendered_page = $twig->render($view, $content);
+        echo $rendered_page;
       } catch (Exception $e){
         die('Virhe näkymän näyttämisessä: ' . $e->getMessage());
       }
 
-      exit();
+      // exit();
+      return $rendered_page;
     }
 
     private static function get_twig(){

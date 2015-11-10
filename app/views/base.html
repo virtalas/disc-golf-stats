@@ -47,9 +47,9 @@
           <ul class="nav navbar-nav">
             <!-- Navigaation linkit -->
             {% if current_page|default('stats') == 'stats' %}
-              <li class="active"><a href="{{base_path}}/stats">Tilastot</a></li>
+              <li class="active"><a href="{{base_path}}">Tilastot</a></li>
             {% else %}
-              <li><a href="{{base_path}}/stats">Tilastot</a></li>
+              <li><a href="{{base_path}}">Tilastot</a></li>
             {% endif %}
 
             {% if current_page == 'game' %}

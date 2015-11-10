@@ -71,6 +71,8 @@ chuckles.data = (function (displayHook) {
 })(chuckles.gui.show);
 
 function init() {
+    // New quote every day
+    // http://www.icndb.com/api/
     var now = new Date();
     var start = new Date(now.getFullYear(), 0, 0);
     var diff = now - start;

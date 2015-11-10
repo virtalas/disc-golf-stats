@@ -7,88 +7,105 @@
       $games = array();
       $playerid = null;
       $courseid = null;
-      $game_years = Game::game_years();
 
-      if (isset($_GET['year'])) {
-        $year = $_GET['year'];
-      } else {
-        $year = $game_years[count($game_years) - 1];
-      }
+      $url = $_SERVER['REQUEST_URI'];
+      $stripped_url = preg_replace("/[^A-Za-z0-9 ]/", '', $url);
 
-      // GET-parameters determine what games are shown:
+      // Fetch page from cache
+      $cached_page = Cache::getPage($stripped_url);
 
-      if (isset($_GET['player']) && isset($_GET['course'])) {
-        // Show this player's games on this course
-        $playerid = $_GET['player'];
-        $courseid = $_GET['course'];
-        $games_count = Game::count_all_player_games_on_course($playerid, $courseid, $year);
-        $games = Game::all(array(
-          'page' => $page,
-          'page_size' => $page_size,
-          'playerid' => $playerid,
-          'courseid' => $courseid,
-          'year' => $year
-        ));
-
-      } else if (isset($_GET['player'])) {
-        // Show this player's games
-        $playerid = $_GET['player'];
-        $games_count = Game::count_all_player_games_by_year($playerid, $year);
-        $games = Game::all(array(
-          'page' => $page,
-          'page_size' => $page_size,
-          'playerid' => $playerid,
-          'year' => $year
-        ));
-
-      } else if (isset($_GET['course'])) {
-        // Show games on this course
-        $courseid = $_GET['course'];
-        $games_count = Game::count_all_course_games_by_year($courseid, $year);
-        $games = Game::all(array(
-          'page' => $page,
-          'page_size' => $page_size,
-          'courseid' => $courseid,
-          'year' => $year
-        ));
+      if ($cached_page != null) {
+        // Use cached page (which is up to date because outdated pages are deleted)
+        echo $cached_page;
 
       } else {
-        // Show all games
-        $games_count = Game::count_all_by_year($year);
-        $games = Game::all(array(
-          'page' => $page,
-          'page_size' => $page_size,
-          'year' => $year
+        // Make page from scratch
+
+        $game_years = Game::game_years();
+
+        if (isset($_GET['year'])) {
+          $year = $_GET['year'];
+        } else {
+          $year = $game_years[count($game_years) - 1];
+        }
+
+        // GET-parameters determine what games are shown:
+
+        if (isset($_GET['player']) && isset($_GET['course'])) {
+          // Show this player's games on this course
+          $playerid = $_GET['player'];
+          $courseid = $_GET['course'];
+          $games_count = Game::count_all_player_games_on_course($playerid, $courseid, $year);
+          $games = Game::all(array(
+            'page' => $page,
+            'page_size' => $page_size,
+            'playerid' => $playerid,
+            'courseid' => $courseid,
+            'year' => $year
+          ));
+
+        } else if (isset($_GET['player'])) {
+          // Show this player's games
+          $playerid = $_GET['player'];
+          $games_count = Game::count_all_player_games_by_year($playerid, $year);
+          $games = Game::all(array(
+            'page' => $page,
+            'page_size' => $page_size,
+            'playerid' => $playerid,
+            'year' => $year
+          ));
+
+        } else if (isset($_GET['course'])) {
+          // Show games on this course
+          $courseid = $_GET['course'];
+          $games_count = Game::count_all_course_games_by_year($courseid, $year);
+          $games = Game::all(array(
+            'page' => $page,
+            'page_size' => $page_size,
+            'courseid' => $courseid,
+            'year' => $year
+          ));
+
+        } else {
+          // Show all games
+          $games_count = Game::count_all_by_year($year);
+          $games = Game::all(array(
+            'page' => $page,
+            'page_size' => $page_size,
+            'year' => $year
+          ));
+        }
+
+        $pages = ceil($games_count/$page_size);
+
+        if ($page > 1) {
+          $prev_page = (int)$page - 1;
+        } else {
+          $prev_page = null;
+        }
+
+        if ($pages > $page) {
+          $next_page = (int)$page + 1;
+        } else {
+          $next_page = null;
+        }
+
+        $page_html = View::make('game/index.html', array(
+          'games' => $games,
+          'prev_page' => $prev_page,
+          'curr_page' => $page,
+          'next_page' => $next_page,
+          'pages' => $pages,
+          'courses' => Course::all(),
+          'players' => Player::all(),
+          'playerid_param' => $playerid,
+          'courseid_param' => $courseid,
+          'game_years' => $game_years,
+          'current_year' => $year
         ));
+
+        Cache::store($stripped_url, $page_html);
       }
-
-      $pages = ceil($games_count/$page_size);
-
-      if ($page > 1) {
-        $prev_page = (int)$page - 1;
-      } else {
-        $prev_page = null;
-      }
-
-      if ($pages > $page) {
-        $next_page = (int)$page + 1;
-      } else {
-        $next_page = null;
-      }
-
-      View::make('game/index.html', array(
-        'games' => $games,
-        'prev_page' => $prev_page,
-        'curr_page' => $page,
-        'next_page' => $next_page,
-        'pages' => $pages,
-        'courses' => Course::all(),
-        'players' => Player::all(),
-        'playerid_param' => $playerid,
-        'courseid_param' => $courseid,
-        'game_years' => $game_years,
-        'current_year' => $year
-      ));
     }
 
     public static function create() {
@@ -163,6 +180,10 @@
 
           if (count($score_errors) == 0) {
             // Scores were valid as well
+
+            // Clear cached pages
+            Cache::clear();
+
             Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
           } else {
             // Scores had errors, nothing was saved
@@ -216,6 +237,9 @@
             $score->gameid = $gameid;
             $score->save();
           }
+
+          // Clear cached pages
+          Cache::clear();
 
           Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
         } else {
@@ -332,6 +356,9 @@
           }
         }
 
+        // Clear cached pages
+        Cache::clear();
+
         Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset päivitetty.'));
       } else {
         $game->prepare();
@@ -420,6 +447,9 @@
         echo "<br>Done!";
         echo "<br>";
       }
+
+      // Clear cached pages
+      Cache::clear();
     }
 
     // Used for displaying score card images that are not in the database
@@ -442,6 +472,9 @@
     public static function destroy($gameid) {
       self::destroy_no_redirect($gameid);
 
+      // Clear cached pages
+      Cache::clear();
+
       Redirect::to('/game', array('message' => 'Peli ja sen tulokset poistettu.'));
     }
 
@@ -457,5 +490,8 @@
       }
 
       $game->destroy();
+
+      // Clear cached pages
+      Cache::clear();
     }
   }
