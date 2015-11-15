@@ -14,7 +14,7 @@
       // Fetch page from cache
       $cached_page = Cache::getPage($stripped_url);
 
-      if ($cached_page != null) {
+      if ($cached_page != null && Cache::on()) {
         // Use cached page (which is up to date because outdated pages are deleted)
         echo $cached_page;
 
@@ -103,6 +103,9 @@
           'game_years' => $game_years,
           'current_year' => $year
         ));
+
+        // Don't include the page message in the cached file
+        $page_html = Cache::strip_tags_content($page_html, "message-success");
 
         Cache::store($stripped_url, $page_html);
       }

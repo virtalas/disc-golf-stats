@@ -1,6 +1,11 @@
 <?php
   class Cache {
 
+    // Turn caching on/off for development
+    public static function on() {
+      return true;
+    }
+
     public static function getPage($stripped_url) {
       $cached_page = null;
 
@@ -14,22 +19,25 @@
 
     public static function store($stripped_url, $content) {
       $dir = 'cached_pages';
-
-      // create new directory with 744 permissions if it does not exist yet
-      // owner will be the user/group the PHP script is run under
-      // if ( !file_exists($dir) ) {
-      //   mkdir ($dir, 0744);
-      // }
-      //
-      // file_put_contents("cache/$dir/". $stripped_url. ".html", $content);
-
       file_put_contents("cache/". $stripped_url. ".html", $content);
-
-      // $myfile = fopen("cache/". $stripped_url. ".html", "w");
-      // fwrite($myfile, $content);
     }
 
     public static function clear() {
       array_map('unlink', glob("cache/*.html"));
+    }
+
+    public static function strip_tags_content($htmlString, $idToRemove) {
+      $dom = new DOMDocument;
+      libxml_use_internal_errors(true);
+      $dom->loadHTML($htmlString);
+      libxml_clear_errors();
+      $xPath = new DOMXPath($dom);
+      $nodes = $xPath->query('//*[@id="'. $idToRemove. '"]');
+
+      if ($nodes->item(0)) {
+          $nodes->item(0)->parentNode->removeChild($nodes->item(0));
+      }
+
+      return $dom->saveHTML();
     }
   }

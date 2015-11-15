@@ -60,10 +60,10 @@
         <td>{{total_par}}</td>
         <td>0</td>
       </tr>
-      <tr>
 
         <!-- Cycle through every player's scores in the game and display them on their own row -->
         {% for playerid,scores in game.scores %}
+          <tr>
           <!-- Array 'players' is ordered by playerid ASC, so to get the player by id: players[playerid - 1] -->
           <!-- <td class='names'>{{players[playerid].firstname}}</td> -->
           <td class='names'>{{players[playerid|trim('player') - 1].firstname}}</td>

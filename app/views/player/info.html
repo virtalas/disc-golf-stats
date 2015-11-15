@@ -45,4 +45,10 @@
       Projekti <a href="https://github.com/virtalas/disc-golf-stats">GitHubissa.</a>
     </p>
 
+  {% if admin_logged_in %}
+    <br>
+    <h4>Poista sivujen välimuisti</h4>
+    <a href="{{base_path}}/clearcache" class="btn btn-default btn-sm" role="button">Clear cache</a>
+  {% endif %}
+
 {% endblock %}

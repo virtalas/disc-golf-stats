@@ -120,6 +120,12 @@
     PlayerController::info();
   });
 
+  // Välimuistisivujen poisto (vain admin)
+  $routes->get('/clearcache', 'check_admin_logged_in', function(){
+    Cache::clear();
+    Redirect::to('/', array('message' => 'Sivujen välimuisti poistettu.'));
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen
