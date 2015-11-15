@@ -1,7 +1,7 @@
 <?php
   class Cache {
 
-    // Turn caching on/off for development
+    // Turn caching on/off (true/false) for development
     public static function on() {
       return true;
     }

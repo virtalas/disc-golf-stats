@@ -1,4 +1,4 @@
-{% macro list_games(games, players, base_path, admin_logged_in) %}
+{% macro list_games(games, players, base_path, admin_logged_in, show_edit) %}
   <table width=60%>
     <tr>
       <td>Olosuhteina voi olla:</td>
@@ -160,7 +160,7 @@
 
     </table>
 
-    {% if admin_logged_in %}
+    {% if admin_logged_in and show_edit %}
       <a href="{{base_path}}/game/{{game.gameid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
     {% endif %}
 

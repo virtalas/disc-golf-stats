@@ -21,6 +21,7 @@
 
   <br>
 
-  {{list_games.list_games(games, players, base_path, admin_logged_in)}}
+  {% set show_edit = true %}
+  {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit)}}
 
 {% endblock %}

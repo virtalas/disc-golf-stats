@@ -55,7 +55,8 @@
 
   </p>
 
-  {{list_games.list_games(games, players, base_path, admin_logged_in)}}
+  {% set show_edit = false %}
+  {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit)}}
 
   <nav>
     <ul class="pagination">
