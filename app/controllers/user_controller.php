@@ -59,7 +59,6 @@
                                               'firstname' => $firstname));
       } else {
         // Register user/player and login
-        // Not the best security solution
         $salt = mcrypt_create_iv(50, MCRYPT_DEV_URANDOM);
         $salt = mb_convert_encoding($salt, "UTF-8", "auto");
 
