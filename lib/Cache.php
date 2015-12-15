@@ -18,7 +18,6 @@
     }
 
     public static function store($stripped_url, $content) {
-      $dir = 'cached_pages';
       file_put_contents("cache/". $stripped_url. ".html", $content);
     }
 
@@ -35,7 +34,7 @@
       $nodes = $xPath->query('//*[@id="'. $idToRemove. '"]');
 
       if ($nodes->item(0)) {
-          $nodes->item(0)->parentNode->removeChild($nodes->item(0));
+        $nodes->item(0)->parentNode->removeChild($nodes->item(0));
       }
 
       return $dom->saveHTML();

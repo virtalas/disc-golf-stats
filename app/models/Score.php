@@ -6,8 +6,10 @@
 
     public function __construct($attributes) {
       parent::__construct($attributes);
-      $this->validators = array('validate_stroke', 'validate_ob', 'validate_score_legal');
+      $this->validators = array('validate_stroke', 'validate_ob');
     }
+
+    // Database functions
 
     public function save() {
       $sql = "INSERT INTO score (gameid, holeid, playerid, stroke, ob, legal)
@@ -39,6 +41,8 @@
       $query = DB::connection()->prepare($sql);
       $query->execute(array('scoreid' => $this->scoreid));
     }
+
+    // Information functions
 
     public static function players_birdies($playerid) {
       $sql = "SELECT COUNT(*) as birdies
@@ -227,11 +231,5 @@
 
     public function validate_ob() {
       return $this->validate_integer($this->ob, "OB:n");
-    }
-
-    public function validate_score_legal() {
-      // Check if game has conditions variant or doubles
-      $errors = array();
-      return $errors;
     }
   }

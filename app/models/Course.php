@@ -79,7 +79,7 @@
       $this->number_of_holes = count($this->holes);
     }
 
-    // Information
+    // Information functions
 
     public static function high_scores($courseid) {
       $sql = "SELECT gameid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, firstname, total_score, total_score - total_par as to_par

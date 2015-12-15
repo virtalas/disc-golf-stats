@@ -8,17 +8,7 @@
   		parent::__construct($attributes);
   	}
 
-    public function save() {
-      $sql = "INSERT INTO player (firstname, username, password, salt)
-              VALUES (:firstname, :username, :password, :salt) RETURNING playerid";
-      $query = DB::connection()->prepare($sql);
-      $query->execute(array('firstname' => $this->firstname,
-                            'username' => $this->username,
-                            'password' => $this->password,
-                            'salt' => $this->salt));
-      $row = $query->fetch();
-      $this->playerid = $row['playerid'];
-    }
+    // Authentication functions
 
     public static function authenticate($username, $password) {
       $sql = "SELECT * FROM Player WHERE username = :username LIMIT 1";
@@ -26,7 +16,6 @@
       $query->execute(array('username' => $username));
       $row = $query->fetch();
 
-      // Not the best security solution
       if ($row && hash_equals($row['password'], crypt($password, $row['salt']))) {
         $player = new Player(array(
           'playerid' => $row['playerid'],
@@ -56,6 +45,20 @@
       } else {
         return false;
       }
+    }
+
+    // Database functions
+
+    public function save() {
+      $sql = "INSERT INTO player (firstname, username, password, salt)
+              VALUES (:firstname, :username, :password, :salt) RETURNING playerid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('firstname' => $this->firstname,
+                            'username' => $this->username,
+                            'password' => $this->password,
+                            'salt' => $this->salt));
+      $row = $query->fetch();
+      $this->playerid = $row['playerid'];
     }
 
   	public static function all() {

@@ -9,6 +9,8 @@
       $this->validators = array('validate_hole_num_and_par');
   	}
 
+    // Database functions
+
     public function save() {
       $sql = "INSERT INTO hole (courseid, hole_num, par)
               VALUES (:courseid, :hole_num, :par) RETURNING holeid";
@@ -58,6 +60,8 @@
 
   		return null;
     }
+
+    // Information functions
 
     public static function course_holes($courseid) {
       $sql = "SELECT holeid, hole_num, par FROM hole WHERE courseid = :courseid ORDER BY hole_num";

@@ -10,6 +10,8 @@
       $this->validators = array('validate_date', 'validate_rain_and_wet_no_rain');
     }
 
+    // Database functions
+
     public function save() {
       $sql = "INSERT INTO game (courseid, gamedate, comment, rain, wet_no_rain,
               windy, variant, dark, led, snow, doubles)
@@ -60,6 +62,8 @@
       $query = DB::connection()->prepare($sql);
       $query->execute(array('gameid' => $this->gameid));
     }
+
+    // Prepare functions
 
     public function prepare() {
       $this->load_course();
@@ -168,6 +172,8 @@
 
       $this->high_scorers = $high_scorers_string;
     }
+
+    // Information functions
 
     public static function game_years() {
       $sql = "SELECT DISTINCT to_char(game.gamedate, 'YYYY') as year FROM game ORDER BY year ASC";
@@ -493,6 +499,8 @@
 
       return $row['gamedate'];
     }
+
+    // Get from row(s)
 
     private static function get_game_from_row($row) {
       if ($row) {
