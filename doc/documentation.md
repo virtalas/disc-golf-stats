@@ -2,6 +2,7 @@
 
 1. Make a copy of 'config/database_example.php' called 'config/database.php'
 2. Input PostgreSQL settings in 'config/database.php'
+3. If you get a "permission denied" PHP error for the cache folder, have a look at [this](http://stackoverflow.com/questions/8103860/move-uploaded-file-gives-failed-to-open-stream-permission-denied-error-after).
 
 ## Import data into PostgreSQL
 
