@@ -29,24 +29,32 @@
           </tr>
           <tr>
             	<td>Viimeisin peli: </td>
-            	<td>{{latest_game}}</td>
+            	<td>{% if latest_game | length == 0 %}{{latest_game}}{% else %}Ei pelejä{% endif %}</td>
           </tr>
           <tr>
             <!-- Empty row -->
             <td height=30></td>
           </tr>
-          <tr>
-            <td>Suosituimmat radat (eniten pelejä):</td>
-            <td>1. {{popular_courses[0].name}} ({{popular_courses[0].occurance}})</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>2. {{popular_courses[1].name}} ({{popular_courses[1].occurance}})</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>3. {{popular_courses[2].name}} ({{popular_courses[2].occurance}})</td>
-          </tr>
+
+          {% if popular_courses | length == 0 %}
+            <tr>
+              <td>Suosituimmat radat (eniten pelejä):</td>
+              <td>Ei pelejä</td>
+            </tr>
+          {% else %}
+            <tr>
+              <td>Suosituimmat radat (eniten pelejä):</td>
+              <td>1. {{popular_courses[0].name}} ({{popular_courses[0].occurance}})</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>2. {{popular_courses[1].name}} ({{popular_courses[1].occurance}})</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>3. {{popular_courses[2].name}} ({{popular_courses[2].occurance}})</td>
+            </tr>
+          {% endif %}
     	</table>
 
   </section>
@@ -57,7 +65,7 @@
 
   <br><br>
 
-  {% if user_logged_in %}
+  {% if user_logged_in and high_scores | length != 0 %}
     <h3>Omat ennätykset</h3>
 
     <br>
@@ -82,6 +90,11 @@
         </tr>
       {% endfor %}
     </table>
+  {% endif %}
+
+  {% if user_logged_in and high_scores | length == 0 %}
+    <h3>Omat ennätykset</h3>
+    <p>Ei pelejä</p>
   {% endif %}
 
 {% endblock %}

@@ -41,10 +41,11 @@
           'high_scores' => $high_scores
         ));
 
-        // Don't include the page message in the cached file
-        $page_html = Cache::strip_tags_content($page_html, "message-success");
-
-        Cache::store($stripped_url, $page_html);
+        if (Cache::on()) {
+          // Don't include the page message in the cached file
+          $page_html = Cache::strip_tags_content($page_html, "message-success");
+          Cache::store($stripped_url, $page_html);
+        }
       }
     }
   }

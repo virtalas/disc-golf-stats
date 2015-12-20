@@ -10,11 +10,11 @@
     </tr>
     <tr>
       <td>Viimeisin peli:</td>
-      <td>{{latest_game}}</td>
+      <td>{% if games_played > 0 %}{{latest_game}}{% else %}Ei pelejä{% endif %}</td>
     </tr>
     <tr>
       <td>Tulosten keskiarvo:</td>
-      <td>{{avg_score}}</td>
+      <td>{% if games_played > 0 %}{{avg_score}}{% else %}Ei pelejä{% endif %}</td>
     </tr>
   </table>
 
@@ -53,26 +53,30 @@
 
   <h3>Parhaat tulokset</h3>
 
-  <table style="width:700px">
-    <tr>
-      <td><b>Sija</b></td>
-      <td><b>Päivämäärä</b></td>
-      <td><b>Pelaaja</b></td>
-      <td><b>Tulos</b></td>
-      <td align="right"><b>Par</b></td>
-    </tr>
-    {% for i in 0..high_scores|length - 1 %}
+  {% if games_played > 0 %}
+    <table style="width:700px">
       <tr>
-        <td>{{i + 1}}.</td>
-        <td>{{high_scores[i][0]}}</td>
-        <td>{{high_scores[i][1]}}</td>
-        <td>{{high_scores[i][2]}}</td>
-        <td align="right">{{high_scores[i][3]}}</td></td>
-        <td style="padding-left:30px">
-          <a href="{{base_path}}/game/{{high_scores[i][4]}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
-        </td>
+        <td><b>Sija</b></td>
+        <td><b>Päivämäärä</b></td>
+        <td><b>Pelaaja</b></td>
+        <td><b>Tulos</b></td>
+        <td align="right"><b>Par</b></td>
       </tr>
-    {% endfor %}
-  </table>
+      {% for i in 0..high_scores|length - 1 %}
+        <tr>
+          <td>{{i + 1}}.</td>
+          <td>{{high_scores[i][0]}}</td>
+          <td>{{high_scores[i][1]}}</td>
+          <td>{{high_scores[i][2]}}</td>
+          <td align="right">{{high_scores[i][3]}}</td></td>
+          <td style="padding-left:30px">
+            <a href="{{base_path}}/game/{{high_scores[i][4]}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Ei pelejä</p>
+  {% endif %}
 
 {% endmacro %}

@@ -45,7 +45,7 @@
     </tr>
     <tr>
       <td>Viimeisin peli:</td>
-      <td>{{latest_game}}</td>
+      <td>{% if game_count > 0 %}{{latest_game}}{% else %}Ei pelejä{% endif %}</td>
     </tr>
     <tr>
       <td>Holareita:</td>
@@ -55,18 +55,26 @@
       <td>Birdiejä:</td>
       <td>{{birdies}}</td>
     </tr>
-    <tr>
-      <td>Suosituimmat radat (eniten pelejä):</td>
-      <td>1. {{popular_courses[0].name}} ({{popular_courses[0].occurance}})</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>2. {{popular_courses[1].name}} ({{popular_courses[1].occurance}})</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>3. {{popular_courses[2].name}} ({{popular_courses[2].occurance}})</td>
-    </tr>
+
+    {% if game_count > 0 %}
+      <tr>
+        <td>Suosituimmat radat (eniten pelejä):</td>
+        <td>1. {{popular_courses[0].name}} ({{popular_courses[0].occurance}})</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>2. {{popular_courses[1].name}} ({{popular_courses[1].occurance}})</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>3. {{popular_courses[2].name}} ({{popular_courses[2].occurance}})</td>
+      </tr>
+    {% else %}
+      <tr>
+        <td>Suosituimmat radat (eniten pelejä):</td>
+        <td>Ei pelejä</td>
+      </tr>
+    {% endif %}
   </table>
 
   <br>
@@ -76,53 +84,61 @@
   <br><br>
 
   <h3>Ennätykset</h3>
-  <br>
 
-  <table style="width:700px">
-    <tr>
-      <th><b>Päivämäärä</b></th>
-      <th><b>Rata</b></th>
-      <th><b>Tulos</b></th>
-      <td align="right"><b>Par</b></td>
-      <th></th>
-    </tr>
-    {% for high_score in high_scores %}
+  {% if game_count > 0 %}
+    <br>
+    <table style="width:700px">
       <tr>
-        <td>{{high_score[0].gamedate}}</td>
-        <td>{{high_score[1].name}}</td>
-        <td>{{high_score[2]}}</td>
-        <td align="right">{{high_score[3]}}</td>
-        <td style="padding-left:30px">
-          <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
-        </td>
+        <th><b>Päivämäärä</b></th>
+        <th><b>Rata</b></th>
+        <th><b>Tulos</b></th>
+        <td align="right"><b>Par</b></td>
+        <th></th>
       </tr>
-    {% endfor %}
-  </table>
+      {% for high_score in high_scores %}
+        <tr>
+          <td>{{high_score[0].gamedate}}</td>
+          <td>{{high_score[1].name}}</td>
+          <td>{{high_score[2]}}</td>
+          <td align="right">{{high_score[3]}}</td>
+          <td style="padding-left:30px">
+            <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Ei pelejä</p>
+  {% endif %}
 
   <br>
 
   <h3>Ratojen tulosten keskiarvot</h3>
 
-  Keskiarvot joka vuodelta. Esitetty muodossa "Tulos (Par)".
+  {% if game_count > 0 %}
+    Keskiarvot joka vuodelta. Esitetty muodossa "Tulos (Par)".
 
-  <br><br>
+    <br><br>
 
-  <table style="width:500px">
-    <tr>
-      <td><b>Rata</b></td>
-      {% for year in years %}
-        <td><b>{{year}}</b></td>
-      {% endfor %}
-    </tr>
-    {% for course_averages in courses_avg_scores %}
+    <table style="width:500px">
       <tr>
-        <!-- First value in the array is the course's name -->
-        {% for average_scoring in course_averages %}
-          <td>{{average_scoring}}</td>
+        <td><b>Rata</b></td>
+        {% for year in years %}
+          <td><b>{{year}}</b></td>
         {% endfor %}
       </tr>
-    {% endfor %}
-  </table>
+      {% for course_averages in courses_avg_scores %}
+        <tr>
+          <!-- First value in the array is the course's name -->
+          {% for average_scoring in course_averages %}
+            <td>{{average_scoring}}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Ei pelejä</p>
+  {% endif %}
 
   <br>
 

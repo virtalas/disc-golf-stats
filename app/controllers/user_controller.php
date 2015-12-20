@@ -60,7 +60,7 @@
       } else {
         // Register user/player and login
         $salt = mcrypt_create_iv(50, MCRYPT_DEV_URANDOM);
-        $salt = mb_convert_encoding($salt, "UTF-8", "auto");
+        $salt = mb_convert_encoding($salt, "UTF-8", "UTF-8");
 
         $player = new Player(array(
           'firstname' => $firstname,

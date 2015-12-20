@@ -50,6 +50,15 @@
       return self::get_course_from_row($row);
     }
 
+    public static function count_all(){
+      $sql = "SELECT COUNT(*) as course_count FROM course";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $row = $query->fetch();
+
+      return $row['course_count'];
+    }
+
     public static function all() {
       $sql = "SELECT * FROM course ORDER BY courseid";
       $query = DB::connection()->prepare($sql);

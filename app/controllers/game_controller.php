@@ -18,7 +18,7 @@
         // Use cached page (which is up to date because outdated pages are deleted)
         echo $cached_page;
 
-      } else {
+      } else if (Game::count_all() > 0) {
         // Make page from scratch
 
         $game_years = Game::game_years();
@@ -104,10 +104,17 @@
           'current_year' => $year
         ));
 
-        // Don't include the page message in the cached file
-        $page_html = Cache::strip_tags_content($page_html, "message-success");
-
-        Cache::store($stripped_url, $page_html);
+        if (Cache::on()) {
+          // Don't include the page message in the cached file
+          $page_html = Cache::strip_tags_content($page_html, "message-success");
+          Cache::store($stripped_url, $page_html);
+        }
+      } else {
+        // No games in the database
+        View::make('game/index.html', array(
+          'courses' => Course::all(),
+          'players' => Player::all()
+        ));
       }
     }
 

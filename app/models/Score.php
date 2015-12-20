@@ -169,7 +169,13 @@
       $query->execute();
       $row = $query->fetch();
 
-      return $row['score_count'];
+      $score_count = $row['score_count'];
+
+      if (!$score_count) {
+        $score_count = 0;
+      }
+
+      return $score_count;
     }
 
     public static function count_all_player_scores($playerid) {

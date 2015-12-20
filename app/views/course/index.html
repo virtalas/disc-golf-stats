@@ -30,8 +30,13 @@
     </div>
   {% endif %}
 
-  <h2>{{course.name}}, {{course.city}}</h2>
 
-  {{course_show.course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores)}}
-
+  {% if courses %}
+    <h2>{{course.name}}, {{course.city}}</h2>
+    {{course_show.course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores)}}
+  {% else %}
+    <p>
+      <a href="{{base_path}}/course/list" class="btn btn-default btn-sm" role="button">Lisää uusi rata</a>
+    </p>
+  {% endif %}
 {% endblock %}

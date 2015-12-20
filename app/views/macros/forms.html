@@ -10,24 +10,34 @@
   <form method="get" action="{{base_path}}/game/new">
     <label>Lisää peli valitsemalla ensin pelaajat ja rata</label>
     <div class="row">
-      <div class="col-xs-2">
-        {% for i in 0..players|length / 2 %}
+      {% if players | length > 1 %}
+        <div class="col-xs-2">
+          {% for i in 0..players|length / 2 %}
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="player{{players[i].playerid}}" value="1"> {{players[i].firstname}}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="col-xs-2">
+          {% for i in players|length / 2|round + 1..players|length %}
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="player{{players[i].playerid}}" value="1"> {{players[i].firstname}}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="col-xs-2">
           <div class="checkbox">
             <label>
-              <input type="checkbox" name="player{{players[i].playerid}}" value="1"> {{players[i].firstname}}
+              <input type="checkbox" name="player{{players[0].playerid}}" value="1"> {{players[0].firstname}}
             </label>
           </div>
-        {% endfor %}
-      </div>
-      <div class="col-xs-2">
-        {% for i in players|length / 2|round + 1..players|length %}
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" name="player{{players[i].playerid}}" value="1"> {{players[i].firstname}}
-            </label>
-          </div>
-        {% endfor %}
-      </div>
+        </div>
+      {% endif %}
     </div>
     <div class="row">
       <div class="col-xs-2">

@@ -6,36 +6,40 @@
       $player = self::get_user_logged_in();
       $course = null;
 
-      if (isset($_GET['course'])) {
-        $course = Course::find($_GET['course']);
-      } else {
-        $popular_courses = Course::popular_courses($player->playerid);
-
-        if ($popular_courses) {
-          $course = $popular_courses[0];
+      if (Course::count_all() > 0) {
+        if (isset($_GET['course'])) {
+          $course = Course::find($_GET['course']);
         } else {
-          $course = Course::find(1);
+          $popular_courses = Course::popular_courses($player->playerid);
+
+          if ($popular_courses) {
+            $course = $popular_courses[0];
+          } else {
+            $course = Course::find(1);
+          }
         }
+
+        $courseid = $course->courseid;
+        $courses = Course::all();
+        $games_played = Course::number_of_games_played($courseid);
+        $latest_game = Course::latest_game_date($courseid);
+        $avg_score = Course::average_scoring($courseid);
+        $par = Course::par($courseid);
+        $high_scores = Course::high_scores($courseid);
+
+        View::make('course/index.html', array(
+          'course' => $course,
+          'courses' => $courses,
+          'player' => $player,
+          'games_played' => $games_played,
+          'latest_game' => $latest_game,
+          'avg_score' => $avg_score,
+          'par' => $par,
+          'high_scores' => $high_scores
+        ));
+      } else {
+        View::make('course/index.html');
       }
-
-      $courseid = $course->courseid;
-      $courses = Course::all();
-      $games_played = Course::number_of_games_played($courseid);
-      $latest_game = Course::latest_game_date($courseid);
-      $avg_score = Course::average_scoring($courseid);
-      $par = Course::par($courseid);
-      $high_scores = Course::high_scores($courseid);
-
-      View::make('course/index.html', array(
-        'course' => $course,
-        'courses' => $courses,
-        'player' => $player,
-        'games_played' => $games_played,
-        'latest_game' => $latest_game,
-        'avg_score' => $avg_score,
-        'par' => $par,
-        'high_scores' => $high_scores
-      ));
     }
 
     public static function show($courseid) {

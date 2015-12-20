@@ -11,7 +11,7 @@
       if ($cached_page != null) {
         // Use cached page (which is up to date because outdated pages are deleted)
         echo $cached_page;
-        
+
       } else {
         // Make page from scratch
 
@@ -55,7 +55,9 @@
           'courses_avg_scores' => $courses_avg_scores
         ));
 
-        Cache::store($stripped_url, $page_html);
+        if (Cache::on()) {
+          Cache::store($stripped_url, $page_html);
+        }
       }
     }
 
