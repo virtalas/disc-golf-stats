@@ -8,4 +8,6 @@ Disc golf stats keeps track of players' scores on different courses and presents
 
 Disc golf stats uses a PostgreSQL database implemented with PHP. Its features include page caching, admin/regular users and creating/reading/updating/deleting data through user interfaces.
 
+Demo website [here](http://lassvirt.users.cs.helsinki.fi/disc-golf-stats/).
+
 Forked from [virtalas/Frisbeegolf-tulospalvelu](https://github.com/virtalas/Frisbeegolf-tulospalvelu).
