@@ -29,7 +29,7 @@
           </tr>
           <tr>
             	<td>Viimeisin peli: </td>
-            	<td>{% if latest_game | length == 0 %}{{latest_game}}{% else %}Ei pelejä{% endif %}</td>
+            	<td>{% if game_count > 0 %}{{latest_game}}{% else %}Ei pelejä{% endif %}</td>
           </tr>
           <tr>
             <!-- Empty row -->
