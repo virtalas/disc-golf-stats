@@ -16,6 +16,7 @@ return array(
     'DatabaseConfig' => $baseDir . '/config/database.php',
     'Game' => $baseDir . '/app/models/Game.php',
     'GameController' => $baseDir . '/app/controllers/game_controller.php',
+    'GraphController' => $baseDir . '/app/controllers/graph_controller.php',
     'Hole' => $baseDir . '/app/models/Hole.php',
     'ImageDisplayer' => $baseDir . '/lib/ins-imgs.php',
     'Player' => $baseDir . '/app/models/Player.php',

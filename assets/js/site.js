@@ -26,5 +26,9 @@ $( document ).ready(function() {
 // Set sidebar's grey background equal to window's scrollable area height
 $(window).load(function() {
   var scroll_height = document.getElementById('fake-wrapper').scrollHeight;
-  document.getElementById('sidebar-wrapper').setAttribute('style','height:'+scroll_height+'px;');
+  var sidebar = document.getElementById('sidebar-wrapper');
+  
+  if (sidebar) {
+    sidebar.setAttribute('style','height:'+scroll_height+'px;');
+  }
 });

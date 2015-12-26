@@ -203,14 +203,41 @@
       return self::get_games_from_rows($rows);
     }
 
+    public static function all_game_dates() {
+      $sql = "SELECT gamedate
+              FROM game
+              ORDER BY gamedate DESC";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+
+      $gamedates = array();
+
+      foreach ($rows as $row) {;
+        $gamedates[] = $row['gamedate'];
+      }
+
+      return $gamedates;
+    }
+
     public static function all($options) {
-      // if (isset($options['page']) && isset($options['page_size'])) {
-      //   $page_size = $options['page_size'];
-      //   $page = $options['page'];
-      // } else {
-      //   $page_size = 10;
-      //   $page = 1;
-      // }
+      if (!$options) {
+        // Fetch all games
+        $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+                game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
+                game.snow, game.doubles
+                FROM game
+                GROUP BY game.gameid
+                ORDER BY game.gamedate DESC";
+
+        $query = DB::connection()->prepare($sql);
+        $query->execute();
+        $rows = $query->fetchAll();
+
+        return self::get_games_from_rows($rows);
+      }
+
       $page_size = $options['page_size'];
       $page = $options['page'];
       $year = $options['year'];

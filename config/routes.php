@@ -126,6 +126,12 @@
     Redirect::to('/', array('message' => 'Sivujen välimuisti poistettu.'));
   });
 
+  // Kuvaajat
+
+  $routes->get('/graphs', 'check_logged_in', function(){
+    GraphController::index();
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen

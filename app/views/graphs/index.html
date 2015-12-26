@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% set current_page = 'graphs' %}
+
+{% block content %}
+
+  <h2>Pelien määrä</h2>
+
+  <div id="chartdiv" style="width: 700px; height: 450px;"></div>
+
+  <!-- Graph data -->
+  {% for gamedate in gamedates %}
+    <span class="gamedateforjs">{{gamedate}}</span>
+  {% endfor %}
+
+{% endblock %}

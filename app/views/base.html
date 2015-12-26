@@ -69,6 +69,12 @@
             {% else %}
               <li><a href="{{base_path}}/course">Radat</a></li>
             {% endif %}
+
+            {% if current_page == 'graphs' %}
+              <li class="active"><a href="{{base_path}}/graphs">Kuvaajat</a></li>
+            {% else %}
+              <li><a href="{{base_path}}/graphs">Kuvaajat</a></li>
+            {% endif %}
           </ul>
 
           {% if user_logged_in %}
@@ -118,11 +124,17 @@
       <!-- jQuery -->
       <script src="{{base_path}}/vendor/jquery.min.js"></script>
 
+      <!-- amcharts -->
+      <script src="{{base_path}}/vendor/amcharts/amcharts.js"></script>
+      <script src="{{base_path}}/vendor/amcharts/serial.js"></script>
+      <script src="{{base_path}}/vendor/amcharts/themes/light.js"></script>
+
       <!-- Bootstrap (skriptitiedosto) -->
       <script src="{{base_path}}/vendor/bootstrap/js/bootstrap.min.js"></script>
 
       <!-- Oma skriptitiedostomme -->
       <script src="{{base_path}}/assets/js/site.js"></script>
+      <script src="{{base_path}}/assets/js/graphs.js"></script>
     {% endblock %}
   </div>
   </body>
