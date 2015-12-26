@@ -4,6 +4,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Misc
 
+* graphs [amcharts](https://www.amcharts.com/demos/date-based-data/)
 * remember me -functionality (http://fishbowl.pastiche.org/2004/01/19/persistent%5Flogin%5Fcookie%5Fbest%5Fpractice/)
 * set collation (order by name not working in page player)
 * site icon
