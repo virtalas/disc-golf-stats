@@ -1,4 +1,9 @@
 $(document).ready(function(){
+
+  /*
+  *  Number of games player per month
+  */
+
   var gamedates = [];
 
   $(".gamedateforjs").each(function(index) {
@@ -15,11 +20,12 @@ $(document).ready(function(){
 
   var gameCountPerMonth = AmCharts.makeChart( "gamecountpermonth", {
     "type": "serial",
+    "language": "fi",
     "theme": "light",
     "dataDateFormat": "YYYY-MM",
     "dataProvider": gamedates,
     "valueAxes": [ {
-      "gridColor": "#FFFFFF",
+      "gridColor": "grey",
       "gridAlpha": 0.2,
       "dashLength": 0
     } ],
@@ -61,7 +67,7 @@ $(document).ready(function(){
       "tickPosition": "start",
       "tickLength": 20,
       "minPeriod": "MM",
-      "minHorizontalGap": 27
+      "minHorizontalGap": 35
     },
     "export": {
       "enabled": true
@@ -102,7 +108,9 @@ $(document).ready(function(){
   //         "title": "red line",
   //         "useLineColorForBulletBorder": true,
   //         "valueField": "value",
-  //         "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+  //         "balloonText": "<span style='font-size:18px;'>[[value]]</span>",
+  //         "type": "smoothedLine",
+  //         "fillAlphas": 0.2,
   //     }],
   //     "chartScrollbar": {
   //         "graph": "g1",
@@ -149,8 +157,80 @@ $(document).ready(function(){
   zoomChart();
 
   function zoomChart() {
-    // Show at least 12 months
-    // var length = gameCountPerMonth.dataProvider.length;
-    // gameCountPerMonth.zoomToIndexes(length - 12, length - 1);
+    // Show at least 15 months (that have games)
+    var length = gameCountPerMonth.dataProvider.length;
+    gameCountPerMonth.zoomToIndexes(length - 15, length - 1);
+  }
+
+  /*
+  *  How many players per round
+  */
+
+  var playerCount = [];
+
+  $(".playercountdistforjs").each(function(index) {
+    var numberOfPlayers = $(this).text().split(",")[0];
+    var occurance = $(this).text().split(",")[1];
+    var title = "";
+
+    if (numberOfPlayers == 1) {
+      title = "1 pelaaja";
+    } else {
+      title = numberOfPlayers + " pelaajaa";
+    }
+
+    playerCount.push({
+        "players": title,
+        "occurance": occurance
+    });
+  });
+
+  $(".playercountdistforjs").remove();
+
+  var playerCountChart = AmCharts.makeChart("playercount", {
+  	"type": "pie",
+    "showBalloon": false,
+  	"balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+  	"labelRadius": 10,
+  	"hoverAlpha": 0.47,
+  	"labelTickAlpha": 0,
+  	"marginLeft": -30,
+  	"marginRight": -30,
+  	"outlineThickness": 0,
+  	"pullOutOnlyOne": true,
+  	"startEffect": "easeOutSine",
+  	"titleField": "players",
+  	"valueField": "occurance",
+  	"fontFamily": "Helvetica",
+  	"fontSize": 12,
+  	"handDrawScatter": 0,
+  	"handDrawThickness": 0,
+  	"theme": "light",
+  	"allLabels": [],
+  	"balloon": {},
+  	"legend": {
+  		"enabled": true,
+  		"bottom": 0,
+  		"position": "right",
+  		"rollOverGraphAlpha": 0
+  	},
+  	"titles": [],
+  	"dataProvider": playerCount
+  });
+
+  hideGraphsBalloon(playerCountChart);
+  playerCountChart.addListener("init", handleInit);
+
+  playerCountChart.addListener("rollOverSlice", function(e) {
+    handleRollOver(e);
+  });
+
+  function handleInit(){
+    playerCountChart.legend.addListener("rollOverItem", handleRollOver);
+  }
+
+  function handleRollOver(e){
+    var wedge = e.dataItem.wedge.node;
+    wedge.parentNode.appendChild(wedge);
   }
 });

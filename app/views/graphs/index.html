@@ -5,11 +5,20 @@
 {% block content %}
 
   <h2>Pelien määrä kuukausittain</h2>
-  <div id="gamecountpermonth" style="width: 700px; height: 450px;"></div>
+  <div id="gamecountpermonth" style="width: 800px; height: 450px; margin-left: -50px;"></div>
+
+  <br><br>
+
+  <h2>Pelaajien määrä kierroksella</h2>
+  <div id="playercount" style="width: 700px; height: 450px;"></div>
 
   <!-- Graph data -->
   {% for gamedated,occurance in gamedates %}
     <span class="gamedateforjs">{{gamedated}},{{occurance}}</span>
+  {% endfor %}
+
+  {% for playercount,occurance in player_count_dist %}
+    <span class="playercountdistforjs">{{playercount}},{{occurance}}</span>
   {% endfor %}
 
 {% endblock %}
@@ -17,7 +26,9 @@
 {% block scripts %}
   <script src="{{base_path}}/vendor/amcharts/amcharts.js"></script>
   <script src="{{base_path}}/vendor/amcharts/serial.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/pie.js"></script>
   <script src="{{base_path}}/vendor/amcharts/themes/light.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/lang/fi.js"></script>
 
   <script src="{{base_path}}/assets/js/graphs.js"></script>
 {% endblock %}

@@ -203,25 +203,6 @@
       return self::get_games_from_rows($rows);
     }
 
-    public static function all_game_dates() {
-      $sql = "SELECT to_char(gamedate, 'YYYY-MM') as gamedated, COUNT(to_char(gamedate, 'YYYY-MM')) as occurance
-              FROM game
-              GROUP BY gamedated
-              ORDER BY gamedated ASC";
-
-      $query = DB::connection()->prepare($sql);
-      $query->execute();
-      $rows = $query->fetchAll();
-
-      $gamedates = array();
-
-      foreach ($rows as $row) {;
-        $gamedates[$row['gamedated']] = $row['occurance'];
-      }
-
-      return $gamedates;
-    }
-
     public static function all($options) {
       if (!$options) {
         // Fetch all games
@@ -526,6 +507,55 @@
       $row = $query->fetch();
 
       return $row['gamedate'];
+    }
+
+    /*
+    *  Graph functions
+    */
+
+    public static function player_count_distribution() {
+      $sql = "SELECT gameid, COUNT(gameid) as player_count
+              FROM
+              (SELECT gameid, playerid
+              FROM score
+              GROUP BY gameid, playerid) t1
+              GROUP BY gameid";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+
+      $dist = array();
+
+      // initialize array
+      for ($i = 1; $i <= count(Player::all_firstnames()); $i++) {
+        $dist[$i] = 0;
+      }
+
+      foreach ($rows as $row) {
+        $dist[$row['player_count']]++;
+      }
+
+      return $dist;
+    }
+
+    public static function all_game_dates() {
+      $sql = "SELECT to_char(gamedate, 'YYYY-MM') as gamedated, COUNT(to_char(gamedate, 'YYYY-MM')) as occurance
+              FROM game
+              GROUP BY gamedated
+              ORDER BY gamedated ASC";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+
+      $gamedates = array();
+
+      foreach ($rows as $row) {;
+        $gamedates[$row['gamedated']] = $row['occurance'];
+      }
+
+      return $gamedates;
     }
 
     // Get from row(s)
