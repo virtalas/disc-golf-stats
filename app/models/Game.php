@@ -204,9 +204,10 @@
     }
 
     public static function all_game_dates() {
-      $sql = "SELECT gamedate
+      $sql = "SELECT to_char(gamedate, 'YYYY-MM') as gamedated, COUNT(to_char(gamedate, 'YYYY-MM')) as occurance
               FROM game
-              ORDER BY gamedate DESC";
+              GROUP BY gamedated
+              ORDER BY gamedated ASC";
 
       $query = DB::connection()->prepare($sql);
       $query->execute();
@@ -215,7 +216,7 @@
       $gamedates = array();
 
       foreach ($rows as $row) {;
-        $gamedates[] = $row['gamedate'];
+        $gamedates[$row['gamedated']] = $row['occurance'];
       }
 
       return $gamedates;

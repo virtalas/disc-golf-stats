@@ -4,13 +4,20 @@
 
 {% block content %}
 
-  <h2>Pelien määrä</h2>
-
-  <div id="chartdiv" style="width: 700px; height: 450px;"></div>
+  <h2>Pelien määrä kuukausittain</h2>
+  <div id="gamecountpermonth" style="width: 700px; height: 450px;"></div>
 
   <!-- Graph data -->
-  {% for gamedate in gamedates %}
-    <span class="gamedateforjs">{{gamedate}}</span>
+  {% for gamedated,occurance in gamedates %}
+    <span class="gamedateforjs">{{gamedated}},{{occurance}}</span>
   {% endfor %}
 
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{base_path}}/vendor/amcharts/amcharts.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/serial.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/themes/light.js"></script>
+
+  <script src="{{base_path}}/assets/js/graphs.js"></script>
 {% endblock %}

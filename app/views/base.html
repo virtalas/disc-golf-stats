@@ -124,18 +124,15 @@
       <!-- jQuery -->
       <script src="{{base_path}}/vendor/jquery.min.js"></script>
 
-      <!-- amcharts -->
-      <script src="{{base_path}}/vendor/amcharts/amcharts.js"></script>
-      <script src="{{base_path}}/vendor/amcharts/serial.js"></script>
-      <script src="{{base_path}}/vendor/amcharts/themes/light.js"></script>
-
       <!-- Bootstrap (skriptitiedosto) -->
       <script src="{{base_path}}/vendor/bootstrap/js/bootstrap.min.js"></script>
 
       <!-- Oma skriptitiedostomme -->
       <script src="{{base_path}}/assets/js/site.js"></script>
-      <script src="{{base_path}}/assets/js/graphs.js"></script>
     {% endblock %}
   </div>
+
+  {% block scripts %}{% endblock %}
+
   </body>
 </html>
