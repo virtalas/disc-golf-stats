@@ -9,6 +9,12 @@ Features/bugs/etc planned for disc-golf-stats
 * site icon
 * Date-picker http://eonasdan.github.io/bootstrap-datetimepicker/
 
+### Graphs
+
+* omien rataennätysten kehitys (nappula mistä voi vaihtaa kumpi on esillä)
+* radan väylien birdiet per väylä (pylväsdiagrammi)
+* jonkinlainen diagrammi pelien lopetusajasta
+
 ### Tilastot-sivu
 
 * prosentit kuinka monta pelaajaa per kierros
