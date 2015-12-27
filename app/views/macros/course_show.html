@@ -1,7 +1,7 @@
 
 <!-- When updating this macro's parameters, update also macro calls in course/index.html and course/show.html -->
 
-{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores) %}
+{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, chrono_high_scores) %}
 
   <table style="width:300px">
     <tr>
@@ -78,5 +78,16 @@
   {% else %}
     <p>Ei pelejä</p>
   {% endif %}
+
+  <br><br>
+
+  <h3>Rataennätysten kehitys</h3>
+
+  <div id="coursehighscores" style="width: 700px; height: 450px;"></div>
+
+  <!-- Graph data -->
+  {% for gamedate,course_high_score in chrono_high_scores %}
+    <span class="highscoresforjs">{{gamedate}},{{course_high_score}}</span>
+  {% endfor %}
 
 {% endmacro %}

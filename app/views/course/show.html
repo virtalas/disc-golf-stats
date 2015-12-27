@@ -22,6 +22,15 @@
     </p>
   {% endif %}
 
-  {{course_show.course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores)}}
+  {{course_show.course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, chrono_high_scores)}}
 
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{base_path}}/vendor/amcharts/amcharts.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/serial.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/themes/light.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/lang/fi.js"></script>
+
+  <script src="{{base_path}}/assets/js/course_graphs.js"></script>
 {% endblock %}

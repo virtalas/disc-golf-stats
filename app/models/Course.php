@@ -300,6 +300,39 @@
       return self::get_courses_from_rows($rows);
     }
 
+    /*
+    *  Graph functions
+    */
+
+    public static function chronological_high_scores($courseid) {
+      $sql = "SELECT gameid, gamedate, MIN(total_score) as total_score FROM
+                (SELECT to_char(game.gamedate, 'YYYY-MM-DD') as gamedate, score.gameid, score.playerid,
+                SUM(score.stroke + score.ob) as total_score
+                FROM score
+                JOIN game ON game.gameid = score.gameid
+                JOIN course ON course.courseid = game.courseid
+                WHERE score.legal = true AND course.courseid = :courseid
+                GROUP BY score.gameid, score.playerid, game.gamedate) t1
+              GROUP BY gameid, gamedate
+              ORDER BY gamedate ASC";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+      $rows = $query->fetchAll();
+
+      $high_scores = array();
+      $current_high_score = null;
+
+      foreach ($rows as $row) {
+        if ($current_high_score == null || $row['total_score'] <= $current_high_score) {
+          $high_scores[$row['gamedate']] = $row['total_score'];
+          $current_high_score = $row['total_score'];
+        }
+      }
+
+      return $high_scores;
+    }
+
     // Get from row(s)
 
     public static function get_course_from_row($row) {
