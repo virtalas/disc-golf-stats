@@ -62,6 +62,8 @@
     }
 
     public static function info() {
-      View::make('player/info.html');
+      View::make('player/info.html', array(
+        'cached_files' => Cache::cached_files()
+      ));
     }
   }

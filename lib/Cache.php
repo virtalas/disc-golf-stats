@@ -26,6 +26,10 @@
       array_map('unlink', glob("cache/*.html"));
     }
 
+    public static function cached_files() {
+      return array_diff(scandir("cache"), array('..', '.', '.gitignore', '.DS_Store'));;
+    }
+
     public static function strip_tags_content($htmlString, $idToRemove) {
       $dom = new DOMDocument;
       libxml_use_internal_errors(true);
