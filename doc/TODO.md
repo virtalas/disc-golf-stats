@@ -4,7 +4,9 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Misc
 
+* search games by conditions
 * remember me -functionality (http://fishbowl.pastiche.org/2004/01/19/persistent%5Flogin%5Fcookie%5Fbest%5Fpractice/)
+* reset password -functionality
 * set collation (order by name not working in page player)
 * site icon
 * Date-picker http://eonasdan.github.io/bootstrap-datetimepicker/
