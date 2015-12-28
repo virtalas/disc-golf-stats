@@ -60,7 +60,12 @@
     }
 
     public static function all() {
-      $sql = "SELECT * FROM course ORDER BY courseid";
+      // Returns courses ordered by game count first, courseid second
+      $sql = "SELECT course.courseid, course.name, course.city, course.map, COUNT(game.gameid) AS game_count
+              FROM course
+              LEFT JOIN game ON game.courseid = course.courseid
+              GROUP BY course.courseid, course.name, course.city, course.map
+              ORDER BY game_count DESC, course.courseid ASC";
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
