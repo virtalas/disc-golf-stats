@@ -75,83 +75,6 @@ $(document).ready(function(){
 
   });
 
-  // var chart1 = AmCharts.makeChart("chartdiv1", {
-  //     "type": "serial",
-  //     "theme": "light",
-  //     "marginRight": 40,
-  //     "marginLeft": 40,
-  //     "autoMarginOffset": 20,
-  //     "dataDateFormat": "YYYY-MM",
-  //     "valueAxes": [{
-  //         "id": "v1",
-  //         "axisAlpha": 0,
-  //         "position": "left",
-  //         "ignoreAxisWidth":true
-  //     }],
-  //     "balloon": {
-  //         "borderThickness": 1,
-  //         "shadowAlpha": 0
-  //     },
-  //     "graphs": [{
-  //         "id": "g1",
-  //         "balloon":{
-  //           "drop":true,
-  //           "adjustBorderColor":false,
-  //           "color":"#ffffff"
-  //         },
-  //         "bullet": "round",
-  //         "bulletBorderAlpha": 1,
-  //         "bulletColor": "#FFFFFF",
-  //         "bulletSize": 5,
-  //         "hideBulletsCount": 50,
-  //         "lineThickness": 2,
-  //         "title": "red line",
-  //         "useLineColorForBulletBorder": true,
-  //         "valueField": "value",
-  //         "balloonText": "<span style='font-size:18px;'>[[value]]</span>",
-  //         "type": "smoothedLine",
-  //         "fillAlphas": 0.2,
-  //     }],
-  //     "chartScrollbar": {
-  //         "graph": "g1",
-  //         "oppositeAxis":false,
-  //         "offset":30,
-  //         "scrollbarHeight": 80,
-  //         "backgroundAlpha": 0,
-  //         "selectedBackgroundAlpha": 0.1,
-  //         "selectedBackgroundColor": "#888888",
-  //         "graphFillAlpha": 0,
-  //         "graphLineAlpha": 0.5,
-  //         "selectedGraphFillAlpha": 0,
-  //         "selectedGraphLineAlpha": 1,
-  //         "autoGridCount":true,
-  //         "color":"#AAAAAA"
-  //     },
-  //     "chartCursor": {
-  //         "pan": true,
-  //         "valueLineEnabled": true,
-  //         "valueLineBalloonEnabled": true,
-  //         "cursorAlpha":1,
-  //         "cursorColor":"#258cbb",
-  //         "limitToGraph":"g1",
-  //         "valueLineAlpha":0.2,
-  //         "categoryBalloonDateFormat": "MMM, YYYY"
-  //     },
-  //     "categoryField": "month",
-  //     "categoryAxis": {
-  //         "parseDates": true,
-  //         "dashLength": 1,
-  //         "minorGridEnabled": true,
-  //         "minPeriod": "MM",
-  //         "minHorizontalGap": 27
-  //     },
-  //     "export": {
-  //         "enabled": true
-  //     },
-  //     "dataProvider": gamedates
-  // });
-
-  // chart1.addListener("rendered", zoomChart);
   gameCountPerMonth.addListener("rendered", zoomChart);
 
   zoomChart();
@@ -191,11 +114,11 @@ $(document).ready(function(){
   	"type": "pie",
     "showBalloon": false,
   	"balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-  	"labelRadius": 10,
+  	"labelRadius": 20,
   	"hoverAlpha": 0.47,
-  	"labelTickAlpha": 0,
-  	"marginLeft": -30,
-  	"marginRight": -30,
+  	"labelTickAlpha": 0.2,
+  	"marginLeft": -50,
+  	"marginRight": 0,
   	"outlineThickness": 0,
   	"pullOutOnlyOne": true,
   	"startEffect": "easeOutSine",

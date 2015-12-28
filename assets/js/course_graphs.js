@@ -73,8 +73,8 @@ $(document).ready(function(){
       },
       "chartCursor": {
           "pan": true,
-          "valueLineEnabled": true,
-          "valueLineBalloonEnabled": true,
+          "valueLineEnabled": false,
+          "valueLineBalloonEnabled": false,
           "cursorAlpha":1,
           "cursorColor":"#258cbb",
           "limitToGraph":"g1",
