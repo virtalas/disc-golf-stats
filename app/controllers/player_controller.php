@@ -8,7 +8,7 @@
       // Fetch page from cache
       $cached_page = Cache::getPage($stripped_url);
 
-      if ($cached_page != null) {
+      if ($cached_page != null && Cache::on()) {
         // Use cached page (which is up to date because outdated pages are deleted)
         echo $cached_page;
 

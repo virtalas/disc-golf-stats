@@ -102,7 +102,13 @@
           <td>{{high_score[2]}}</td>
           <td align="right">{{high_score[3]}}</td>
           <td style="padding-left:30px">
-            <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+            {% if high_score[0].gameid %}
+              <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">
+                Katso tuloskortti
+              </a>
+            {% else %}
+              Ei laillisia pelejä
+            {% endif %}
           </td>
         </tr>
       {% endfor %}
