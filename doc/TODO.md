@@ -10,6 +10,7 @@ Features/bugs/etc planned for disc-golf-stats
 * set collation (order by name not working in page player)
 * site icon
 * Date-picker http://eonasdan.github.io/bootstrap-datetimepicker/
+* ennätysten lataus nopeammaksi (etu/pelaajat -sivu) 
 
 ### Graphs
 
