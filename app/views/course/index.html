@@ -28,12 +28,6 @@
 
   {% import "macros/course_show.html" as course_show %}
 
-  {% if message is not null %}
-    <div class="alert alert-success">
-      {{message}}
-    </div>
-  {% endif %}
-
   {% if courses %}
     <h2>{{course.name}}, {{course.city}}</h2>
     {{course_show.course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, chrono_high_scores, score_distribution)}}
