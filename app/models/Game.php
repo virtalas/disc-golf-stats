@@ -558,6 +558,20 @@
       return $gamedates;
     }
 
+    public static function game_hours_and_weekdays() {
+      $sql = "SELECT date_part('dow', gamedate) as day,
+              date_part('hour', date_trunc('hour', gamedate + interval '30 minute')) as hour
+              FROM game";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+
+      $gamedates = array();
+
+      return $rows;
+    }
+
     // Get from row(s)
 
     private static function get_game_from_row($row) {

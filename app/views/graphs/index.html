@@ -12,6 +12,10 @@
   <h2>Pelaajien määrä kierroksella</h2>
   <div id="playercount" style="width: 700px; height: 450px;"></div>
 
+  <!-- <br><br>
+  <h2>Pelien lopetusaika ja viikonpäivä</h2>
+  <div id="gamehours" style="width: 700px; height: 450px;"></div> -->
+
   <!-- Graph data -->
   {% for gamedated,occurance in gamedates %}
     <span class="gamedateforjs">{{gamedated}},{{occurance}}</span>
@@ -21,12 +25,18 @@
     <span class="playercountdistforjs">{{playercount}},{{occurance}}</span>
   {% endfor %}
 
+  {% for weekday_hour in game_hours %}
+    <span class="gamehoursforjs">{{weekday_hour[0]}},{{weekday_hour[1]}}</span>
+  {% endfor %}
+
 {% endblock %}
 
 {% block scripts %}
   <script src="{{base_path}}/vendor/amcharts/amcharts.js"></script>
   <script src="{{base_path}}/vendor/amcharts/serial.js"></script>
   <script src="{{base_path}}/vendor/amcharts/pie.js"></script>
+  <script src="{{base_path}}/vendor/amcharts/xy.js"></script>
+
   <script src="{{base_path}}/vendor/amcharts/themes/light.js"></script>
   <script src="{{base_path}}/vendor/amcharts/lang/fi.js"></script>
 

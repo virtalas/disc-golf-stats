@@ -338,6 +338,35 @@
       return $high_scores;
     }
 
+    public static function score_distribution($courseid, $n) {
+      $sql = "SELECT hole_num,
+              COUNT(hole_in_one) AS hole_in_one,
+              COUNT(birdie) AS birdie,
+              COUNT(par) AS par,
+              COUNT(bogey) AS bogey,
+              COUNT(over_bogey) AS over_bogey
+              FROM (
+                SELECT hole.hole_num,
+                CASE WHEN score.stroke = 1 THEN 1 END AS hole_in_one,
+                CASE WHEN hole.par - score.stroke - score.ob = 1 THEN 1 END AS birdie,
+                CASE WHEN hole.par - score.stroke - score.ob = 0 THEN 1 END AS par,
+                CASE WHEN hole.par - score.stroke - score.ob = -1 THEN 1 END AS bogey,
+                CASE WHEN hole.par - score.stroke - score.ob < -1 THEN 1 END AS over_bogey
+                FROM score
+                JOIN hole ON hole.holeid = score.holeid
+                JOIN course ON course.courseid = hole.courseid
+                WHERE course.courseid = :courseid AND score.legal = true
+              ) t1
+              GROUP BY hole_num
+              ORDER BY hole_num";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+      $rows = $query->fetchAll();
+
+      return $rows;
+    }
+
     // Get from row(s)
 
     public static function get_course_from_row($row) {

@@ -27,7 +27,8 @@ $(document).ready(function(){
     "valueAxes": [ {
       "gridColor": "grey",
       "gridAlpha": 0.2,
-      "dashLength": 0
+      "dashLength": 0,
+      "title": "Pelit"
     } ],
     "gridAboveGraphs": true,
     "startDuration": 1,
@@ -57,7 +58,7 @@ $(document).ready(function(){
       "categoryBalloonEnabled": false,
       "cursorAlpha": 0,
       "zoomable": false,
-      "categoryBalloonDateFormat": "MMM, YYYY"
+      "categoryBalloonDateFormat": "MMMM, YYYY"
     },
     "categoryField": "month",
     "categoryAxis": {
@@ -130,7 +131,6 @@ $(document).ready(function(){
   	"handDrawThickness": 0,
   	"theme": "light",
   	"allLabels": [],
-  	"balloon": {},
   	"legend": {
   		"enabled": true,
   		"bottom": 0,
@@ -141,7 +141,7 @@ $(document).ready(function(){
   	"dataProvider": playerCount
   });
 
-  hideGraphsBalloon(playerCountChart);
+  // hideGraphsBalloon(playerCountChart);
   playerCountChart.addListener("init", handleInit);
 
   playerCountChart.addListener("rollOverSlice", function(e) {
@@ -156,4 +156,58 @@ $(document).ready(function(){
     var wedge = e.dataItem.wedge.node;
     wedge.parentNode.appendChild(wedge);
   }
+
+  /*
+  *  Game hours and days of week
+  *  !! Not implemented yet !!
+  */
+
+  var gameHours = [];
+
+  $(".gamehoursforjs").each(function(index) {
+    var day = $(this).text().split(",")[0];
+    var hour = $(this).text().split(",")[1];
+    var found = false;
+
+    switch (day) {
+      case "0":
+          day = "Sunnuntai";
+          break;
+      case "1":
+          day = "Maanantai";
+          break;
+      case "2":
+          day = "Tiistai";
+          break;
+      case "3":
+          day = "Keskiviikko";
+          break;
+      case "4":
+          day = "Torstai";
+          break;
+      case "5":
+          day = "Perjantai";
+          break;
+      case "6":
+          day = "Lauantai";
+          break;
+    }
+
+    for (var i = 0; i < gameHours.length; i++) {
+      if (gameHours[i].day == day && gameHours[i].hour == hour) {
+        gameHours[i].value++;
+        found = true;
+      }
+    }
+
+    if (!found) {
+      gameHours.push({
+          "day": day,
+          "hour": hour,
+          "value": 1
+      });
+    }
+  });
+
+  $(".gamehoursforjs").remove();
 });

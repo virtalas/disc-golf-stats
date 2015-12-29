@@ -26,7 +26,10 @@
         $avg_score = Course::average_scoring($courseid);
         $par = Course::par($courseid);
         $high_scores = Course::high_scores($courseid);
+
+        // Graph data
         $chrono_high_scores = Course::chronological_high_scores($courseid);
+        $score_distribution = Course::score_distribution($courseid, 1);
 
         View::make('course/index.html', array(
           'course' => $course,
@@ -37,7 +40,8 @@
           'avg_score' => $avg_score,
           'par' => $par,
           'high_scores' => $high_scores,
-          'chrono_high_scores' => $chrono_high_scores
+          'chrono_high_scores' => $chrono_high_scores,
+          'score_distribution' => $score_distribution
         ));
       } else {
         View::make('course/index.html');

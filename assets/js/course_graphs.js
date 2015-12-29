@@ -22,15 +22,16 @@ $(document).ready(function(){
       "type": "serial",
       "theme": "light",
       "language": "fi",
-      "marginRight": 40,
-      "marginLeft": 40,
+      "marginRight": 30,
+      "marginLeft": 50,
       "autoMarginOffset": 20,
       "dataDateFormat": "YYYY-MM-DD",
       "valueAxes": [{
           "id": "v1",
           "axisAlpha": 0,
           "position": "left",
-          "ignoreAxisWidth":true
+          "ignoreAxisWidth": true,
+          "title": "Tulos"
       }],
       "balloon": {
           "borderThickness": 1,
@@ -103,5 +104,113 @@ $(document).ready(function(){
     var length = courseHighScoresChart.dataProvider.length;
     courseHighScoresChart.zoomToIndexes(length - 15, length - 1);
   }
+
+  /*
+  *  Birdie occurance per hole
+  */
+
+  var scoreDistribution = [];
+
+  $(".scoredistributionforjs").each(function(index) {
+    var holeNum = $(this).text().split(",")[0];
+    var holeInOnes = $(this).text().split(",")[1];
+    var birdies = $(this).text().split(",")[2];
+    var pars = $(this).text().split(",")[3];
+    var bogies = $(this).text().split(",")[4];
+    var overBogies = $(this).text().split(",")[5];
+
+    scoreDistribution.push({
+        "hole": holeNum,
+        "holeInOnes": holeInOnes,
+        "birdies": birdies,
+        "pars": pars,
+        "bogies": bogies,
+        "overBogies": overBogies
+    });
+  });
+
+  $(".scoredistributionforjs").remove();
+
+  var chart = AmCharts.makeChart("scoredistribution", {
+    "type": "serial",
+  	"theme": "light",
+    "legend": {
+      "horizontalGap": 10,
+      "maxColumns": 1,
+      "position": "right",
+  		"useGraphSettings": true,
+  		"markerSize": 10
+    },
+    "dataProvider": scoreDistribution,
+    "valueAxes": [{
+        "stackType": "regular",
+        "axisAlpha": 0.3,
+        "gridAlpha": 0,
+        "title": "Tulos"
+    }],
+    "graphs": [{
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0,
+        "title": "Hole in one",
+        "type": "column",
+	      "color": "#000000",
+        "fillColors": "red",
+        "valueField": "holeInOnes"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0,
+        "title": "Birdie",
+        "type": "column",
+	      "color": "#000000",
+        "fillColors": "#00FF00",
+        "valueField": "birdies"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0,
+        "title": "Par",
+        "type": "column",
+	      "color": "#000000",
+        "fillColors": "#A7C942",
+        "valueField": "pars"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0,
+        "title": "Bogey",
+        "type": "column",
+	      "color": "#000000",
+        "fillColors": "orange",
+        "valueField": "bogies"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0,
+        "title": "Over bogey",
+        "type": "column",
+	      "color": "#000000",
+        "fillColors": "#8E668E",
+        "valueField": "overBogies"
+    }],
+    "categoryField": "hole",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "gridAlpha": 0,
+        "position": "left",
+        "title": "Väylä",
+        "minHorizontalGap": 15
+    },
+    "export": {
+    	"enabled": true
+     }
+  });
 
 });
