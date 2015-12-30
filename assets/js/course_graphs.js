@@ -107,7 +107,7 @@ $(document).ready(function(){
           "parseDates": true,
           "dashLength": 1,
           "minorGridEnabled": true,
-          "minHorizontalGap": 27
+          "minHorizontalGap": 50
       },
       "export": {
           "enabled": true
@@ -212,7 +212,7 @@ $(document).ready(function(){
           "parseDates": true,
           "dashLength": 1,
           "minorGridEnabled": true,
-          "minHorizontalGap": 27
+          "minHorizontalGap": 50
       },
       "export": {
           "enabled": true
