@@ -67,9 +67,15 @@ chuckles.data = (function (displayHook) {
         return joke;
     }
 
+    function setJoke(newJoke) {
+      joke = newJoke;
+      displayHook();
+    }
+
     return {
         load: load,
-        list: list
+        list: list,
+        setJoke: setJoke
     };
 
 })(chuckles.gui.show);
@@ -86,7 +92,17 @@ function init() {
     var name = document.getElementById("firstname").innerHTML;
 
     var url = "http://api.icndb.com/jokes/" + day + "?firstName=" + name + "&lastName=";
-    console.log("Fetching joke: " + url);
 
-    chuckles.data.load(url);
+    if (now.getMonth() == 11 && now.getDate() == 24) {
+      console.log("Merry Christmas!");
+      chuckles.data.setJoke("Hyvää joulua, " + name + "!");
+
+    } else if (now.getMonth() == 11 && now.getDate() == 31) {
+      console.log("Happy New Year!");
+      chuckles.data.setJoke("Hyvää uutta vuotta, " + name + "!");
+
+    } else {
+      console.log("Fetching joke: " + url);
+      chuckles.data.load(url);
+    }
 }
