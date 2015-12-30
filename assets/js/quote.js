@@ -47,10 +47,14 @@ chuckles.data = (function (displayHook) {
                 return false;
             }
 
-            var res = JSON.parse(req.responseText);
-            joke = res.value.joke;
-            // Correct quotes
-            joke = joke.replace(/&quot;/g,'"');
+            try {
+              var res = JSON.parse(req.responseText);
+              joke = res.value.joke;
+              // Correct quotes
+              joke = joke.replace(/&quot;/g,'"');
+            } catch (err) {
+              joke = "No quote today!";
+            }
 
             displayHook();
         }
