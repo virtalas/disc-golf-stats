@@ -1,7 +1,7 @@
 
 <!-- When updating this macro's parameters, update also macro calls in course/index.html and course/show.html -->
 
-{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, chrono_high_scores, score_distribution) %}
+{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, chrono_high_scores, chrono_high_scores_player, score_distribution) %}
 
   <table style="width:300px">
     <tr>
@@ -80,16 +80,28 @@
   {% endif %}
 
   <br><br>
+
   <h3>Rataennätysten kehitys</h3>
+
+  <a class="btn btn-primary btn-xs disabled_link" id="omatennatykset">Omat ennätykset</a>
+  <a class="btn btn-default btn-xs" id="rataennatykset">Rataennätykset</a>
+
   <div id="coursehighscores" style="width: 700px; height: 450px;"></div>
+  <div id="courseplayerhighscores" style="width: 700px; height: 450px;"></div>
 
   <br><br>
+
   <h3>Tulosten jakautuminen väylillä</h3>
+
   <div id="scoredistribution" style="width: 790px; height: 450px;"></div>
 
   <!-- Graph data -->
   {% for gamedate,course_high_score in chrono_high_scores %}
     <span class="highscoresforjs">{{gamedate}},{{course_high_score}}</span>
+  {% endfor %}
+
+  {% for gamedate,course_high_score in chrono_high_scores_player %}
+    <span class="playerhighscoresforjs">{{gamedate}},{{course_high_score}}</span>
   {% endfor %}
 
   {% for row in score_distribution %}

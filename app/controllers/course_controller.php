@@ -28,7 +28,8 @@
         $high_scores = Course::high_scores($courseid);
 
         // Graph data
-        $chrono_high_scores = Course::chronological_high_scores($courseid);
+        $chrono_high_scores = Course::chronological_high_scores($courseid, 0);
+        $chrono_high_scores_player = Course::chronological_high_scores($courseid, $player->playerid);
         $score_distribution = Course::score_distribution($courseid, 1);
 
         View::make('course/index.html', array(
@@ -41,6 +42,7 @@
           'par' => $par,
           'high_scores' => $high_scores,
           'chrono_high_scores' => $chrono_high_scores,
+          'chrono_high_scores_player' => $chrono_high_scores_player,
           'score_distribution' => $score_distribution
         ));
       } else {

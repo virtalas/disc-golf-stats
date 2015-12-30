@@ -309,21 +309,41 @@
     *  Graph functions
     */
 
-    public static function chronological_high_scores($courseid) {
-      $sql = "SELECT gameid, gamedate, MIN(total_score) as total_score FROM
-                (SELECT to_char(game.gamedate, 'YYYY-MM-DD') as gamedate, score.gameid, score.playerid,
-                SUM(score.stroke + score.ob) as total_score
-                FROM score
-                JOIN game ON game.gameid = score.gameid
-                JOIN course ON course.courseid = game.courseid
-                WHERE score.legal = true AND course.courseid = :courseid
-                GROUP BY score.gameid, score.playerid, game.gamedate) t1
-              GROUP BY gameid, gamedate
-              ORDER BY gamedate ASC";
+    public static function chronological_high_scores($courseid, $playerid) {
+      if ($playerid == 0) {
+        // High scores for ALL players
+        $sql = "SELECT gameid, gamedate, MIN(total_score) as total_score FROM
+                  (SELECT to_char(game.gamedate, 'YYYY-MM-DD') as gamedate, score.gameid, score.playerid,
+                  SUM(score.stroke + score.ob) as total_score
+                  FROM score
+                  JOIN game ON game.gameid = score.gameid
+                  JOIN course ON course.courseid = game.courseid
+                  WHERE score.legal = true AND course.courseid = :courseid
+                  GROUP BY score.gameid, score.playerid, game.gamedate) t1
+                GROUP BY gameid, gamedate
+                ORDER BY gamedate ASC";
 
-      $query = DB::connection()->prepare($sql);
-      $query->execute(array('courseid' => $courseid));
-      $rows = $query->fetchAll();
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('courseid' => $courseid));
+        $rows = $query->fetchAll();
+
+      } else {
+        // High scores for specific player
+        $sql = "SELECT gameid, gamedate, MIN(total_score) as total_score FROM
+                  (SELECT to_char(game.gamedate, 'YYYY-MM-DD') as gamedate, score.gameid, score.playerid,
+                  SUM(score.stroke + score.ob) as total_score
+                  FROM score
+                  JOIN game ON game.gameid = score.gameid
+                  JOIN course ON course.courseid = game.courseid
+                  WHERE score.legal = true AND course.courseid = :courseid AND score.playerid = :playerid
+                  GROUP BY score.gameid, score.playerid, game.gamedate) t1
+                GROUP BY gameid, gamedate
+                ORDER BY gamedate ASC";
+
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('courseid' => $courseid, 'playerid' => $playerid));
+        $rows = $query->fetchAll();
+      }
 
       $high_scores = array();
       $current_high_score = null;
