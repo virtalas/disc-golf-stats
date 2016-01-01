@@ -97,7 +97,7 @@ function init() {
       console.log("Merry Christmas!");
       chuckles.data.setJoke("Hyvää joulua, " + name + "!");
 
-    } else if (now.getMonth() == 11 && now.getDate() == 31) {
+    } else if ((now.getMonth() == 11 && now.getDate() == 31) || (now.getMonth() == 0 && now.getDate() == 1)) {
       console.log("Happy New Year!");
       chuckles.data.setJoke("Hyvää uutta vuotta, " + name + "!");
 

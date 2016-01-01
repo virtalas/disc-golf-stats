@@ -109,7 +109,7 @@
     PlayerController::index();
   });
 
-  // Pelaajien traditionaalinen listaussivu
+  // Pelaajien traditionaalinen listaussivu - onko tarvetta?
   $routes->get('/player/list', 'check_logged_in', function() {
     // Not implemented yet
     // PlayerController::list_players();
