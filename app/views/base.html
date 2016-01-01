@@ -59,9 +59,9 @@
             {% endif %}
 
             {% if current_page == 'player' %}
-              <li class="active"><a href="{{base_path}}/player?player={{user_logged_in.playerid}}">Pelaajat</a></li>
+              <li class="active"><a id="playerpagelink" href="{{base_path}}/player">Pelaajat</a></li>
             {% else %}
-              <li><a href="{{base_path}}/player?player={{user_logged_in.playerid}}">Pelaajat</a></li>
+              <li><a id="playerpagelink" href="{{base_path}}/player">Pelaajat</a></li>
             {% endif %}
 
             {% if current_page == 'course' %}
