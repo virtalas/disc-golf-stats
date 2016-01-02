@@ -13,7 +13,7 @@
     </div>
   {% endif %}
 
-  <h2>{{course.name}}, {{course.city}}</h2>
+  <h2>{{course.name}}, <span id="coursecity">{{course.city}}</span></h2>
 
   {% if admin_logged_in %}
     <p>
@@ -33,4 +33,6 @@
   <script src="{{base_path}}/vendor/amcharts/lang/fi.js"></script>
 
   <script src="{{base_path}}/assets/js/course_graphs.js"></script>
+  <script src="{{base_path}}/assets/js/weather.js"></script>
+
 {% endblock %}
