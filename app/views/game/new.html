@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <h2>Lisää peli radalle {{course.name}}, {{course.city}}</h2>
+  <h2>Lisää peli radalle {{course.name}}, <span id="coursecity">{{course.city}}</span></h2>
 
   {% if errors %}
     <div class="alert alert-danger">
@@ -16,6 +16,8 @@
     </div>
   {% endif %}
 
+  <div id="weathermessage"></div>
+
   <br>
 
   <form method="post" action="{{base_path}}/game" enctype="multipart/form-data">
@@ -23,7 +25,7 @@
       <label>Valitse olosuhteet</label>
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="rain" value="1"
+          <input type="checkbox" name="rain" value="1" id="inputrain"
             {% if attributes.rain %}
               checked
             {% endif %}
@@ -43,7 +45,7 @@
 
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="windy" value="1"
+          <input type="checkbox" name="windy" value="1" id="inputwindy"
             {% if attributes.windy %}
               checked
             {% endif %}
@@ -83,7 +85,7 @@
 
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="snow" value="1"
+          <input type="checkbox" name="snow" value="1" id="inputsnow"
             {% if attributes.snow %}
               checked
             {% endif %}
@@ -204,4 +206,8 @@
     <a href="{{base_path}}/game"><button type="button" class="btn btn-default">Peruuta</button></a>
   </form>
 
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{base_path}}/assets/js/weather.js"></script>
 {% endblock %}
