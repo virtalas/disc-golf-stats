@@ -10,13 +10,11 @@ Features/bugs/etc planned for disc-golf-stats
 * set collation (order by name not working in page player)
 * site icon
 * Date-picker http://eonasdan.github.io/bootstrap-datetimepicker/
-* ennätysten lataus nopeammaksi (etu/pelaajat -sivu) 
+* ennätysten lataus nopeammaksi (etu/pelaajat -sivu)
 
 ### Graphs
 
-* omien rataennätysten kehitys (nappula mistä voi vaihtaa kumpi on esillä)
-* radan väylien birdiet per väylä (pylväsdiagrammi)
-* jonkinlainen diagrammi pelien lopetusajasta
+* jonkinlainen diagrammi pelien lopetusajasta, myös viikonpäivä mukaan?
 
 ### Tilastot-sivu
 
