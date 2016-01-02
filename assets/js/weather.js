@@ -41,7 +41,7 @@ $(document).ready(function () {
 
     if (modified) {
       $("#weathermessage").attr('class', 'alert alert-success');
-      $("#weathermessage").text('Säätietoja lisättiin automaattisesti. Tarkista valitut olosuhteet.')
+      $("#weathermessage").text('Säätietoja valittiin automaattisesti. Tarkista valitut olosuhteet.')
     }
   });
 });
