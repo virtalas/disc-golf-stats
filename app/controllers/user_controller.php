@@ -17,7 +17,9 @@
         $_SESSION['user'] = $user->playerid;
         setcookie("user", $user->playerid);
 
-        Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $user->firstname . '!'));
+        // Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $user->firstname . '!'));
+        Redirect::to('/');
+
       }
     }
 
