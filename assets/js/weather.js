@@ -19,6 +19,8 @@ $(document).ready(function () {
     $("#description").text(data.weather[0].description);
     $("#temperature").text(temperature + " °C");
     $("#wind").text(wind + " m/s");
+    $("#icon").attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
+    $("#icon").attr('title', data.weather[0].description);
 
     // Used for /game/new
 
