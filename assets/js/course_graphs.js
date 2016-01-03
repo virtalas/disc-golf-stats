@@ -274,7 +274,7 @@ $(document).ready(function(){
         "title": "Tulos"
     }],
     "graphs": [{
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>Väylä [[category]]: <b>[[value]]</b></span>",
         "fillAlphas": 0.8,
         "labelText": "[[value]]",
         "lineAlpha": 0,
@@ -284,7 +284,7 @@ $(document).ready(function(){
         "fillColors": "red",
         "valueField": "holeInOnes"
     }, {
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>Väylä [[category]]: <b>[[value]]</b></span>",
         "fillAlphas": 0.8,
         "labelText": "[[value]]",
         "lineAlpha": 0,
@@ -294,7 +294,7 @@ $(document).ready(function(){
         "fillColors": "#00FF00",
         "valueField": "birdies"
     }, {
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>Väylä [[category]]: <b>[[value]]</b></span>",
         "fillAlphas": 0.8,
         "labelText": "[[value]]",
         "lineAlpha": 0,
@@ -304,7 +304,7 @@ $(document).ready(function(){
         "fillColors": "#A7C942",
         "valueField": "pars"
     }, {
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>Väylä [[category]]: <b>[[value]]</b></span>",
         "fillAlphas": 0.8,
         "labelText": "[[value]]",
         "lineAlpha": 0,
@@ -314,7 +314,7 @@ $(document).ready(function(){
         "fillColors": "orange",
         "valueField": "bogies"
     }, {
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>Väylä [[category]]: <b>[[value]]</b></span>",
         "fillAlphas": 0.8,
         "labelText": "[[value]]",
         "lineAlpha": 0,
