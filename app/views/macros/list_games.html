@@ -150,6 +150,14 @@
         </tr>
       {% endif %}
 
+      <!-- Display game weather -->
+      {% if game.weather %}
+        <tr>
+          <td class='names'>Sää</td>
+          <td colspan=30 class='names'>{{game.weather}}</td>
+        </tr>
+      {% endif %}
+
       <!-- Display comments if there are any -->
       {% if game.comment %}
         <tr>

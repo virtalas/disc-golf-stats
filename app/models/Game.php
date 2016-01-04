@@ -2,21 +2,21 @@
   class Game extends BaseModel {
 
     public $gameid, $courseid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
-            $variant, $dark, $led, $snow, $doubles, // Ready to use after creation
-            $course, $scores, $conditions, $illegal_scorers, $high_scorers; // Need to be prepared via prepare_var()
+            $variant, $dark, $led, $snow, $doubles, $temp, // Ready to use after creation
+            $course, $scores, $conditions, $weather, $illegal_scorers, $high_scorers; // Need to be prepared via prepare_var()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
-      $this->validators = array('validate_date', 'validate_rain_and_wet_no_rain');
+      $this->validators = array('validate_date', 'validate_rain_and_wet_no_rain', 'validate_temp');
     }
 
     // Database functions
 
     public function save() {
       $sql = "INSERT INTO game (courseid, gamedate, comment, rain, wet_no_rain,
-              windy, variant, dark, led, snow, doubles)
+              windy, variant, dark, led, snow, doubles, temp)
               VALUES (:courseid, :gamedate, :comment, :rain, :wet_no_rain, :windy,
-              :variant, :dark, :led, :snow, :doubles) RETURNING gameid";
+              :variant, :dark, :led, :snow, :doubles, :temp) RETURNING gameid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $this->courseid,
                             'gamedate' => $this->gamedate,
@@ -28,7 +28,8 @@
                             'dark' => $this->dark,
                             'led' => $this->led,
                             'snow' => $this->snow,
-                            'doubles' => $this->doubles
+                            'doubles' => $this->doubles,
+                            'temp' => $this->temp
                             ));
       $row = $query->fetch();
       $this->gameid = $row['gameid'];
@@ -39,7 +40,7 @@
     public function update() {
       $sql = "UPDATE game SET gamedate = :gamedate, comment = :comment, rain = :rain,
               wet_no_rain = :wet_no_rain, windy = :windy, variant = :variant,
-              dark = :dark, led = :led, snow = :snow, doubles = :doubles
+              dark = :dark, led = :led, snow = :snow, doubles = :doubles, temp = :temp
               WHERE gameid = :gameid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('gameid' => $this->gameid,
@@ -52,7 +53,8 @@
                             'dark' => $this->dark,
                             'led' => $this->led,
                             'snow' => $this->snow,
-                            'doubles' => $this->doubles
+                            'doubles' => $this->doubles,
+                            'temp' => $this->temp
                             ));
       return $this->gameid;
     }
@@ -69,6 +71,7 @@
       $this->load_course();
       $this->load_scores();
       $this->load_conditions();
+      $this->load_weather();
       $this->load_illegal_scorers();
       $this->load_high_scorers();
     }
@@ -85,26 +88,11 @@
     private function load_conditions() {
       $conditions_array = array();
 
-      if ($this->windy) {
-        array_push($conditions_array, "tuulista");
-      }
-      if ($this->rain) {
-        array_push($conditions_array, "sadetta");
-      }
-      if ($this->wet_no_rain) {
-        array_push($conditions_array, "märkää (ei sadetta)");
-      }
       if ($this->variant) {
         array_push($conditions_array, "poikkeava rata");
       }
-      if ($this->dark) {
-        array_push($conditions_array, "pimeää");
-      }
       if ($this->led) {
         array_push($conditions_array, "LED");
-      }
-      if ($this->snow) {
-        array_push($conditions_array, "lunta");
       }
       if ($this->doubles) {
         array_push($conditions_array, "parigolf");
@@ -121,6 +109,41 @@
       }
 
       $this->conditions = $condtitions_string;
+    }
+
+    private function load_weather() {
+      $weather_array = [];
+
+      if ($this->temp) {
+        array_push($weather_array, $this->temp. " °C");
+      }
+      if ($this->windy) {
+        array_push($weather_array, "tuulista");
+      }
+      if ($this->rain) {
+        array_push($weather_array, "sadetta");
+      }
+      if ($this->wet_no_rain) {
+        array_push($weather_array, "märkää (ei sadetta)");
+      }
+      if ($this->dark) {
+        array_push($weather_array, "pimeää");
+      }
+      if ($this->snow) {
+        array_push($weather_array, "lunta");
+      }
+
+      $i = 1;
+      $weather_string = "";
+      foreach ($weather_array as $weather) {
+        $weather_string .= $weather;
+        if ($i < count($weather_array)) {
+          $weather_string .= ", ";
+        }
+        $i++;
+      }
+
+      $this->weather = $weather_string;
     }
 
     public function load_illegal_scorers() {
@@ -191,7 +214,7 @@
 
     public static function all_player_games($playerid) {
       $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
+              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp
               FROM game
               WHERE gameid IN
               (SELECT gameid FROM score WHERE playerid = :playerid)
@@ -208,7 +231,7 @@
         // Fetch all games
         $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
-                game.snow, game.doubles
+                game.snow, game.doubles, game.temp
                 FROM game
                 GROUP BY game.gameid
                 ORDER BY game.gamedate DESC";
@@ -234,7 +257,7 @@
 
         $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
-                game.snow, game.doubles
+                game.snow, game.doubles, game.temp
                 FROM game
                 JOIN score ON score.gameid = game.gameid
                 WHERE score.playerid = :playerid
@@ -258,7 +281,7 @@
         $playerid = $options['playerid'];
         $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
-                game.snow, game.doubles
+                game.snow, game.doubles, game.temp
                 FROM game
                 JOIN score ON score.gameid = game.gameid
                 WHERE score.playerid = :playerid
@@ -279,7 +302,7 @@
         // Fetch this games on this course
         $courseid = $options['courseid'];
         $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-                comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
+                comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp
                 FROM game
                 WHERE courseid = :courseid
                 AND to_char(gamedate, 'YYYY') = :year
@@ -298,7 +321,7 @@
       } else {
         // Fetch all games
         $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-                comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
+                comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp
                 FROM game
                 WHERE to_char(gamedate, 'YYYY') = :year
                 ORDER BY game.gamedate DESC
@@ -339,7 +362,7 @@
 
     public static function find_format_gamedate($gameid){
       $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
-              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles
+              comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp
               FROM game WHERE gameid = :gameid LIMIT 1";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('gameid' => $gameid));
@@ -588,7 +611,8 @@
           'dark' => $row['dark'],
           'led' => $row['led'],
           'snow' => $row['snow'],
-          'doubles' => $row['doubles']
+          'doubles' => $row['doubles'],
+          'temp' => $row['temp']
         ));
         $game->prepare();
 
@@ -628,6 +652,16 @@
 
       if ($this->rain && $this->wet_no_rain) {
         $errors[] = "Olosuhteina ei voi olla sekä sadetta että märkää (ei sadetta).";
+      }
+
+      return $errors;
+    }
+
+    public function validate_temp() {
+      $errors = array();
+
+      if (!is_numeric($this->temp) && $this->temp != null) {
+        $errors[] = "Lämpötila annettu väärin. Käytä lämpötilassa pistettä (.) eikä pilkkua (,)";
       }
 
       return $errors;

@@ -131,9 +131,6 @@
         }
       }
 
-      // $attributes = array();
-      // $attributes['date'] = date('Y-m-d');
-      // $attributes['time'] = date('H:i');
       View::make('game/new.html', array(
         'course' => $course,
         'players' => $players,
@@ -152,6 +149,7 @@
       $led = isset($_POST['led']) && $_POST['led']  ? "1" : "0"; // checked=1, unchecked=0
       $snow = isset($_POST['snow']) && $_POST['snow']  ? "1" : "0"; // checked=1, unchecked=0
       $doubles = isset($_POST['doubles']) && $_POST['doubles']  ? "1" : "0"; // checked=1, unchecked=0
+      $temp = isset($_POST['temp']) && $_POST['temp']  ? $_POST['temp'] : null; // temperature can be null
       $date = $_POST['date'];
       $time = $_POST['time'];
       $comment = $_POST['comment'];
@@ -170,7 +168,8 @@
         'dark' => $dark,
         'led' => $led,
         'snow' => $snow,
-        'doubles' => $doubles
+        'doubles' => $doubles,
+        'temp' => $temp
       ));
       $errors = $game->errors();
 
@@ -303,6 +302,7 @@
       $led = isset($_POST['led']) && $_POST['led']  ? "1" : "0"; // checked=1, unchecked=0
       $snow = isset($_POST['snow']) && $_POST['snow']  ? "1" : "0"; // checked=1, unchecked=0
       $doubles = isset($_POST['doubles']) && $_POST['doubles']  ? "1" : "0"; // checked=1, unchecked=0
+      $temp = isset($_POST['temp']) && $_POST['temp']  ? $_POST['temp'] : null; // temperature can be null
       $date = $_POST['date'];
       $time = $_POST['time'];
       $comment = $_POST['comment'];
@@ -322,19 +322,12 @@
         'dark' => $dark,
         'led' => $led,
         'snow' => $snow,
-        'doubles' => $doubles
+        'doubles' => $doubles,
+        'temp' => $temp
       ));
       $errors = $game->errors();
 
       $course = Course::find($courseid);
-
-      // Game's players
-      // $players = array();
-      // foreach (Player::all() as $player) {
-      //   if (isset($_POST['player'. $player->playerid])) {
-      //     $players[] = $player;
-      //   }
-      // }
 
       $player_scores = Score::all_game_scores($gameid);
 
@@ -401,7 +394,7 @@
     }
 
     // Process multiple csv files
-    // Correct course assigning will work ONLY IF all course names are unique
+    // Correct course assigning will work ONLY IF (!) all course names are unique
     // and csv filenames are like '2014-10-30 Coursename.csv'
     public static function csv_import_process() {
       $courses = Course::all();

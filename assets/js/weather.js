@@ -29,6 +29,8 @@ $(document).ready(function () {
 
     // Used for /game/new
 
+    $("#inputtemp").attr('value', temperature);
+
     var modified = false;
 
     if (wind >= 5) {

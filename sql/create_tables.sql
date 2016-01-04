@@ -34,7 +34,8 @@ variant boolean DEFAULT FALSE,
 dark boolean DEFAULT FALSE,
 led boolean DEFAULT FALSE,
 snow boolean DEFAULT FALSE,
-doubles boolean DEFAULT FALSE
+doubles boolean DEFAULT FALSE,
+temp real
 );
 
 CREATE TABLE Score(
