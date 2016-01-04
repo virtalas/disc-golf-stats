@@ -51,12 +51,18 @@
     }
 
     public static function show($courseid) {
+      $player = self::get_user_logged_in();
       $course = Course::find($courseid);
       $games_played = Course::number_of_games_played($courseid);
       $latest_game = Course::latest_game_date($courseid);
       $avg_score = Course::average_scoring($courseid);
       $par = Course::par($courseid);
       $high_scores = Course::high_scores($courseid);
+
+      // Graph data
+      $chrono_high_scores = Course::chronological_high_scores($courseid, 0);
+      $chrono_high_scores_player = Course::chronological_high_scores($courseid, $player->playerid);
+      $score_distribution = Course::score_distribution($courseid, 1);
 
       View::make('course/show.html', array(
         'course' => $course,
@@ -65,7 +71,9 @@
         'avg_score' => $avg_score,
         'par' => $par,
         'high_scores' => $high_scores,
-        'chrono_high_scores' => Course::chronological_high_scores($courseid)
+        'chrono_high_scores' => $chrono_high_scores,
+        'chrono_high_scores_player' => $chrono_high_scores_player,
+        'score_distribution' => $score_distribution
       ));
     }
 
