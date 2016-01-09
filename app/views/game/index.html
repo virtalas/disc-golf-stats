@@ -32,25 +32,25 @@
 
   <br>
 
+  <p>
+    Tuloskortit ovat päivämäärän perusteella laskevassa järjestyksessä.
+  </p>
+
+  <p>
+    Katso pelit vuodelta:
+    <a href="{{base_path}}/game/old/2012" class="btn btn-default btn-xs">2012</a>
+    <a href="{{base_path}}/game/old/2013" class="btn btn-default btn-xs">2013</a>
+
+    {% for year in game_years %}
+      {% if year == current_year %}
+        <a class="btn btn-primary btn-xs disabled_link">{{year}}</a>
+      {% else %}
+        <a href="{{base_path}}/game?year={{year}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}" class="btn btn-default btn-xs">{{year}}</a>
+      {% endif %}
+    {% endfor %}
+  </p>
+
   {% if games %}
-
-    <p>
-      Tuloskortit ovat päivämäärän perusteella laskevassa järjestyksessä.
-    </p>
-
-    <p>
-      Katso pelit vuodelta:
-      <a href="{{base_path}}/game/old/2012" class="btn btn-default btn-xs">2012</a>
-      <a href="{{base_path}}/game/old/2013" class="btn btn-default btn-xs">2013</a>
-
-      {% for year in game_years %}
-        {% if year == current_year %}
-          <a class="btn btn-primary btn-xs disabled_link">{{year}}</a>
-        {% else %}
-          <a href="{{base_path}}/game?year={{year}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}" class="btn btn-default btn-xs">{{year}}</a>
-        {% endif %}
-      {% endfor %}
-    </p>
 
     {% set show_edit = false %}
     {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit)}}
