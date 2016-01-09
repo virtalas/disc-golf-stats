@@ -8,7 +8,9 @@
   		parent::__construct($attributes);
   	}
 
-    // Authentication functions
+    /*
+    *  Authentication functions
+    */
 
     public static function authenticate($username, $password) {
       $sql = "SELECT * FROM Player WHERE username = :username LIMIT 1";
@@ -47,7 +49,9 @@
       }
     }
 
-    // Database functions
+    /*
+    *  Database functions
+    */
 
     public function save() {
       $sql = "INSERT INTO player (firstname, username, password, salt)
