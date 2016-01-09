@@ -15,6 +15,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Graphs
 
+* pelien määrä kuukausittain -kaavioon "omat pelit"/"kaikki pelit"-valitsin
 * jonkinlainen diagrammi pelien lopetusajasta, myös viikonpäivä mukaan?
 
 ### Tilastot-sivu
