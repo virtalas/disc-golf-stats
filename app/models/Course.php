@@ -11,7 +11,9 @@
       $this->validators = array('validate_name', 'validate_city');
     }
 
-    // Database functions
+    /*
+    *  Database functions
+    */
 
     public function save() {
       $sql = "INSERT INTO course (name, city, map) VALUES (:name, :city, :map) RETURNING courseid";
@@ -82,7 +84,9 @@
       return self::get_courses_from_rows($rows);
     }
 
-    // Prepare functions
+    /*
+    *  Prepare functions
+    */
 
     public function prepare() {
       $this->load_holes();
@@ -93,7 +97,9 @@
       $this->number_of_holes = count($this->holes);
     }
 
-    // Information functions
+    /*
+    *  Information functions
+    */
 
     public static function high_scores($courseid) {
       $sql = "SELECT gameid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, firstname, total_score, total_score - total_par as to_par
@@ -387,7 +393,9 @@
       return $rows;
     }
 
-    // Get from row(s)
+    /*
+    *  Get from row(s)
+    */
 
     public static function get_course_from_row($row) {
       if ($row) {
@@ -422,7 +430,9 @@
       return $courses;
     }
 
-    // Validators
+    /*
+    *  Validators
+    */
 
     public function validate_name() {
       return $this->validate_string_not_empty($this->name, "Nimi");

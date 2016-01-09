@@ -9,7 +9,9 @@
       $this->validators = array('validate_stroke', 'validate_ob');
     }
 
-    // Database functions
+    /*
+    *  Database functions
+    */
 
     public function save() {
       $sql = "INSERT INTO score (gameid, holeid, playerid, stroke, ob, legal)
@@ -42,7 +44,9 @@
       $query->execute(array('scoreid' => $this->scoreid));
     }
 
-    // Information functions
+    /*
+    *  Information functions
+    */
 
     public static function players_birdies($playerid) {
       $sql = "SELECT COUNT(*) as birdies
@@ -223,7 +227,9 @@
       }
     }
 
-    // Validators
+    /*
+    *  Validators
+    */
 
     public function validate_stroke() {
       $errors = $this->validate_integer($this->stroke, "Tuloksen");

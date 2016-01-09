@@ -9,7 +9,9 @@
       $this->validators = array('validate_hole_num_and_par');
   	}
 
-    // Database functions
+    /*
+    *  Database functions
+    */
 
     public function save() {
       $sql = "INSERT INTO hole (courseid, hole_num, par)
@@ -61,7 +63,9 @@
   		return null;
     }
 
-    // Information functions
+    /*
+    *  Information functions
+    */
 
     public static function course_holes($courseid) {
       $sql = "SELECT holeid, hole_num, par FROM hole WHERE courseid = :courseid ORDER BY hole_num";
@@ -86,7 +90,9 @@
       return $holes;
     }
 
-    // Validators
+    /*
+    *  Validators
+    */
 
     public function validate_hole_num_and_par() {
       $hole_num_errors = $this->validate_integer($this->hole_num, "Väylän numeron");
