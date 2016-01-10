@@ -105,7 +105,7 @@
     </div>
 
     <div class="form-group">
-      <label>Lämpötila</label>
+      <label>Lämpötila</label> – saa olla tyhjä
       <div class="row">
         <div class="col-xs-2">
           <input class="form-control" type="text" name="temp" value="{% if attributes.temp %}{{attributes.temp}}{% endif %}" id="inputtemp">
@@ -173,7 +173,7 @@
 
         <div class="form-group">
           <label></label>
-          <label>Heitot</label>
+          <label>Heitot</label> – merkkaa skipatut väylät nollalla
           <table>
             <tr>
               {% for hole in course.holes %}
