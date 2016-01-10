@@ -5,6 +5,11 @@
 {% block content %}
 
   <h2>Pelien määrä kuukausittain</h2>
+
+  <a class="btn btn-primary btn-xs disabled_link" id="omatpelit">Omat pelit</a>
+  <a class="btn btn-default btn-xs" id="pelit">Kaikki pelit</a>
+
+  <div id="playergamecountpermonth" style="width: 800px; height: 450px; margin-left: -50px;"></div>
   <div id="gamecountpermonth" style="width: 800px; height: 450px; margin-left: -50px;"></div>
 
   <br><br>
@@ -12,13 +17,19 @@
   <h2>Pelaajien määrä kierroksella</h2>
   <div id="playercount" style="width: 700px; height: 450px;"></div>
 
-  <!-- <br><br>
+  <!-- NOT IMPLEMENTED YET
+  <br><br>
   <h2>Pelien lopetusaika ja viikonpäivä</h2>
-  <div id="gamehours" style="width: 700px; height: 450px;"></div> -->
+  <div id="gamehours" style="width: 700px; height: 450px;"></div>
+  -->
 
   <!-- Graph data -->
   {% for gamedated,occurance in gamedates %}
     <span class="gamedateforjs">{{gamedated}},{{occurance}}</span>
+  {% endfor %}
+
+  {% for gamedated,occurance in player_gamedates %}
+    <span class="playergamedateforjs">{{gamedated}},{{occurance}}</span>
   {% endfor %}
 
   {% for playercount,occurance in player_count_dist %}

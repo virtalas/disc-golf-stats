@@ -1,6 +1,27 @@
 $(document).ready(function(){
 
   /*
+  *  Number of games played per month / Own games player per month
+  */
+
+  $("#gamecountpermonth").hide();
+
+  $("#omatpelit").click(function(eventObject) {
+    $("#omatpelit").removeClass("btn-default").addClass("btn-primary").addClass("disabled_link");
+    $("#pelit").removeClass("btn-primary").addClass("btn-default").removeClass("disabled_link");
+    $("#gamecountpermonth").hide();
+    $("#playergamecountpermonth").show();
+  });
+
+  $("#pelit").click(function(eventObject) {
+    gameCountPerMonth.invalidateSize(); // fixes a problem caused by rendering the chart in a hidden element
+    $("#pelit").removeClass("btn-default").addClass("btn-primary").addClass("disabled_link");
+    $("#omatpelit").removeClass("btn-primary").addClass("btn-default").removeClass("disabled_link");
+    $("#playergamecountpermonth").hide();
+    $("#gamecountpermonth").show();
+  });
+
+  /*
   *  Number of games player per month
   */
 
@@ -76,14 +97,100 @@ $(document).ready(function(){
 
   });
 
-  gameCountPerMonth.addListener("rendered", zoomChart);
+  gameCountPerMonth.addListener("rendered", zoomGCPMChart);
 
-  zoomChart();
+  zoomGCPMChart();
 
-  function zoomChart() {
+  function zoomGCPMChart() {
     // Show at least 15 months (that have games)
     var length = gameCountPerMonth.dataProvider.length;
     gameCountPerMonth.zoomToIndexes(length - 15, length - 1);
+  }
+
+  /*
+  *  Own games player per month
+  */
+
+  var playerGamedates = [];
+
+  $(".playergamedateforjs").each(function(index) {
+    var month = $(this).text().split(",")[0];
+    var value = $(this).text().split(",")[1];
+
+    playerGamedates.push({
+        "month": month,
+        "value": value
+    });
+  });
+
+  $(".playergamedateforjs").remove();
+
+  var playerGameCountPerMonth = AmCharts.makeChart( "playergamecountpermonth", {
+    "type": "serial",
+    "language": "fi",
+    "theme": "light",
+    "dataDateFormat": "YYYY-MM",
+    "dataProvider": playerGamedates,
+    "valueAxes": [ {
+      "gridColor": "grey",
+      "gridAlpha": 0.2,
+      "dashLength": 0,
+      "title": "Pelit"
+    } ],
+    "gridAboveGraphs": true,
+    "startDuration": 1,
+    "graphs": [ {
+      "id": "g1",
+      "balloonText": "[[category]]: <b>[[value]]</b>",
+      "fillAlphas": 0.8,
+      "lineAlpha": 0.2,
+      "type": "column",
+      "valueField": "value"
+    } ],
+    "chartScrollbar": {
+        "oppositeAxis":false,
+        "offset":30,
+        "scrollbarHeight": 80,
+        "backgroundAlpha": 0,
+        "selectedBackgroundAlpha": 0.1,
+        "selectedBackgroundColor": "#888888",
+        "graphFillAlpha": 0,
+        "graphLineAlpha": 0.5,
+        "selectedGraphFillAlpha": 0,
+        "selectedGraphLineAlpha": 1,
+        "autoGridCount":true,
+        "color":"#AAAAAA"
+    },
+    "chartCursor": {
+      "categoryBalloonEnabled": false,
+      "cursorAlpha": 0,
+      "zoomable": false,
+      "categoryBalloonDateFormat": "MMMM, YYYY"
+    },
+    "categoryField": "month",
+    "categoryAxis": {
+      "parseDates": true,
+      "gridPosition": "start",
+      "gridAlpha": 0,
+      "tickPosition": "start",
+      "tickLength": 20,
+      "minPeriod": "MM",
+      "minHorizontalGap": 35
+    },
+    "export": {
+      "enabled": true
+    }
+
+  });
+
+  playerGameCountPerMonth.addListener("rendered", zoomPGCPMChart);
+
+  zoomPGCPMChart();
+
+  function zoomPGCPMChart() {
+    // Show at least 15 months (that have games)
+    var length = playerGameCountPerMonth.dataProvider.length;
+    playerGameCountPerMonth.zoomToIndexes(length - 15, length - 1);
   }
 
   /*

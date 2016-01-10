@@ -568,16 +568,32 @@
       return $dist;
     }
 
-    public static function all_game_dates() {
-      $sql = "SELECT to_char(gamedate, 'YYYY-MM') as gamedated, COUNT(to_char(gamedate, 'YYYY-MM')) as occurance
-              FROM game
-              GROUP BY gamedated
-              ORDER BY gamedated ASC";
+    public static function all_game_dates($playerid = null) {
 
-      $query = DB::connection()->prepare($sql);
-      $query->execute();
+      if ($playerid != null) {
+        // Fetch player specific games
+        $sql = "SELECT to_char(gamedate, 'YYYY-MM') as gamedated, COUNT(to_char(gamedate, 'YYYY-MM')) as occurance
+                FROM game
+                WHERE gameid IN (
+                  SELECT gameid FROM score WHERE playerid = :playerid
+                )
+                GROUP BY gamedated
+                ORDER BY gamedated ASC";
+
+        $query = DB::connection()->prepare($sql);
+        $query->execute(array('playerid' => $playerid));
+      } else {
+        // Fetch all games
+        $sql = "SELECT to_char(gamedate, 'YYYY-MM') as gamedated, COUNT(to_char(gamedate, 'YYYY-MM')) as occurance
+                FROM game
+                GROUP BY gamedated
+                ORDER BY gamedated ASC";
+
+        $query = DB::connection()->prepare($sql);
+        $query->execute();
+      }
+
       $rows = $query->fetchAll();
-
       $gamedates = array();
 
       foreach ($rows as $row) {;
