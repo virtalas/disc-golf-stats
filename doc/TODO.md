@@ -15,7 +15,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Graphs
 
-* pelien määrä kuukausittain -kaavioon "omat pelit"/"kaikki pelit"-valitsin
+* pelien määrä kuukausittain -kaavio: kun painaa 'kaikki pelit', kaavio liikahtaa paikoilleen, korjaa ettei liikahda
 * jonkinlainen diagrammi pelien lopetusajasta, myös viikonpäivä mukaan(?) (vain sopiva kaavio puuttuu http://raphaeljs.com/github/dots.html)
 
 ### Tilastot-sivu
