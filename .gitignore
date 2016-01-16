@@ -3,3 +3,4 @@ config/database.php
 deploy.sh
 backup.sh
 get_backups.sh
+users-deploy.sh

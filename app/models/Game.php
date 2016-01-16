@@ -116,7 +116,7 @@
     }
 
     private function load_weather() {
-      $weather_array = [];
+      $weather_array = array();
 
       if ($this->temp) {
         array_push($weather_array, $this->temp. " °C");
