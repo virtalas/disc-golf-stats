@@ -322,6 +322,20 @@ $(document).ready(function(){
   *  Player course popularity / Course popularity
   */
 
+  // Used for gradient graph bars
+  function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+  }
+
+  function rgbToHex(r, g, b) {
+      return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
+
+  function gradience(index) {
+    return rgbToHex(82, 204 - index * 5, 82);
+  }
+
   $("#coursepopularity").hide();
 
   $("#omatpelitradalla").click(function(eventObject) {
@@ -353,7 +367,8 @@ $(document).ready(function(){
     playerCoursePopularity.push({
         "name": name,
         "city": city,
-        "count": count
+        "count": count,
+        "color": gradience(index)
     });
   });
 
@@ -409,7 +424,8 @@ $(document).ready(function(){
     coursePopularity.push({
         "name": name,
         "city": city,
-        "count": count
+        "count": count,
+        "color": gradience(index)
     });
   });
 
