@@ -18,8 +18,17 @@
   <div id="playercount" style="width: 700px; height: 450px;"></div>
 
   <br><br>
+
   <h2>Ratojen suosio</h2>
-  Radat, joilla on enemmän kuin yksi peli.
+
+  <p>
+    Radat, joilla on enemmän kuin yksi peli.
+  </p>
+
+  <a class="btn btn-primary btn-xs disabled_link" id="omatpelitradalla">Omat pelit radoilla</a>
+  <a class="btn btn-default btn-xs" id="pelitradalla">Kaikki pelit radoilla</a>
+
+  <div id="playercoursepopularity" style="width: 800px; height: 450px;"></div>
   <div id="coursepopularity" style="width: 800px; height: 450px;"></div>
 
   <!-- NOT IMPLEMENTED YET
@@ -43,6 +52,10 @@
 
   {% for weekday_hour in game_hours %}
     <span class="gamehoursforjs">{{weekday_hour[0]}},{{weekday_hour[1]}}</span>
+  {% endfor %}
+
+  {% for row in player_course_popularity %}
+    <span class="playercoursepopularityforjs">{{row[0]}},{{row[1]}},{{row[2]}}</span>
   {% endfor %}
 
   {% for row in course_popularity %}

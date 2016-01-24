@@ -319,6 +319,83 @@ $(document).ready(function(){
   $(".gamehoursforjs").remove();
 
   /*
+  *  Player course popularity / Course popularity
+  */
+
+  $("#coursepopularity").hide();
+
+  $("#omatpelitradalla").click(function(eventObject) {
+    $("#omatpelitradalla").removeClass("btn-default").addClass("btn-primary").addClass("disabled_link");
+    $("#pelitradalla").removeClass("btn-primary").addClass("btn-default").removeClass("disabled_link");
+    $("#coursepopularity").hide();
+    $("#playercoursepopularity").show();
+  });
+
+  $("#pelitradalla").click(function(eventObject) {
+    coursePopularityChart.invalidateSize(); // fixes a problem caused by rendering the chart in a hidden element
+    $("#pelitradalla").removeClass("btn-default").addClass("btn-primary").addClass("disabled_link");
+    $("#omatpelitradalla").removeClass("btn-primary").addClass("btn-default").removeClass("disabled_link");
+    $("#playercoursepopularity").hide();
+    $("#coursepopularity").show();
+  });
+
+  /*
+  *  Player course popularity
+  */
+
+  var playerCoursePopularity = [];
+
+  $(".playercoursepopularityforjs").each(function(index) {
+    var name = $(this).text().split(",")[0];
+    var city = $(this).text().split(",")[1];
+    var count = $(this).text().split(",")[2];
+
+    playerCoursePopularity.push({
+        "name": name,
+        "city": city,
+        "count": count
+    });
+  });
+
+  $(".playercoursepopularityforjs").remove();
+
+  var coursePopularityChart = AmCharts.makeChart("playercoursepopularity", {
+    "type": "serial",
+    "theme": "light",
+    "marginRight": 70,
+    "dataProvider": playerCoursePopularity,
+    "valueAxes": [{
+      "axisAlpha": 0,
+      "position": "left",
+      "title": "Pelit radalla"
+    }],
+    "startDuration": 1,
+    "graphs": [{
+      "balloonText": "<b>[[category]], [[city]]: [[value]]</b>",
+      "fillColorsField": "color",
+      "fillAlphas": 0.9,
+      "lineAlpha": 0.2,
+      "type": "column",
+      "valueField": "count"
+    }],
+    "chartCursor": {
+      "categoryBalloonEnabled": false,
+      "cursorAlpha": 0,
+      "zoomable": false
+    },
+    "categoryField": "name",
+    "categoryAxis": {
+      "gridPosition": "start",
+      "labelRotation": 45,
+      "minHorizontalGap": 35
+    },
+    "export": {
+      "enabled": true
+    }
+
+  });
+
+  /*
   *  Course popularity
   */
 

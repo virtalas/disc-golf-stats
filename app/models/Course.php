@@ -408,6 +408,24 @@
       return $rows;
     }
 
+    public static function player_course_popularity($playerid) {
+      $sql = "SELECT course.name, course.city, COUNT(*) as count
+              FROM course
+              JOIN game ON game.courseid = course.courseid
+              WHERE game.gameid IN (
+                SELECT gameid FROM score WHERE playerid = :playerid
+              )
+              GROUP BY course.courseid
+              HAVING COUNT(*) > 1
+              ORDER BY count DESC";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $rows = $query->fetchAll();
+
+      return $rows;
+    }
+
     /*
     *  Get from row(s)
     */
