@@ -17,6 +17,11 @@
   <h2>Pelaajien määrä kierroksella</h2>
   <div id="playercount" style="width: 700px; height: 450px;"></div>
 
+  <br><br>
+  <h2>Ratojen suosio</h2>
+  Radat, joilla on enemmän kuin yksi peli.
+  <div id="coursepopularity" style="width: 800px; height: 450px;"></div>
+
   <!-- NOT IMPLEMENTED YET
   <br><br>
   <h2>Pelien lopetusaika ja viikonpäivä</h2>
@@ -38,6 +43,10 @@
 
   {% for weekday_hour in game_hours %}
     <span class="gamehoursforjs">{{weekday_hour[0]}},{{weekday_hour[1]}}</span>
+  {% endfor %}
+
+  {% for row in course_popularity %}
+    <span class="coursepopularityforjs">{{row[0]}},{{row[1]}},{{row[2]}}</span>
   {% endfor %}
 
 {% endblock %}

@@ -317,4 +317,60 @@ $(document).ready(function(){
   });
 
   $(".gamehoursforjs").remove();
+
+  /*
+  *  Course popularity
+  */
+
+  var coursePopularity = [];
+
+  $(".coursepopularityforjs").each(function(index) {
+    var name = $(this).text().split(",")[0];
+    var city = $(this).text().split(",")[1];
+    var count = $(this).text().split(",")[2];
+
+    coursePopularity.push({
+        "name": name,
+        "city": city,
+        "count": count
+    });
+  });
+
+  $(".coursepopularityforjs").remove();
+
+  var coursePopularityChart = AmCharts.makeChart("coursepopularity", {
+    "type": "serial",
+    "theme": "light",
+    "marginRight": 70,
+    "dataProvider": coursePopularity,
+    "valueAxes": [{
+      "axisAlpha": 0,
+      "position": "left",
+      "title": "Pelit radalla"
+    }],
+    "startDuration": 1,
+    "graphs": [{
+      "balloonText": "<b>[[category]], [[city]]: [[value]]</b>",
+      "fillColorsField": "color",
+      "fillAlphas": 0.9,
+      "lineAlpha": 0.2,
+      "type": "column",
+      "valueField": "count"
+    }],
+    "chartCursor": {
+      "categoryBalloonEnabled": false,
+      "cursorAlpha": 0,
+      "zoomable": false
+    },
+    "categoryField": "name",
+    "categoryAxis": {
+      "gridPosition": "start",
+      "labelRotation": 45,
+      "minHorizontalGap": 35
+    },
+    "export": {
+      "enabled": true
+    }
+
+  });
 });

@@ -393,6 +393,21 @@
       return $rows;
     }
 
+    public static function course_popularity() {
+      $sql = "SELECT course.name, course.city, COUNT(*) as count
+              FROM course
+              JOIN game ON game.courseid = course.courseid
+              GROUP BY course.courseid
+              HAVING COUNT(*) > 1
+              ORDER BY count DESC";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+
+      return $rows;
+    }
+
     /*
     *  Get from row(s)
     */
