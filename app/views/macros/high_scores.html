@@ -1,0 +1,35 @@
+{% macro display_high_scores(high_scores, base_path, user_logged_in) %}
+
+  {% if user_logged_in and high_scores | length != 0 %}
+    <table style="width:700px">
+      <tr>
+        <th><b>Päivämäärä</b></th>
+        <th><b>Rata</b></th>
+        <th><b>Tulos</b></th>
+        <td align="right"><b>Par</b></td>
+        <th></th>
+      </tr>
+      {% set previous_course_name = null %}
+      {% for high_score in high_scores %}
+        {% if high_score.name != previous_course_name %}
+          <tr>
+            <td>{{high_score.gamedate}}</td>
+            <td>{{high_score.name}}</td>
+            <td>{{high_score.total_score}}</td>
+            <td align="right">{{high_score.to_par}}</td>
+            <td style="padding-left:30px">
+              <a href="{{base_path}}/game/{{high_score.gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+            </td>
+          </tr>
+        {% endif %}
+        {% set previous_course_name = high_score.name %}
+      {% endfor %}
+    </table>
+  {% endif %}
+
+  {% if user_logged_in and high_scores | length == 0 %}
+    <h3>Omat ennätykset</h3>
+    <p>Ei pelejä</p>
+  {% endif %}
+
+{% endmacro %}

@@ -2,6 +2,8 @@
 
 {% set current_page = 'player' %}
 
+{% import "macros/high_scores.html" as high_scores_macro %}
+
 {% block sidebar %}
   <li class="sidebar-brand">
       <a href="">
@@ -85,37 +87,9 @@
 
   <h3>Ennätykset</h3>
 
-  {% if game_count > 0 %}
-    <br>
-    <table style="width:700px">
-      <tr>
-        <th><b>Päivämäärä</b></th>
-        <th><b>Rata</b></th>
-        <th><b>Tulos</b></th>
-        <td align="right"><b>Par</b></td>
-        <th></th>
-      </tr>
-      {% for high_score in high_scores %}
-        <tr>
-          <td>{{high_score[0].gamedate}}</td>
-          <td>{{high_score[1].name}}</td>
-          <td>{{high_score[2]}}</td>
-          <td align="right">{{high_score[3]}}</td>
-          <td style="padding-left:30px">
-            {% if high_score[0].gameid %}
-              <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">
-                Katso tuloskortti
-              </a>
-            {% else %}
-              Ei laillisia pelejä
-            {% endif %}
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-  {% else %}
-    <p>Ei pelejä</p>
-  {% endif %}
+  <br>
+
+  {{high_scores_macro.display_high_scores(high_scores, base_path, user_logged_in)}}
 
   <br>
 

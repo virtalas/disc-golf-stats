@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+  {% import "macros/high_scores.html" as high_scores_macro %}
+
   {% if error %}
     <div class="alert alert-danger">
       {{error}}
@@ -65,36 +67,10 @@
 
   <br><br>
 
-  {% if user_logged_in and high_scores | length != 0 %}
-    <h3>Omat ennätykset</h3>
+  <h3>Omat ennätykset</h3>
 
-    <br>
+  <br>
 
-    <table style="width:700px">
-      <tr>
-        <th><b>Päivämäärä</b></th>
-        <th><b>Rata</b></th>
-        <th><b>Tulos</b></th>
-        <td align="right"><b>Par</b></td>
-        <th></th>
-      </tr>
-      {% for high_score in high_scores %}
-        <tr>
-          <td>{{high_score[0].gamedate}}</td>
-          <td>{{high_score[1].name}}</td>
-          <td>{{high_score[2]}}</td>
-          <td align="right">{{high_score[3]}}</td>
-          <td style="padding-left:30px">
-            <a href="{{base_path}}/game/{{high_score[0].gameid}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-  {% endif %}
-
-  {% if user_logged_in and high_scores | length == 0 %}
-    <h3>Omat ennätykset</h3>
-    <p>Ei pelejä</p>
-  {% endif %}
+  {{high_scores_macro.display_high_scores(high_scores, base_path, user_logged_in)}}
 
 {% endblock %}

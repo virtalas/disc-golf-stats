@@ -3,8 +3,8 @@
 
     // Turn caching on/off (true/false) for development
     public static function on() {
-      return true; // on
-      // return false; // off
+      // return true; // on
+      return false; // off
     }
 
     public static function getPage($stripped_url) {

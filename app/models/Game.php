@@ -490,43 +490,47 @@
     }
 
     public static function player_high_scores($playerid) {
-      $player_courses = Course::player_courses($playerid);
-      $high_scores = array();
-
-      foreach ($player_courses as $course) {
-        $sql = "SELECT gameid, total_score, total_score - total_par as to_par
-                FROM (
-                SELECT score.gameid, SUM(score.stroke) + SUM(score.ob) as total_score,
+      // If there are multiple games with the same high score, this returns them both.
+      // Duplicate scores come in a row, with the newest one first (the correct one).
+      $sql = "SELECT to_char(t1.gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, t1.name, t1.gameid, t1.total_score,
+              CASE
+              WHEN t1.total_score - t1.total_par > 0
+              THEN '+' || t1.total_score - t1.total_par
+              ELSE '' || t1.total_score - t1.total_par
+              END AS to_par
+              FROM (
+                SELECT game.gamedate, course.courseid, course.name, score.gameid, SUM(score.stroke) + SUM(score.ob) as total_score,
                 SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
                 FROM score
                 JOIN hole ON score.holeid = hole.holeid
+                JOIN course ON hole.courseid = course.courseid
+                JOIN game ON score.gameid = game.gameid
                 WHERE score.legal = TRUE
                 AND score.playerid = :playerid
-                AND hole.courseid = :courseid
-                GROUP BY score.gameid
-                ) t1
-                ORDER BY total_score ASC LIMIT 1";
-        $query = DB::connection()->prepare($sql);
-        $query->execute(array('playerid' => $playerid, 'courseid' => $course->courseid));
-        $row = $query->fetch();
+                GROUP BY score.gameid, course.courseid, game.gamedate
+                ORDER BY course.name
+              ) t1
+                LEFT JOIN (
+                  SELECT game.gamedate, course.courseid, course.name, score.gameid, SUM(score.stroke) + SUM(score.ob) as total_score,
+                  SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
+                  FROM score
+                  JOIN hole ON score.holeid = hole.holeid
+                  JOIN course ON hole.courseid = course.courseid
+                  JOIN game ON score.gameid = game.gameid
+                  WHERE score.legal = TRUE
+                  AND score.playerid = :playerid
+                  GROUP BY score.gameid, course.courseid, game.gamedate
+                  ORDER BY course.name
+                ) t2
+                  ON (t1.courseid = t2.courseid AND t1.total_score > t2.total_score)
+              WHERE t2.courseid IS NULL
+              ORDER BY t1.name ASC, t1.gamedate DESC";
 
-        // Array to be passed to the HTML template
-        $high_score = array();
-        $high_score[] = self::find_format_gamedate($row['gameid']); // index 0: game
-        $high_score[] = $course; // index 1: course
-        $high_score[] = $row['total_score']; // index 2: total score
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $rows = $query->fetchAll();
 
-        // index 3: to par
-        if ($row['to_par'] > 0) {
-          $high_score[] = "+". $row['to_par'];
-        } else {
-          $high_score[] = $row['to_par'];
-        }
-
-        $high_scores[] = $high_score;
-      }
-
-      return $high_scores;
+      return $rows;
     }
 
     public static function get_gamedate($gameid) {
