@@ -29,16 +29,25 @@
         $aces = Score::players_aces($player->playerid);
 
         $courses_avg_scores = array();
+        $names_done = false;
 
-        foreach (Course::player_courses($player->playerid) as $course) {
-          $averages = array();
-          $averages[] = $course->name;
+        foreach ($years as $year) {
+          $avg_scores_by_year = Course::average_player_scoring_by_year($player->playerid, $year);
 
-          foreach (Game::game_years() as $year) {
-            $averages[] = Course::average_player_scoring_by_year($course->courseid, $player->playerid, $year);
+          for ($i = 0; $i < count($avg_scores_by_year); $i++) {
+            if (!$names_done) {
+              $averages = array();
+              $averages[] = $avg_scores_by_year[$i]['name'];
+              $courses_avg_scores[] = $averages;
+            }
+
+            if ($avg_scores_by_year[$i]['avg_score'] != null) {
+              $courses_avg_scores[$i][] = $avg_scores_by_year[$i]['avg_score']. " (". $avg_scores_by_year[$i]['to_par']. ")";
+            } else {
+              $courses_avg_scores[$i][] = "";
+            }
           }
-
-          $courses_avg_scores[] = $averages;
+          $names_done = true;
         }
 
         $page_html = View::make('player/index.html', array(

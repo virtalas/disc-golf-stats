@@ -7,6 +7,14 @@
       $twig = self::get_twig();
       $rendered_page = "";
 
+      $twig->addFilter( new Twig_SimpleFilter('cast_to_array', function ($stdClassObject) {
+        $response = array();
+        foreach ($stdClassObject as $key => $value) {
+          $response[] = array($key, $value);
+        }
+        return $response;
+      }));
+
       try{
         // Asetetaan uudelleenohjauksen yhteydessä lisätty viesti
         self::set_flash_message($content);
