@@ -10,7 +10,6 @@ Features/bugs/etc planned for disc-golf-stats
 * set collation (order by name not working in page player)
 * site icon
 * Date-picker http://eonasdan.github.io/bootstrap-datetimepicker/
-* ennätysten lataus nopeammaksi (etu/pelaajat -sivu)
 * Game-tauluun playerid (omistaja / pelin lisääjä), jolloin myös ei-admin voi muokata lisäämiään pelejä
 
 ### Graphs
@@ -20,8 +19,6 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Tilastot-sivu
 
-* prosentit kuinka monta pelaajaa per kierros
-* average time
 * longest streak (days in row)
 
 ### Pelit-sivu
@@ -31,10 +28,8 @@ Features/bugs/etc planned for disc-golf-stats
 ### Radat-sivu
 
 * rate courses with 5 stars, how overall score and user's own score
-* millä kaikilla väylillä heitetty birdie
 * väylien pituudet
 
 ### Pelaajat-sivu
 
 * "ratojen tulosten keskiarvot" Kivikon tulokset väärin (skipatut väylät)
-* rate courses with 5 stars, how overall score and user's own score
