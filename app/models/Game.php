@@ -118,7 +118,7 @@
     private function load_weather() {
       $weather_array = array();
 
-      if ($this->temp) {
+      if (!is_null($this->temp)) { // temp can be 0!
         array_push($weather_array, $this->temp. " °C");
       }
       if ($this->windy) {
