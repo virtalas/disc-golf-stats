@@ -307,7 +307,7 @@
       $led = isset($_POST['led']) && $_POST['led']  ? "1" : "0"; // checked=1, unchecked=0
       $snow = isset($_POST['snow']) && $_POST['snow']  ? "1" : "0"; // checked=1, unchecked=0
       $doubles = isset($_POST['doubles']) && $_POST['doubles']  ? "1" : "0"; // checked=1, unchecked=0
-      $temp = isset($_POST['temp']) && $_POST['temp']  ? $_POST['temp'] : null; // temperature can be null
+      $temp = $_POST['temp'] != ""  ? $_POST['temp'] : null; // temperature can be null (or 0!)
       $date = $_POST['date'];
       $time = $_POST['time'];
       $comment = $_POST['comment'];
