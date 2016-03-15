@@ -42,7 +42,7 @@
             }
 
             if ($avg_scores_by_year[$i]['avg_score'] != null) {
-              $courses_avg_scores[$i][] = $avg_scores_by_year[$i]['avg_score']. " (". $avg_scores_by_year[$i]['to_par']. ")";
+              $courses_avg_scores[$i][] = $avg_scores_by_year[$i]['avg_score']. " (". str_replace(" ", "", $avg_scores_by_year[$i]['to_par']). ")";
             } else {
               $courses_avg_scores[$i][] = "";
             }
