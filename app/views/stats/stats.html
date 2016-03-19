@@ -67,7 +67,9 @@
 
   <br><br>
 
-  <h3>Omat ennätykset</h3>
+  {% if user_logged_in and high_scores | length != 0 %}
+    <h3>Omat ennätykset</h3>
+  {% endif %}
 
   <br>
 
