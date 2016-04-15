@@ -30,6 +30,7 @@ real_id = The playerid of the user that is changing their password
 
 temp_id = The temporary account's playerid
 
+1. Make a backup file of the database just in case with `pg_dump dbname > outfile`
 1. Enable registering by uncommenting the two registering urls (get /register, post /register) in config/routes.php.
 2. The user will input an account by the name of "temp" and input their new password into the registering form.
 3. This will create a new temp account (with temp_id) that has the new password.
