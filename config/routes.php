@@ -97,6 +97,10 @@
     GameController::destroy($gameid);
   });
 
+  $routes->get('/game/:gameid/export', 'check_logged_in', function($gameid){
+    GameController::export($gameid);
+  });
+
   // Näytä tuloskortti-kuvat
   $routes->get('/game/old/:year', 'check_logged_in', function($year){
     GameController::display_score_card_pictures_by_year($year);

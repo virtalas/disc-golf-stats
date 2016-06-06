@@ -393,6 +393,43 @@
       ));
     }
 
+    public static function export($gameid) {
+      $content = "";
+      $game = Game::find($gameid);
+
+      foreach ($game->scores as $playerid => $scores) {
+        $player = Player::find(substr($playerid, 6));
+        $content .= $player->firstname;
+
+        // strokes
+        foreach ($scores as $score) {
+          $content .= ";". $score->stroke;
+        }
+
+        // OBs
+        $content .= ";x;x;";
+        $first = true;
+        foreach ($scores as $score) {
+          if ($first) {
+            $content .= $score->ob;
+            $first = false;
+          } else {
+            $content .= ",". $score->ob;
+          }
+        }
+
+        $content .= "\n";
+      }
+
+      $name = substr($game->gamedate, 0, 10). " ". $game->course->name;
+
+      // Download file
+      header('Content-type: application/txt');
+      header('Content-Disposition: attachment; filename='. $name. '.txt');
+      echo $content;
+      exit;
+}
+
     // Import multiple csv files
     public static function csv_import_show() {
       View::make('game/csv_import.html');
