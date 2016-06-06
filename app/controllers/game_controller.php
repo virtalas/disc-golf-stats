@@ -421,6 +421,31 @@
         $content .= "\n";
       }
 
+      $content .= "\n\n";
+
+      // Other game information
+
+      if (!empty($game->illegal_scorers)) {
+        $content .= "* Laiton peli: ". $game->illegal_scorers;
+        $content .= "\n";
+      }
+      if (!empty($game->high_scorers)) {
+        $content .= "* Ennätys: ". $game->high_scorers;
+        $content .= "\n";
+      }
+      if (!empty($game->conditions)) {
+        $content .= "* Olosuhteet: ". $game->conditions;
+        $content .= "\n";
+      }
+      if (!empty($game->weather)) {
+        $content .= "* Sää: ". $game->weather;
+        $content .= "\n";
+      }
+      if (!empty($game->comment)) {
+        $content .= "* Kommentit: ". $game->comment;
+        $content .= "\n";
+      }
+
       $name = substr($game->gamedate, 0, 10). " ". $game->course->name;
 
       // Download file
