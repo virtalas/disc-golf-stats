@@ -75,6 +75,15 @@
       return self::get_courses_from_rows($rows);
     }
 
+    public static function all_order_by_id() {
+      $sql = "SELECT * FROM course ORDER BY courseid ASC";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+
+      return self::get_courses_from_rows($rows);
+    }
+
     public static function all_order_by_name() {
       $sql = "SELECT * FROM course ORDER BY name";
       $query = DB::connection()->prepare($sql);

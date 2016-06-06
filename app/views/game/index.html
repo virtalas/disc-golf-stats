@@ -14,9 +14,11 @@
   {% endif %}
 
   {% if playerid_param and courseid_param %}
-    <h2>Pelaajan {{players[playerid_param - 1].firstname}} pelit radalla {{courses[courseid_param - 1].name}}
+    <h2>Pelaajan {{players[playerid_param - 1].firstname}} pelit radalla {{courses_order_by_id[courseid_param - 1].name}}
   {% elseif playerid_param %}
     <h2>Pelaajan {{players[playerid_param - 1].firstname}} pelit
+  {% elseif courseid_param %}
+    <h2>Pelatut pelit radalla {{courses_order_by_id[courseid_param - 1].name}}
   {% else %}
     <h2>Pelatut pelit
   {% endif %}
