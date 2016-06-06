@@ -446,7 +446,7 @@
         $content .= "\n";
       }
 
-      $name = substr($game->gamedate, 0, 10). " ". $game->course->name;
+      $name = $game->gamedate. " ". $game->course->name;
 
       // Download file
       header('Content-type: application/txt');
