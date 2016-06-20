@@ -7,7 +7,6 @@
       $url = $_SERVER['REQUEST_URI'];
       $stripped_url = preg_replace("/[^A-Za-z0-9 ]/", '', $url);
 
-
       if ($player) {
         $stripped_url .= $player->playerid;
       }
