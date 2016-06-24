@@ -11,9 +11,9 @@ $(document).ready(function () {
 
 // Disabled link
 $(document).ready(function () {
-	$('a.disabled_link').click(function(event){
-   		event.preventDefault();
-	});
+  $('a.disabled_link').click(function(event){
+    event.preventDefault();
+  });
 });
 
 // Set sidebar's grey background equal to window's scrollable area height
@@ -36,9 +36,9 @@ $(document).ready(function () {
     var name = cname + "=";
     var ca = document.cookie.split(';');
     for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1);
+      if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
     }
     return "";
   }
