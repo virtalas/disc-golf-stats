@@ -11,7 +11,7 @@
 
   {% for curr_course in courses %}
     <li>
-        <a href="{{base_path}}/course?course={{curr_course.courseid}}"
+        <a href="{{base_path}}/course?course={{curr_course.courseid}}" class="sidebar-li"
           {% if curr_course.courseid == course.courseid %}
             id="selected"
           {% endif %}
