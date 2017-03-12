@@ -2,6 +2,7 @@
   class Cache {
 
     // Turn caching on/off (true/false) for development
+    // Turn ON for git commits
     public static function on() {
       return true; // on
       // return false; // off
