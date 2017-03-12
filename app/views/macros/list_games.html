@@ -16,6 +16,7 @@
       </td>
       <td valign="top">
         <li><font color="red">hole in one</font></li>
+        <li><font color="yellow">eagle</font></li>
         <li><font color="#00FF00">birdie</font></li>
         <li><font color="#A7C942">par</font></li>
         <li><font color="orange">bogey</font></li>
@@ -78,7 +79,9 @@
               <td>
             {% elseif score.stroke == 1 %}
               <td class='hole_in_one'>
-            {% elseif score.stroke + score.ob < score.hole_par %}
+            {% elseif score.stroke + score.ob + 2 == score.hole_par %}
+              <td class='eagle'>
+            {% elseif score.stroke + score.ob + 1 == score.hole_par %}
               <td class='birdie'>
             {% elseif score.stroke + score.ob == score.hole_par %}
               <td class='par'>

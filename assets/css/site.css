@@ -127,6 +127,10 @@ blockquote {
 	background-color: red;
 }
 
+#card td.eagle {
+	background-color: yellow;
+}
+
 #card td.birdie {
 	background-color: #00FF00;
 }
