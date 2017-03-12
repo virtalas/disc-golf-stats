@@ -27,6 +27,7 @@
         $throw_count = Score::count_all_player_scores($player->playerid);
         $birdies = Score::players_birdies($player->playerid);
         $aces = Score::players_aces($player->playerid);
+        $eagles = Score::players_eagles($player->playerid);
 
         $courses_avg_scores = array();
         $names_done = false;
@@ -60,6 +61,7 @@
           'popular_courses' => $popular_courses,
           'birdies' => $birdies,
           'aces' => $aces,
+          'eagles' => $eagles,
           'years' => $years,
           'courses_avg_scores' => $courses_avg_scores
         ));

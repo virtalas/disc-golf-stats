@@ -74,6 +74,22 @@
       return $row['aces'];
     }
 
+    public static function players_eagles($playerid) {
+      // Hole in ones are not counted as eagles.
+      $sql = "SELECT COUNT(*) as eagles
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              WHERE score.playerid = :playerid
+              AND hole.par - (score.stroke + score.ob) = 2
+              AND score.stroke != 0
+              AND score.stroke != 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $row = $query->fetch();
+
+      return $row['eagles'];
+    }
+
     public static function all_game_scores($gameid) {
       $players = Game::games_players($gameid);
       $player_scores = array();
