@@ -22,9 +22,16 @@ hole_num smallint NOT NULL,
 par smallint NOT NULL
 );
 
+CREATE TABLE Contest(
+contestid SERIAL PRIMARY KEY,
+name varchar(300),
+number_of_games smallint NOT NULL
+);
+
 CREATE TABLE Game(
 gameid SERIAL PRIMARY KEY,
 courseid INTEGER REFERENCES Course(courseid),
+contestid INTEGER REFERENCES Contest(contestid),
 gamedate timestamp,
 comment varchar(300),
 rain boolean DEFAULT FALSE,
