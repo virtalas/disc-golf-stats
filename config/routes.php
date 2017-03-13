@@ -136,6 +136,12 @@
     GraphController::index();
   });
 
+  // Kisat
+
+  $routes->get('/contest', 'check_logged_in', function(){
+    ContestController::index();
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen
