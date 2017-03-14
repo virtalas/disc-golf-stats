@@ -142,6 +142,14 @@
     ContestController::index();
   });
 
+  $routes->get('/contest/new', 'check_logged_in', function(){
+    ContestController::create();
+  });
+
+  $routes->post('/contest', 'check_logged_in', function(){
+    ContestController::store();
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen

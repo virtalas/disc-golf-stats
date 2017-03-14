@@ -10,6 +10,7 @@ return array(
     'BaseModel' => $baseDir . '/lib/base_model.php',
     'CSVScoreProcessor' => $baseDir . '/lib/process_csv_scores.php',
     'Cache' => $baseDir . '/lib/Cache.php',
+    'Contest' => $baseDir . '/app/models/Contest.php',
     'ContestController' => $baseDir . '/app/controllers/contest_controller.php',
     'Course' => $baseDir . '/app/models/Course.php',
     'CourseController' => $baseDir . '/app/controllers/course_controller.php',

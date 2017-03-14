@@ -46,6 +46,7 @@ class ComposerStaticInite5687506ac72889f9b1fd85e60e64c2a
         'BaseModel' => __DIR__ . '/../..' . '/lib/base_model.php',
         'CSVScoreProcessor' => __DIR__ . '/../..' . '/lib/process_csv_scores.php',
         'Cache' => __DIR__ . '/../..' . '/lib/Cache.php',
+        'Contest' => __DIR__ . '/../..' . '/app/models/Contest.php',
         'ContestController' => __DIR__ . '/../..' . '/app/controllers/contest_controller.php',
         'Course' => __DIR__ . '/../..' . '/app/models/Course.php',
         'CourseController' => __DIR__ . '/../..' . '/app/controllers/course_controller.php',

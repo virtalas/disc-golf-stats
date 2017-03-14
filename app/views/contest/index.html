@@ -4,4 +4,33 @@
 
 {% block content %}
   <h2>Kisat</h2>
+
+  <a href="{{base_path}}/contest/new" class="btn btn-default" role="button">Uusi kisa</a>
+
+  {% if contests %}
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Nimi</th>
+          <th>Pelien määrä</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for contest in contests %}
+          <tr>
+            <td><a href="{{base_path}}/contest/{{contest.contestid}}">{{contest.name}}</a></td>
+            <td>{{contest.number_of_games}}</td>
+            {% if admin_logged_in %}
+              <td><a class="btn btn-default btn-sm" href="{{base_path}}/contest/{{contest.contestid}}/edit">Muokkaa</a></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>
+      Ei kisoja.
+    </p>
+  {% endif %}
 {% endblock %}

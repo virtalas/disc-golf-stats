@@ -6,7 +6,7 @@
 
     public function __construct($attributes) {
   		parent::__construct($attributes);
-      $this->validators = array('validate_name');
+      $this->validators = array('validate_name', 'validate_number_of_games');
   	}
 
     /*
@@ -80,7 +80,7 @@
       $contests = array();
 
       foreach ($rows as $row) {
-        $contests[] = self:get_contest_from_row($row);
+        $contests[] = self::get_contest_from_row($row);
       }
 
       return $contests;
@@ -92,5 +92,9 @@
 
     public function validate_name() {
       return $this->validate_string_not_empty($this->name, "Nimi");
+    }
+
+    public function validate_number_of_games() {
+      return $this->validate_integer($this->number_of_games, "Pelien määrä");
     }
   }
