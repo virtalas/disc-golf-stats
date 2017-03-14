@@ -37,4 +37,9 @@
         View::make('contest/new.html', array('errors' => $errors, 'attributes' => $params));
       }
     }
+
+    public static function show($contestid) {
+      $contest = Contest::find($contestid);
+      View::make('contest/show.html', array('contest' => $contest));
+    }
   }
