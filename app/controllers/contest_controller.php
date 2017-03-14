@@ -5,9 +5,7 @@
     public static function index() {
       $contests = Contest::all();
 
-      View::make('contest/index.html', array(
-        'contests' => $contests
-      ));
+      View::make('contest/index.html', array('contests' => $contests));
     }
 
     public static function create() {

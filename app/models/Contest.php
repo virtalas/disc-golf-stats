@@ -54,8 +54,7 @@
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
-
-      self::get_contests_from_rows($rows);
+      return self::get_contests_from_rows($rows);
     }
 
     /*

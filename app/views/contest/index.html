@@ -7,6 +7,8 @@
 
   <a href="{{base_path}}/contest/new" class="btn btn-default" role="button">Uusi kisa</a>
 
+  <br><br>
+
   {% if contests %}
     <table class="table table-striped table-bordered">
       <thead>
@@ -21,9 +23,6 @@
           <tr>
             <td><a href="{{base_path}}/contest/{{contest.contestid}}">{{contest.name}}</a></td>
             <td>{{contest.number_of_games}}</td>
-            {% if admin_logged_in %}
-              <td><a class="btn btn-default btn-sm" href="{{base_path}}/contest/{{contest.contestid}}/edit">Muokkaa</a></td>
-            {% endif %}
           </tr>
         {% endfor %}
       </tbody>
