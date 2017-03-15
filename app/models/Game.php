@@ -542,6 +542,20 @@
       return $row['gamedate'];
     }
 
+    public static function five_latest_games() {
+      $sql = "SELECT *
+              FROM game
+              JOIN course ON game.courseid = course.courseid
+              ORDER BY game.gamedate DESC
+              LIMIT 5";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+
+      return self::get_games_from_rows($rows);
+    }
+
     /*
     *  Graph functions
     */

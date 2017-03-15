@@ -168,6 +168,11 @@
     ContestController::update($contestid);
   });
 
+  // Pelin lisääinen kisaan
+  $routes->post('/contest/:contestid/add', 'check_logged_in', function($contestid){
+    ContestController::add_game($contestid);
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen

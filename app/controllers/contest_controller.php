@@ -40,7 +40,9 @@
 
     public static function show($contestid) {
       $contest = Contest::find($contestid);
-      View::make('contest/show.html', array('contest' => $contest));
+      $latest_games = Game::five_latest_games();
+
+      View::make('contest/show.html', array('contest' => $contest, 'games' => $latest_games));
     }
 
     public static function edit($contestid) {
