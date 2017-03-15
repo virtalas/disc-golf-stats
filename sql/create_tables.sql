@@ -24,6 +24,7 @@ par smallint NOT NULL
 
 CREATE TABLE Contest(
 contestid SERIAL PRIMARY KEY,
+creator INTEGER REFERENCES Player(playerid),
 name varchar(300),
 number_of_games smallint NOT NULL
 );

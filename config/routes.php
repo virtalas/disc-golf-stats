@@ -158,6 +158,16 @@
     ContestController::show($contestid);
   });
 
+  // Kisan muokkauslomakkeen esittäminen (vain kisan luoja)
+  $routes->get('/contest/:contestid/edit', 'check_logged_in', function($contestid){
+    ContestController::edit($contestid);
+  });
+
+  // Kisan muokkaaminen (vain kisan luoja)
+  $routes->post('/contest/:contestid/edit', 'check_logged_in', function($contestid){
+    ContestController::update($contestid);
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen

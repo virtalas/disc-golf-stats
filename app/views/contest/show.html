@@ -3,5 +3,17 @@
 {% set current_page = 'contest' %}
 
 {% block content %}
+
+  {% if message is not null %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+
   <h2>{{contest.name}}</h2>
+
+  {% if contest.creator == user_logged_in.playerid %}
+    <a href="{{base_path}}/contest/{{contest.contestid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
+  {% endif %}
+
 {% endblock %}

@@ -14,8 +14,10 @@
 
     public static function store() {
       $params = $_POST;
+      $player = self::get_user_logged_in();
 
       $contest_params = array(
+        'creator' => $player->playerid,
         'name' => $params['name'],
         'number_of_games' => $params['number_of_games']
       );
@@ -39,5 +41,49 @@
     public static function show($contestid) {
       $contest = Contest::find($contestid);
       View::make('contest/show.html', array('contest' => $contest));
+    }
+
+    public static function edit($contestid) {
+      $contest = Contest::find($contestid);
+      $player = self::get_user_logged_in();
+
+      $attributes = array(
+        'contestid' => $contest->contestid,
+        'creator' => $contest->creator,
+        'name' => $contest->name,
+        'number_of_games' => $contest->number_of_games
+      );
+
+      // Only the creator of the contest can view this page
+      if ($contest->creator == $player->playerid) {
+        View::make("contest/edit.html", array('attributes' => $attributes));
+      } else {
+        Redirect::to('/');
+      }
+    }
+
+    public static function update($contestid) {
+      $params = $_POST;
+
+      $contest_params = array(
+        'contestid' => $contestid,
+        'name' => $params['name'],
+        'number_of_games' => $params['number_of_games']
+      );
+
+      $contest = new Contest($contest_params);
+      $errors = $contest->errors();
+
+      if (count($errors) == 0) {
+        // Contest was valid
+        $contest->update();
+
+        // Clear cached pages
+        Cache::clear();
+
+        Redirect::to('/contest/'. $contestid, array('message' => 'Kisan tiedot päivitetty.'));
+      } else {
+        View::make('course/edit.html', array('errors' => $errors, 'attributes' => $params));
+      }
     }
   }

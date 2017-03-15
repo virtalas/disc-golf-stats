@@ -2,7 +2,7 @@
 
   class Contest extends BaseModel {
 
-    public $contestid, $name, $number_of_games;
+    public $contestid, $creator, $name, $number_of_games;
 
     public function __construct($attributes) {
   		parent::__construct($attributes);
@@ -14,9 +14,9 @@
     */
 
     public function save() {
-      $sql = "INSERT INTO contest (name, number_of_games) VALUES (:name, :number_of_games) RETURNING contestid";
+      $sql = "INSERT INTO contest (creator, name, number_of_games) VALUES (:creator, :name, :number_of_games) RETURNING contestid";
       $query = DB::connection()->prepare($sql);
-      $query->execute(array('name' => $this->name, 'number_of_games' => $this->number_of_games));
+      $query->execute(array('creator' => $this->creator, 'name' => $this->name, 'number_of_games' => $this->number_of_games));
 
       $row = $query->fetch();
       $this->contestid = $row['contestid'];
@@ -65,6 +65,7 @@
       if ($row) {
         $contest = new Contest(array(
           'contestid' => $row['contestid'],
+          'creator' => $row['creator'],
           'name' => $row['name'],
           'number_of_games' => $row['number_of_games'],
         ));

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% set current_page = 'contest' %}
+
+{% block content %}
+  <h2>Muokkaa kisaa {{attributes.name}}</h2>
+
+  <form method="post" action="{{base_path}}/contest/{{attributes.contestid}}/edit">
+    <div class="form-group">
+      <label for="name">Kisan nimi</label>
+      <input class="form-control" name="name" value="{{attributes.name}}">
+    </div>
+    <div class="form-group">
+      <label for="number_of_games">Pelien määrä</label>
+      <input class="form-control" name="number_of_games" value="{{attributes.number_of_games}}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Muokkaa</button>
+    <a href="{{base_path}}/contest/{{contestid}}"><button type="button" class="btn btn-default">Peruuta</button></a>
+  </form>
+{% endblock %}
