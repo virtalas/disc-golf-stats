@@ -40,6 +40,10 @@
       $query->execute(array('contestid' => $this->contestid));
     }
 
+    public function is_creator($player) {
+      return $this->creator == $player->playerid;
+    }
+
     public static function find($contestid){
       $sql = "SELECT * FROM contest WHERE contestid = :contestid LIMIT 1";
       $query = DB::connection()->prepare($sql);

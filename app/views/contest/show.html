@@ -17,11 +17,11 @@
 
     <br><br>
 
-    <form method="get" action="{{base_path}}/contest/{{contest.contestid}}/add">
+    <form method="post" action="{{base_path}}/contest/{{contest.contestid}}/add">
       <label>Lisää peli viidestä uusimmasta tai antamalla pelin ID</label>
       <div class="row">
         <div class="col-xs-2">
-          <select class="form-control" name="course">
+          <select class="form-control" name="gameid">
             {% for game in games %}
               <option value="{{game.gameid}}">{{game.gamedate|date("d.m.Y H:i")}} {{game.course.name}}, {{game.course.city}}</option>
             {% endfor %}

@@ -66,6 +66,7 @@
 
     public static function update($contestid) {
       $params = $_POST;
+      $player = self::get_user_logged_in();
 
       $contest_params = array(
         'contestid' => $contestid,
@@ -75,6 +76,11 @@
 
       $contest = new Contest($contest_params);
       $errors = $contest->errors();
+
+      // Only the creator of the contest can update
+      if ($contest->is_creator($player)) {
+        $errors[] = "Vain kisan luoja voi muokata sitä.";
+      }
 
       if (count($errors) == 0) {
         // Contest was valid
@@ -86,6 +92,22 @@
         Redirect::to('/contest/'. $contestid, array('message' => 'Kisan tiedot päivitetty.'));
       } else {
         View::make('course/edit.html', array('errors' => $errors, 'attributes' => $params));
+      }
+    }
+
+    public static function add_game($contestid) {
+      $gameid = $_POST['gameid'];
+      $player = self::get_user_logged_in();
+
+      $contest = Contest::find($contestid);
+      $game = Game::find($gameid);
+
+      if ($contest->is_creator($player)) {
+        $game->contestid = (int) $contestid;
+        $game->update();
+        // Redirect::to('/contest/'. $contestid, array('message' => 'Peli lisätty kisaan.'));
+      } else {
+        Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi lisätä siihen pelejä.'));
       }
     }
   }
