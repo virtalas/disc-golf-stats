@@ -39,22 +39,26 @@
     }
 
     public function update() {
-      $sql = "UPDATE game SET gamedate = :gamedate, comment = :comment, rain = :rain,
+      $sql = "UPDATE game SET contestid = :contestid, gamedate = :gamedate, comment = :comment, rain = :rain,
               wet_no_rain = :wet_no_rain, windy = :windy, variant = :variant,
-              dark = :dark, led = :led, snow = :snow, doubles = :doubles, temp = :temp, contestid = :contestid
+              dark = :dark, led = :led, snow = :snow, doubles = :doubles, temp = :temp
               WHERE gameid = :gameid";
       $query = DB::connection()->prepare($sql);
+
+      // var_export($var, true) returns boolean as a string.
+      // Giving a boolean in the following array would cause an SQL error.
       $query->execute(array('gameid' => $this->gameid,
+                            'contestid' => $this->contestid,
                             'gamedate' => $this->gamedate,
                             'comment' => $this->comment,
-                            'rain' => $this->rain,
-                            'wet_no_rain' => $this->wet_no_rain,
-                            'windy' => $this->windy,
-                            'variant' => $this->variant,
-                            'dark' => $this->dark,
-                            'led' => $this->led,
-                            'snow' => $this->snow,
-                            'doubles' => $this->doubles,
+                            'rain' => var_export($this->rain, true),
+                            'wet_no_rain' => var_export($this->wet_no_rain, true),
+                            'windy' => var_export($this->windy, true),
+                            'variant' => var_export($this->variant, true),
+                            'dark' => var_export($this->dark, true),
+                            'led' => var_export($this->led, true),
+                            'snow' => var_export($this->snow, true),
+                            'doubles' => var_export($this->doubles, true),
                             'temp' => $this->temp));
       return $this->gameid;
     }
