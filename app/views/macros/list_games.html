@@ -137,6 +137,14 @@
         </tr>
       {% endif %}
 
+      <!-- Display contest name if the game is part of a contest -->
+      {% if game.contest_name %}
+        <tr>
+          <td class="names">Kisa</td>
+          <td colspan="30" class="names">{{game.contest_name}}</td>
+        </tr>
+      {% endif %}
+
       <!-- Display high scorers if there are any -->
       {% if game.high_scorers %}
         <tr>

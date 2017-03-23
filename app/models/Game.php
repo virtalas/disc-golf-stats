@@ -80,6 +80,7 @@
       $this->load_weather();
       $this->load_illegal_scorers();
       $this->load_high_scorers();
+      $this->load_contest_name();
     }
 
     private function load_course() {
@@ -202,13 +203,13 @@
       $this->high_scorers = $high_scorers_string;
     }
 
-    // public function load_contest_name() {
-    //   $sql = "SELECT name FROM contest WHERE contestid = :contestid";
-    //   $query = DB::connection()->prepare($sql);
-    //   $query->execute(array('contestid' => $contestid));
-    //   $row = $query->fetch();
-    //   $contest_name = $row['name'];
-    // }
+    public function load_contest_name() {
+      $sql = "SELECT name FROM contest WHERE contestid = :contestid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('contestid' => $this->contestid));
+      $row = $query->fetch();
+      $this->contest_name = $row['name'];
+    }
 
     /*
     *  Information functions
@@ -562,25 +563,17 @@
     }
 
     public static function five_latest_games() {
-      $sql = "SELECT game.*, contest.name
+      $sql = "SELECT *
               FROM game
               JOIN course ON game.courseid = course.courseid
-              LEFT JOIN contest ON game.contestid = contest.contestid
               ORDER BY game.gamedate DESC
               LIMIT 5";
 
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
-      $games = array();
 
-      foreach ($rows as $row) {
-        $game = self::get_game_from_row($row);
-        $game->contest_name = $row['name'];
-        $games[] = $game;
-      }
-
-      return $games;
+      return self::get_games_from_rows($rows);
     }
 
     /*
