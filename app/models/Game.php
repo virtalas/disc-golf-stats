@@ -3,7 +3,7 @@
 
     public $gameid, $courseid, $contestid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
             $variant, $dark, $led, $snow, $doubles, $temp, // Ready to use after creation
-            $course, $scores, $conditions, $weather, $illegal_scorers, $high_scorers; // Need to be prepared via prepare_var()
+            $course, $scores, $conditions, $weather, $illegal_scorers, $high_scorers, $contest_name; // Need to be prepared via prepare_var()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -202,6 +202,14 @@
       $this->high_scorers = $high_scorers_string;
     }
 
+    // public function load_contest_name() {
+    //   $sql = "SELECT name FROM contest WHERE contestid = :contestid";
+    //   $query = DB::connection()->prepare($sql);
+    //   $query->execute(array('contestid' => $contestid));
+    //   $row = $query->fetch();
+    //   $contest_name = $row['name'];
+    // }
+
     /*
     *  Information functions
     */
@@ -343,6 +351,15 @@
 
         return self::get_games_from_rows($rows);
       }
+    }
+
+    public static function contest_games($contestid) {
+      $sql = "SELECT * FROM game WHERE contestid = :contestid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('contestid' => $contestid));
+      $rows = $query->fetchAll();
+
+      return self::get_games_from_rows($rows);
     }
 
     public static function games_players($gameid) {
@@ -545,17 +562,25 @@
     }
 
     public static function five_latest_games() {
-      $sql = "SELECT *
+      $sql = "SELECT game.*, contest.name
               FROM game
               JOIN course ON game.courseid = course.courseid
+              LEFT JOIN contest ON game.contestid = contest.contestid
               ORDER BY game.gamedate DESC
               LIMIT 5";
 
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
+      $games = array();
 
-      return self::get_games_from_rows($rows);
+      foreach ($rows as $row) {
+        $game = self::get_game_from_row($row);
+        $game->contest_name = $row['name'];
+        $games[] = $game;
+      }
+
+      return $games;
     }
 
     /*

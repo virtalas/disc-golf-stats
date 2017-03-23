@@ -14,7 +14,7 @@
       <thead>
         <tr>
           <th>Nimi</th>
-          <th>Pelien määrä</th>
+          <th>Pelit</th>
         </tr>
       </thead>
 
@@ -22,7 +22,7 @@
         {% for contest in contests %}
           <tr>
             <td><a href="{{base_path}}/contest/{{contest.contestid}}">{{contest.name}}</a></td>
-            <td>{{contest.number_of_games}}</td>
+            <td>{{contest.games_played}} / {{contest.number_of_games}}</td>
           </tr>
         {% endfor %}
       </tbody>

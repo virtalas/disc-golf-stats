@@ -2,7 +2,8 @@
 
   class Contest extends BaseModel {
 
-    public $contestid, $creator, $name, $number_of_games;
+    public $contestid, $creator, $name, $number_of_games,
+            $games_played;
 
     public function __construct($attributes) {
   		parent::__construct($attributes);
@@ -59,6 +60,25 @@
       $query->execute();
       $rows = $query->fetchAll();
       return self::get_contests_from_rows($rows);
+    }
+
+    public static function all_with_games_played() {
+      $sql = "SELECT contest.contestid, contest.creator, contest.name, contest.number_of_games, COUNT (*) as games_played
+              FROM contest
+              JOIN game ON game.contestid = contest.contestid
+              GROUP BY contest.contestid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute();
+      $rows = $query->fetchAll();
+      $contests = array();
+
+      foreach ($rows as $row) {
+        $contest = self::get_contest_from_row($row);
+        $contest->games_played = $row['games_played'];
+        $contests[] = $contest;
+      }
+
+      return $contests;
     }
 
     /*

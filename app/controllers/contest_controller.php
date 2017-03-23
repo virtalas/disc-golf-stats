@@ -3,7 +3,7 @@
   class ContestController extends BaseController {
 
     public static function index() {
-      $contests = Contest::all();
+      $contests = Contest::all_with_games_played();
 
       View::make('contest/index.html', array('contests' => $contests));
     }
@@ -41,8 +41,12 @@
     public static function show($contestid) {
       $contest = Contest::find($contestid);
       $latest_games = Game::five_latest_games();
+      $games = Game::contest_games($contestid);
 
-      View::make('contest/show.html', array('contest' => $contest, 'games' => $latest_games));
+      View::make('contest/show.html', array('contest' => $contest,
+                                            'latest_games' => $latest_games,
+                                            'games' => $games,
+                                            'players' => Player::all()));
     }
 
     public static function edit($contestid) {
@@ -105,7 +109,7 @@
       if ($contest->is_creator($player)) {
         $game->contestid = (int) $contestid;
         $game->update();
-        // Redirect::to('/contest/'. $contestid, array('message' => 'Peli lisätty kisaan.'));
+        Redirect::to('/contest/'. $contestid, array('message' => 'Peli lisätty kisaan.'));
       } else {
         Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi lisätä siihen pelejä.'));
       }

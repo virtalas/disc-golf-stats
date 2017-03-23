@@ -4,6 +4,8 @@
 
 {% block content %}
 
+  {% import "macros/list_games.html" as list_games %}
+
   {% if message is not null %}
     <div class="alert alert-success">
       {{message}}
@@ -22,8 +24,13 @@
       <div class="row">
         <div class="col-xs-2">
           <select class="form-control" name="gameid">
-            {% for game in games %}
-              <option value="{{game.gameid}}">{{game.gamedate|date("d.m.Y H:i")}} {{game.course.name}}, {{game.course.city}}</option>
+            {% for game in latest_games %}
+              <option value="{{game.gameid}}">
+                {{game.gamedate|date("d.m.Y H:i")}} {{game.course.name}}, {{game.course.city}}
+                {% if game.contest_name %}
+                  (Kisassa {{game.contest_name}})
+                {% endif %}
+              </option>
             {% endfor %}
           </select>
         </div>
@@ -31,6 +38,12 @@
         <button type="submit" class="btn btn-default">Lisää peli</button>
       </div>
     </form>
+
+    {% if games %}
+      {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit)}}
+    {% else %}
+      Kisassa ei ole yhtään peliä.
+    {% endif %}
 
   {% endif %}
 
