@@ -90,9 +90,10 @@
       return $row['eagles'];
     }
 
-    public static function all_game_scores($gameid) {
-      $players = Game::games_players($gameid);
+    public static function all_game_scores($game) {
+      $players = Game::games_players($game->gameid);
       $player_scores = array();
+      $totals = array();
 
       foreach ($players as $player) {
         $sql = "SELECT hole.hole_num, hole.par, score.scoreid, score.stroke, score.ob, score.legal FROM score
@@ -100,7 +101,7 @@
                 WHERE score.gameid = :gameid AND score.playerid = :playerid
                 ORDER BY hole.hole_num ASC";
         $query = DB::connection()->prepare($sql);
-        $query->execute(array('gameid' => $gameid, 'playerid' => $player->playerid));
+        $query->execute(array('gameid' => $game->gameid, 'playerid' => $player->playerid));
         $rows = $query->fetchAll();
 
         $scores = array();
@@ -121,6 +122,7 @@
         }
 
         $player_scores['player'. $player->playerid] = $scores;
+        $totals['player'. $player->playerid] = $total_score;
       }
 
       // Sort array by total score
@@ -140,8 +142,62 @@
         return $a_total_score - $b_total_score;
       });
 
-      return $player_scores;
+      $game->scores = $player_scores;
+      $game->total_scores = $totals;
     }
+
+    // public static function all_game_scores($gameid) {
+    //   $players = Game::games_players($gameid);
+    //   $player_scores = array();
+    //
+    //   foreach ($players as $player) {
+    //     $sql = "SELECT hole.hole_num, hole.par, score.scoreid, score.stroke, score.ob, score.legal FROM score
+    //             JOIN hole ON score.holeid = hole.holeid
+    //             WHERE score.gameid = :gameid AND score.playerid = :playerid
+    //             ORDER BY hole.hole_num ASC";
+    //     $query = DB::connection()->prepare($sql);
+    //     $query->execute(array('gameid' => $gameid, 'playerid' => $player->playerid));
+    //     $rows = $query->fetchAll();
+    //
+    //     $scores = array();
+    //     $total_score = 0;
+    //
+    //     foreach ($rows as $row) {
+    //       $score = new Score(array(
+    //         'hole_num' => $row['hole_num'],
+    //         'hole_par' => $row['par'],
+    //         'scoreid' => $row['scoreid'],
+    //         'stroke' => $row['stroke'],
+    //         'ob' => $row['ob'],
+    //         'legal' => $row['legal']
+    //       ));
+    //       $scores[] = $score;
+    //       $total_score += (int) $row['stroke'];
+    //       $total_score += (int) $row['ob'];
+    //     }
+    //
+    //     $player_scores['player'. $player->playerid] = $scores;
+    //   }
+    //
+    //   // Sort array by total score
+    //   uasort($player_scores, function($a, $b) {
+    //     $a_total_score = 0;
+    //     foreach ($a as $score) {
+    //       $a_total_score += $score->stroke;
+    //       $a_total_score += $score->ob;
+    //     }
+    //
+    //     $b_total_score = 0;
+    //     foreach ($b as $score) {
+    //       $b_total_score += $score->stroke;
+    //       $b_total_score += $score->ob;
+    //     }
+    //
+    //     return $a_total_score - $b_total_score;
+    //   });
+    //
+    //   return $player_scores;
+    // }
 
     public static function new_high_score($gameid, $playerid, $courseid) {
       if (self::legal($gameid, $playerid)) {

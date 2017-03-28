@@ -4,7 +4,6 @@
 
     public static function index() {
       $contests = Contest::all_with_games_played();
-
       View::make('contest/index.html', array('contests' => $contests));
     }
 
@@ -42,11 +41,14 @@
       $contest = Contest::find($contestid);
       $latest_games = Game::five_latest_games();
       $games = Game::contest_games($contestid);
+      $points = Contest::points($contest, $games);
+      $players = Player::all();
 
       View::make('contest/show.html', array('contest' => $contest,
                                             'latest_games' => $latest_games,
                                             'games' => $games,
-                                            'players' => Player::all()));
+                                            'players' => $players,
+                                            'points' => $points));
     }
 
     public static function edit($contestid) {

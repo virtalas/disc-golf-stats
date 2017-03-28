@@ -11,6 +11,7 @@ Features/bugs/etc planned for disc-golf-stats
 * Date-picker http://eonasdan.github.io/bootstrap-datetimepicker/
 * Game-tauluun playerid (omistaja / pelin lisääjä), jolloin myös ei-admin voi muokata lisäämiään pelejä
 * testejä tietokannalle, malleille etc. myös testi onko cache päällä
+* tuloskortin laskennalle ja esittämiselle oma model player_scores-listan sijaan
 
 ### Graphs
 

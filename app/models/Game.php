@@ -3,7 +3,7 @@
 
     public $gameid, $courseid, $contestid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
             $variant, $dark, $led, $snow, $doubles, $temp, // Ready to use after creation
-            $course, $scores, $conditions, $weather, $illegal_scorers, $high_scorers, $contest_name; // Need to be prepared via prepare_var()
+            $course, $scores, $conditions, $weather, $illegal_scorers, $high_scorers, $contest_name, $total_scores; // Need to be prepared via prepare_var()
 
     public function __construct($attributes) {
       parent::__construct($attributes);
@@ -89,7 +89,8 @@
     }
 
     private function load_scores() {
-      $this->scores = Score::all_game_scores($this->gameid);
+      // $this->scores = Score::all_game_scores($this->gameid);
+      Score::all_game_scores($this);
     }
 
     private function load_conditions() {

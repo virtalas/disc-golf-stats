@@ -40,6 +40,28 @@
     </form>
 
     {% if games %}
+
+      <h3>Pisteet</h3>
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Pelaaja</th>
+              {% for contest_num in 1..contest.number_of_games %}
+                <th>#{{contest_num}}</th>
+              {% endfor %}
+            <th>Yhteensä</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+            </tr>
+        </tbody>
+      </table>
+
+      <h3>Pelit</h3>
+
       {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit)}}
     {% else %}
       Kisassa ei ole yhtään peliä.

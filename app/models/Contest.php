@@ -63,10 +63,10 @@
     }
 
     public static function all_with_games_played() {
-      $sql = "SELECT contest.contestid, contest.creator, contest.name, contest.number_of_games, COUNT (*) as games_played
-              FROM contest
-              JOIN game ON game.contestid = contest.contestid
-              GROUP BY contest.contestid";
+      $sql = "SELECT t.contestid, t.creator, t.name, t.number_of_games, (
+                SELECT COUNT(game.gameid) FROM contest ct JOIN game ON game.contestid = ct.contestid WHERE ct.contestid = t.contestid
+              ) as games_played
+              FROM contest t";
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
@@ -79,6 +79,14 @@
       }
 
       return $contests;
+    }
+
+    public static function points($contest, $games) {
+      $points = array();
+
+      
+
+      return $points;
     }
 
     /*
