@@ -83,8 +83,51 @@
 
     public static function points($contest, $games) {
       $points = array();
+      $players = Player::all();
+      $point_distribution = array(4, 3, 2, 1, 0);
 
-      
+      foreach ($games as $game) {
+        $placement = 0;
+        $game_num = 0;
+        $previous_strokes = 0;
+        $previous_points = 0;
+
+        foreach ($game->total_scores as $playerid_string => $total) {
+          // playerid_string is i.e. 'player4'
+          $playerid = (int) str_replace("player", "", $playerid_string);
+          $player_name = $players[$playerid - 1]->firstname; // $players ordered by playerid ascending
+
+          // Works only with unique player firstnames (not a problem...)
+          if (!array_key_exists($player_name, $points)) {
+            // initialize
+            $points[$player_name] = array("game_points" => array(), "total_points" => array(), "total_strokes" => 0);
+          }
+
+          // Player was tied for a placement:
+          if ($previous_strokes == $total) {
+            if ($game_num == 0) {
+              $points[$player_name]["game_points"][] = $previous_points;
+            } else {
+              $points[$player_name]["game_points"][] = $points[$player_name]["game_points"][$game_num - 1] + $previous_points;
+            }
+          // Player was not tied:
+          } else {
+            if ($game_num == 0) {
+              $points[$player_name]["game_points"][] = $point_distribution[$placement];
+            } else {
+              $points[$player_name]["game_points"][] = $points[$player_name]["game_points"][$game_num - 1] + $point_distribution[$placement];
+            }
+            $previous_points = $point_distribution[$placement];
+          }
+
+          $points[$player_name]["total_strokes"] += $total;
+
+          $placement++;
+          $previous_strokes = $total;
+        }
+
+        $game_num++;
+      }
 
       return $points;
     }

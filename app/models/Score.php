@@ -142,6 +142,10 @@
         return $a_total_score - $b_total_score;
       });
 
+      uasort($totals, function($a, $b) {
+        return $a - $b;
+      });
+
       $game->scores = $player_scores;
       $game->total_scores = $totals;
     }

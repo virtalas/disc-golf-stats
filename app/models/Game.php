@@ -89,7 +89,6 @@
     }
 
     private function load_scores() {
-      // $this->scores = Score::all_game_scores($this->gameid);
       Score::all_game_scores($this);
     }
 
