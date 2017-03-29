@@ -355,7 +355,7 @@
     }
 
     public static function contest_games($contestid) {
-      $sql = "SELECT * FROM game WHERE contestid = :contestid";
+      $sql = "SELECT * FROM game WHERE contestid = :contestid ORDER BY gamedate ASC"; // needs to be ASC for point counting
       $query = DB::connection()->prepare($sql);
       $query->execute(array('contestid' => $contestid));
       $rows = $query->fetchAll();
