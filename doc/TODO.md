@@ -27,6 +27,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Radat-sivu
 
+* sort by popularity or name
 * rate courses with 5 stars, how overall score and user's own score
 * väylien pituudet
 
