@@ -45,20 +45,18 @@
               WHERE gameid = :gameid";
       $query = DB::connection()->prepare($sql);
 
-      // var_export($var, true) returns boolean as a string.
-      // Giving a boolean in the following array would cause an SQL error.
       $query->execute(array('gameid' => $this->gameid,
                             'contestid' => $this->contestid,
                             'gamedate' => $this->gamedate,
                             'comment' => $this->comment,
-                            'rain' => var_export($this->rain, true),
-                            'wet_no_rain' => var_export($this->wet_no_rain, true),
-                            'windy' => var_export($this->windy, true),
-                            'variant' => var_export($this->variant, true),
-                            'dark' => var_export($this->dark, true),
-                            'led' => var_export($this->led, true),
-                            'snow' => var_export($this->snow, true),
-                            'doubles' => var_export($this->doubles, true),
+                            'rain' => $this->rain,
+                            'wet_no_rain' => $this->wet_no_rain,
+                            'windy' => $this->windy,
+                            'variant' => $this->variant,
+                            'dark' => $this->dark,
+                            'led' => $this->led,
+                            'snow' => $this->snow,
+                            'doubles' => $this->doubles,
                             'temp' => $this->temp));
       return $this->gameid;
     }
