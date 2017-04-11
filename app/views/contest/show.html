@@ -52,6 +52,7 @@
             {% for contest_num in 1..contest.number_of_games %}
               <th>#{{contest_num}}</th>
             {% endfor %}
+          <th>Par</th>
           <th>Yhteensä</th>
         </tr>
       </thead>
@@ -71,6 +72,11 @@
                 <td></td>
               {% endfor %}
 
+              {% if player_points["to_par"] > 0 %}
+                <td>+{{player_points["to_par"]}}</td>
+              {% else %}
+                <td>{{player_points["to_par"]}}</td>
+              {% endif %}
               <td>{{player_points["total_points"]}}</td>
             </tr>
             {% set placement = placement + 1 %}

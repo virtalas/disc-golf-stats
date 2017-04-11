@@ -3,7 +3,7 @@
   class Course extends BaseModel {
 
     public $courseid, $name, $city, $map, // Ready to use after creation
-            $holes, $number_of_holes, // Need to be prepared via prepare()
+            $holes, $number_of_holes, $par, // Need to be prepared via prepare()
             $occurance; // used for popular_courses()
 
     public function __construct($attributes) {
@@ -99,11 +99,24 @@
 
     public function prepare() {
       $this->load_holes();
+      $this->load_par();
     }
 
     private function load_holes() {
       $this->holes = Hole::course_holes($this->courseid);
       $this->number_of_holes = count($this->holes);
+    }
+
+    private function load_par() {
+      $sql = "SELECT SUM(hole.par) as total_par
+              FROM course
+              JOIN hole ON hole.courseid = course.courseid
+              WHERE course.courseid = :courseid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $this->courseid));
+      $row = $query->fetch();
+
+      $this->par = $row["total_par"];
     }
 
     /*

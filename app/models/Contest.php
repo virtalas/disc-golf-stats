@@ -106,11 +106,12 @@
 
         foreach ($game->total_scores as $playerid_string => $total) {
           $player_name = Player::firstname_from_playerid_string($players, $playerid_string);
+          $game_players[] = $player_name;
 
           // Works only with unique player firstnames (not a problem...)
           if (!array_key_exists($player_name, $points)) {
             // initialize
-            $points[$player_name] = array("game_points" => array(), "total_points" => 0, "total_strokes" => 0);
+            $points[$player_name] = array("game_points" => array(), "total_points" => 0, "total_strokes" => 0, "to_par" => 0);
           }
 
           // Player was tied for a placement:
@@ -125,6 +126,9 @@
           $points[$player_name]["total_strokes"] += $total;
           $points[$player_name]["total_points"] += $previous_points;
 
+          $to_course_par = $total - $game->course->par;
+          $points[$player_name]["to_par"] += $to_course_par;
+
           $placement++;
           $previous_strokes = $total;
         }
@@ -135,7 +139,7 @@
         foreach ($contest_players as $player_name) {
           if (!array_key_exists($player_name, $points)) {
             // initialize
-            $points[$player_name] = array("game_points" => array(), "total_points" => 0, "total_strokes" => 0);
+            $points[$player_name] = array("game_points" => array(0), "total_points" => 0, "total_strokes" => 0, "to_par" => 0);
           } else if (count($points[$player_name]["game_points"]) < $game_num) {
             // Add zero points for the player for this game
             $points[$player_name]["game_points"][] = 0;
@@ -144,7 +148,11 @@
       }
 
       uasort($points, function($a, $b) {
-        return $b["total_points"] - $a["total_points"];
+        if ($b["total_points"] != $a["total_points"]) {
+          return $b["total_points"] - $a["total_points"];
+        } else {
+          return $a["to_par"] - $b["to_par"];
+        }
       });
 
       return $points;
