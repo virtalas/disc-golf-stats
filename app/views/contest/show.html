@@ -18,7 +18,7 @@
 
   <br><br>
 
-  {% if contest.creator == user_logged_in.playerid %}
+  {% if contest.creator == user_logged_in.playerid or user_logged_in.admin %}
 
     <div class="row">
       <div class="col-xs-4">

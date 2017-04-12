@@ -178,6 +178,11 @@
     ContestController::remove_game($contestid);
   });
 
+  // Kisan poistaminen
+  $routes->post('/contest/:contestid/destroy', 'check_logged_in', function($contestid){
+    ContestController::destroy($contestid);
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen

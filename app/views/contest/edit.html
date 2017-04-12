@@ -3,7 +3,14 @@
 {% set current_page = 'contest' %}
 
 {% block content %}
+
+  {% import "macros/forms.html" as forms %}
+
   <h2>Muokkaa kisaa {{attributes.name}}</h2>
+
+  {{forms.destroy_button("#{base_path}/contest/#{attributes.contestid}/destroy", "Poista", "Oletko varma että haluat poistaa kisan?")}}
+
+  <br><br>
 
   <form method="post" action="{{base_path}}/contest/{{attributes.contestid}}/edit">
     <div class="form-group">

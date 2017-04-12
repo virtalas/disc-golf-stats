@@ -63,7 +63,7 @@
       );
 
       // Only the creator of the contest can view this page
-      if ($contest->creator == $player->playerid) {
+      if ($contest->is_creator($player) || $player->admin) {
         View::make("contest/edit.html", array('attributes' => $attributes));
       } else {
         Redirect::to('/');
@@ -84,7 +84,7 @@
       $errors = $contest->errors();
 
       // Only the creator of the contest can update
-      if ($contest->is_creator($player)) {
+      if ($contest->is_creator($player) || $player->admin) {
         $errors[] = "Vain kisan luoja voi muokata sitä.";
       }
 
@@ -101,6 +101,23 @@
       }
     }
 
+    public static function destroy($contestid) {
+      $contest_games = Game::contest_games($contestid);
+      $contest = Contest::find($contestid);
+
+      if ($contest->is_creator($player) || $player->admin) {
+        foreach ($contest_games as $game) {
+          self::remove_game_from_contest($contestid, $game->gameid);
+        }
+
+        $contest->destroy();
+        Cache::clear();
+        Redirect::to('/contest', array('message' => 'Kisa poistettu.'));
+      } else {
+        Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi poistaa sen.'));
+      }
+    }
+
     public static function add_game($contestid) {
       $gameid = $_POST['gameid'];
       $player = self::get_user_logged_in();
@@ -108,8 +125,9 @@
       $contest = Contest::find($contestid);
       $game = Game::find($gameid);
 
-      if ($contest->is_creator($player)) {
+      if ($contest->is_creator($player) || $player->admin) {
         $game->add_to_contest($contestid);
+        Cache::clear();
         Redirect::to('/contest/'. $contestid, array('message' => 'Peli lisätty kisaan.'));
       } else {
         Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi lisätä siihen pelejä.'));
@@ -118,16 +136,24 @@
 
     public static function remove_game($contestid) {
       $gameid = $_POST['gameid'];
+      if (self::remove_game_from_contest($contestid, $gameid)) {
+        Redirect::to('/contest/'. $contestid, array('message' => 'Peli poistettu kisasta.'));
+      } else {
+        Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi poistaa siitä pelejä.'));
+      }
+    }
+
+    private static function remove_game_from_contest($contestid, $gameid) {
       $player = self::get_user_logged_in();
 
       $contest = Contest::find($contestid);
       $game = Game::find($gameid);
 
-      if ($contest->is_creator($player)) {
+      if ($contest->is_creator($player) || $player->admin) {
         $game->remove_from_contest();
-        Redirect::to('/contest/'. $contestid, array('message' => 'Peli poistettu kisasta.'));
+        return true;
       } else {
-        Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi poistaa siitä pelejä.'));
+        return false;
       }
     }
   }
