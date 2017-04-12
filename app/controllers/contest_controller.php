@@ -104,6 +104,7 @@
     public static function destroy($contestid) {
       $contest_games = Game::contest_games($contestid);
       $contest = Contest::find($contestid);
+      $player = self::get_user_logged_in();
 
       if ($contest->is_creator($player) || $player->admin) {
         foreach ($contest_games as $game) {
