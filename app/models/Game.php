@@ -61,6 +61,18 @@
       return $this->gameid;
     }
 
+    public function add_to_contest($contestid) {
+      $sql = "UPDATE game SET contestid = :contestid WHERE gameid = :gameid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('gameid' => $this->gameid, 'contestid' => $contestid));
+    }
+
+    public function remove_from_contest() {
+      $sql = "UPDATE game SET contestid = null WHERE gameid = :gameid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('gameid' => $this->gameid));
+    }
+
     public function destroy() {
       $sql = "DELETE FROM game WHERE gameid = :gameid";
       $query = DB::connection()->prepare($sql);
@@ -560,12 +572,12 @@
       return $row['gamedate'];
     }
 
-    public static function five_latest_games() {
+    public static function ten_latest_games() {
       $sql = "SELECT *
               FROM game
               JOIN course ON game.courseid = course.courseid
               ORDER BY game.gamedate DESC
-              LIMIT 5";
+              LIMIT 10";
 
       $query = DB::connection()->prepare($sql);
       $query->execute();

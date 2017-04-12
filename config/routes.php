@@ -173,6 +173,11 @@
     ContestController::add_game($contestid);
   });
 
+  // Pelin poistaminen kisasta
+  $routes->post('/contest/:contestid/remove', 'check_logged_in', function($contestid){
+    ContestController::remove_game($contestid);
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen

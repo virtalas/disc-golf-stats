@@ -14,14 +14,27 @@
 
   <h2>{{contest.name}}</h2>
 
+  <a href="{{base_path}}/contest/{{contest.contestid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
+
+  <br><br>
+
   {% if contest.creator == user_logged_in.playerid %}
-    <a href="{{base_path}}/contest/{{contest.contestid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
 
-    <br><br>
+    <div class="row">
+      <div class="col-xs-4">
+        <label>Lisää peli kymmenestä uusimmasta</label>
+      </div>
 
-    <form method="post" action="{{base_path}}/contest/{{contest.contestid}}/add">
-      <label>Lisää peli viidestä uusimmasta</label>
-      <div class="row">
+      <div class="col-xs-1"></div>
+
+      <div class="col-xs-4">
+        <label>Poista pelejä kisasta</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Adding games -->
+      <form method="post" action="{{base_path}}/contest/{{contest.contestid}}/add">
         <div class="col-xs-2">
           <select class="form-control" name="gameid">
             {% for game in latest_games %}
@@ -35,9 +48,30 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-default">Lisää peli</button>
-      </div>
-    </form>
+        <div class="col-xs-2">
+          <button type="submit" class="btn btn-default">Lisää peli</button>
+        </div>
+      </form>
+
+      <div class="col-xs-1"></div>
+
+      <!-- Removing games -->
+      <form method="post" action="{{base_path}}/contest/{{contest.contestid}}/remove">
+        <div class="col-xs-2">
+          <select class="form-control" name="gameid">
+            {% for game in games %}
+              <option value="{{game.gameid}}">
+                {{game.gamedate|date("d.m.Y H:i")}} {{game.course.name}}, {{game.course.city}} (Kisassa {{game.contest_name}})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-xs-2">
+          <button type="submit" class="btn btn-default">Poista peli</button>
+        </div>
+      </form>
+    </div>
   {% endif %}
 
   {% if games %}
@@ -68,9 +102,12 @@
                 <td>{{game_points}}</td>
               {% endfor %}
 
-              {% for i in player_points["game_points"]|length..contest.number_of_games - 1 %}
-                <td></td>
-              {% endfor %}
+              <!-- Empty cels to fill the table -->
+              {% if player_points["game_points"]|length < contest.number_of_games %}
+                {% for i in player_points["game_points"]|length..contest.number_of_games - 1 %}
+                  <td></td>
+                {% endfor %}
+              {% endif %}
 
               {% if player_points["to_par"] > 0 %}
                 <td>+{{player_points["to_par"]}}</td>

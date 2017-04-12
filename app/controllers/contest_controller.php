@@ -39,7 +39,7 @@
 
     public static function show($contestid) {
       $contest = Contest::find($contestid);
-      $latest_games = Game::five_latest_games();
+      $latest_games = Game::ten_latest_games();
       $games = Game::contest_games($contestid);
       $points = Contest::points($contest, $games);
       $players = Player::all();
@@ -109,11 +109,25 @@
       $game = Game::find($gameid);
 
       if ($contest->is_creator($player)) {
-        $game->contestid = (int) $contestid;
-        $game->update();
+        $game->add_to_contest($contestid);
         Redirect::to('/contest/'. $contestid, array('message' => 'Peli lisätty kisaan.'));
       } else {
         Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi lisätä siihen pelejä.'));
+      }
+    }
+
+    public static function remove_game($contestid) {
+      $gameid = $_POST['gameid'];
+      $player = self::get_user_logged_in();
+
+      $contest = Contest::find($contestid);
+      $game = Game::find($gameid);
+
+      if ($contest->is_creator($player)) {
+        $game->remove_from_contest();
+        Redirect::to('/contest/'. $contestid, array('message' => 'Peli poistettu kisasta.'));
+      } else {
+        Redirect::to('/contest/'. $contestid, array('message' => 'Vain kisan luoja voi poistaa siitä pelejä.'));
       }
     }
   }
