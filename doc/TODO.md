@@ -20,6 +20,8 @@ Features/bugs/etc planned for disc-golf-stats
 ### Tilastot-sivu
 
 * longest streak (days in row)
+* longest birdie streak
+* (longest par streak)
 
 ### Pelit-sivu
 
