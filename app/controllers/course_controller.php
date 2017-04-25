@@ -10,7 +10,7 @@
         if (isset($_GET['course'])) {
           $course = Course::find($_GET['course']);
         } else {
-          $popular_courses = Course::popular_courses($player->playerid);
+          $popular_courses = Course::popular_courses($player->playerid); // returns a list for no reason?
 
           if ($popular_courses) {
             $course = $popular_courses[0];
@@ -19,8 +19,20 @@
           }
         }
 
+        $sorted_by_name = false;
+
+        if (isset($_GET['sort'])) {
+          if ($_GET['sort'] == "name") {
+            $courses = Course::all_order_by_name();
+            $sorted_by_name = true;
+          } else {
+            $courses = Course::all();
+          }
+        } else {
+          $courses = Course::all();
+        }
+
         $courseid = $course->courseid;
-        $courses = Course::all();
         $games_played = Course::number_of_games_played($courseid);
         $latest_game = Course::latest_game_date($courseid);
         $avg_score = Course::average_scoring($courseid);
@@ -43,7 +55,8 @@
           'high_scores' => $high_scores,
           'chrono_high_scores' => $chrono_high_scores,
           'chrono_high_scores_player' => $chrono_high_scores_player,
-          'score_distribution' => $score_distribution
+          'score_distribution' => $score_distribution,
+          'sorted_by_name' => $sorted_by_name
         ));
       } else {
         View::make('course/index.html');

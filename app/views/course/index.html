@@ -9,9 +9,14 @@
       </a>
   </li>
 
+  <div style="padding-left: 20px; padding-bottom: 15px;">
+    <a class="btn btn-xs {% if not sorted_by_name %}btn-primary disabled_link{% else %}btn-default{% endif %}" href="{{base_path}}/course?course={{course.courseid}}&sort=popularity">Suosio</a>
+    <a class="btn btn-xs {% if sorted_by_name %}btn-primary disabled_link{% else %}btn-default{% endif %}" href="{{base_path}}/course?course={{course.courseid}}&sort=name">Nimi</a>
+  </div>
+
   {% for curr_course in courses %}
-    <li>
-        <a href="{{base_path}}/course?course={{curr_course.courseid}}" class="sidebar-li"
+    <li class="course-li">
+        <a href="{{base_path}}/course?course={{curr_course.courseid}}{% if sorted_by_name %}&sort=name{% endif %}" class="sidebar-li"
           {% if curr_course.courseid == course.courseid %}
             id="selected"
           {% endif %}
@@ -47,4 +52,5 @@
   <script src="{{base_path}}/assets/js/course_graphs.js"></script>
 
   <script src="{{base_path}}/assets/js/weather.js"></script>
+  <script src="{{base_path}}/assets/js/course_list_sorting.js"></script>
 {% endblock %}
