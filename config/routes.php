@@ -83,17 +83,17 @@
   });
 
   // Pelin muokkauslomakkeen esittäminen (vain admin)
-  $routes->get('/game/:gameid/edit', 'check_admin_logged_in', function($gameid){
+  $routes->get('/game/:gameid/edit', 'check_logged_in', function($gameid){
     GameController::edit($gameid);
   });
 
   // Pelin muokkaaminen (vain admin)
-  $routes->post('/game/:gameid/edit', 'check_admin_logged_in', function($gameid){
+  $routes->post('/game/:gameid/edit', 'check_logged_in', function($gameid){
     GameController::update($gameid);
   });
 
   // Pelin poisto (vain admin)
-  $routes->post('/game/:gameid/destroy', 'check_admin_logged_in', function($gameid){
+  $routes->post('/game/:gameid/destroy', 'check_logged_in', function($gameid){
     GameController::destroy($gameid);
   });
 
