@@ -22,7 +22,7 @@
   <br>
 
   {% set show_edit = true %}
-  {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit)}}
+  {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit, user_logged_in)}}
 
   <a href="{{base_path}}/game/{{games[0].gameid}}/export" class="btn btn-default btn-xs" role="button">Export</a>
 

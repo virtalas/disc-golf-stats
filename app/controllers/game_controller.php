@@ -142,6 +142,7 @@
     public static function store() {
       $params = $_POST;
 
+      $player = self::get_user_logged_in();
       $rain = isset($_POST['rain']) && $_POST['rain']  ? "1" : "0"; // checked=1, unchecked=0
       $wet_no_rain = isset($_POST['wet_no_rain']) && $_POST['wet_no_rain']  ? "1" : "0"; // checked=1, unchecked=0
       $windy = isset($_POST['windy']) && $_POST['windy']  ? "1" : "0"; // checked=1, unchecked=0
@@ -160,6 +161,7 @@
 
       $game = new Game(array(
         'courseid' => $courseid,
+        'creator' => $player->playerid,
         'gamedate' => $gamedate,
         'comment' => $comment,
         'rain' => $rain,
@@ -269,9 +271,15 @@
     }
 
     public static function edit($gameid) {
+      $player = self::get_user_logged_in();
       $game = Game::find($gameid);
       $game->prepare();
       $players = Game::games_players($gameid);
+
+      if ($game->creator != $player->playerid && !$player->admin) {
+        Redirect::to('/game', array('message' => 'Vain pelin tekijä tai admin voi muokata peliä.'));
+        return;
+      }
 
       $attributes = array();
       foreach ($game->scores as $playerid => $scores) {
@@ -299,6 +307,12 @@
 
     public static function update($gameid) {
       $attributes = $_POST;
+      $player = self::get_user_logged_in();
+
+      if (Game::get_creator($gameid) != $player->playerid && !$player->admin) {
+        Redirect::to('/game', array('message' => 'Vain pelin tekijä tai admin voi muokata peliä.'));
+        return;
+      }
 
       $rain = isset($_POST['rain']) && $_POST['rain']  ? "1" : "0"; // checked=1, unchecked=0
       $wet_no_rain = isset($_POST['wet_no_rain']) && $_POST['wet_no_rain']  ? "1" : "0"; // checked=1, unchecked=0
@@ -542,6 +556,13 @@
     }
 
     public static function destroy($gameid) {
+      $player = self::get_user_logged_in();
+
+      if (Game::get_creator($gameid) != $player->playerid && !$player->admin) {
+        Redirect::to('/game', array('message' => 'Vain pelin tekijä tai admin voi poistaa pelin.'));
+        return;
+      }
+
       self::destroy_no_redirect($gameid);
 
       // Clear cached pages

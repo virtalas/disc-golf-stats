@@ -1,7 +1,7 @@
 <?php
   class Game extends BaseModel {
 
-    public $gameid, $courseid, $contestid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
+    public $gameid, $courseid, $creator, $contestid, $gamedate, $comment, $rain, $wet_no_rain, $windy, // Ready to use after creation
             $variant, $dark, $led, $snow, $doubles, $temp, // Ready to use after creation
             $course, $scores, $conditions, $weather, $illegal_scorers, $high_scorers, $contest_name, $total_scores; // Need to be prepared via prepare_var()
 
@@ -15,12 +15,13 @@
     */
 
     public function save() {
-      $sql = "INSERT INTO game (courseid, gamedate, comment, rain, wet_no_rain,
+      $sql = "INSERT INTO game (courseid, creator, gamedate, comment, rain, wet_no_rain,
               windy, variant, dark, led, snow, doubles, temp)
-              VALUES (:courseid, :gamedate, :comment, :rain, :wet_no_rain, :windy,
+              VALUES (:courseid, :creator, :gamedate, :comment, :rain, :wet_no_rain, :windy,
               :variant, :dark, :led, :snow, :doubles, :temp) RETURNING gameid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('courseid' => $this->courseid,
+                            'creator' => $this->creator,
                             'gamedate' => $this->gamedate,
                             'comment' => $this->comment,
                             'rain' => $this->rain,
@@ -240,7 +241,7 @@
     }
 
     public static function all_player_games($playerid) {
-      $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+      $sql = "SELECT gameid, courseid, creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
               comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
               FROM game
               WHERE gameid IN
@@ -256,7 +257,7 @@
     public static function all($options) {
       if (!$options) {
         // Fetch all games
-        $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+        $sql = "SELECT game.gameid, game.courseid, game.creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
                 game.snow, game.doubles, game.temp, game.contestid
                 FROM game
@@ -282,7 +283,7 @@
         $playerid = $options['playerid'];
         $courseid = $options['courseid'];
 
-        $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+        $sql = "SELECT game.gameid, game.courseid, game.creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
                 game.snow, game.doubles, game.temp, game.contestid
                 FROM game
@@ -306,7 +307,7 @@
       } else if (isset($options['playerid'])) {
         // Fetch only this player's games
         $playerid = $options['playerid'];
-        $sql = "SELECT game.gameid, game.courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+        $sql = "SELECT game.gameid, game.courseid, game.creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
                 game.snow, game.doubles, game.temp, game.contestid
                 FROM game
@@ -328,7 +329,7 @@
       } else if (isset($options['courseid'])) {
         // Fetch this games on this course
         $courseid = $options['courseid'];
-        $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+        $sql = "SELECT gameid, courseid, creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
                 FROM game
                 WHERE courseid = :courseid
@@ -347,7 +348,7 @@
 
       } else {
         // Fetch all games
-        $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+        $sql = "SELECT gameid, courseid, creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
                 FROM game
                 WHERE to_char(gamedate, 'YYYY') = :year
@@ -397,7 +398,7 @@
     }
 
     public static function find_format_gamedate($gameid){
-      $sql = "SELECT gameid, courseid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+      $sql = "SELECT gameid, courseid, creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
               comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
               FROM game WHERE gameid = :gameid LIMIT 1";
       $query = DB::connection()->prepare($sql);
@@ -572,6 +573,15 @@
       return $row['gamedate'];
     }
 
+    public static function get_creator($gameid) {
+      $sql = "SELECT creator FROM game WHERE gameid = :gameid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('gameid' => $gameid));
+      $row = $query->fetch();
+
+      return $row['creator'];
+    }
+
     public static function ten_latest_games() {
       $sql = "SELECT *
               FROM game
@@ -674,6 +684,7 @@
         $game = new Game(array(
           'gameid' => $row['gameid'],
           'courseid' => $row['courseid'],
+          'creator' => $row['creator'],
           'gamedate' => $row['gamedate'],
           'comment' => $row['comment'],
           'rain' => $row['rain'],
