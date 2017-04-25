@@ -75,6 +75,12 @@
             {% else %}
               <li><a href="{{base_path}}/graphs">Kuvaajat</a></li>
             {% endif %}
+
+            {% if current_page == 'contest' %}
+              <li class="active"><a href="{{base_path}}/contest">Kisat</a></li>
+            {% else %}
+              <li><a href="{{base_path}}/contest">Kisat</a></li>
+            {% endif %}
           </ul>
 
           {% if user_logged_in %}

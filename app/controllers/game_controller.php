@@ -335,7 +335,8 @@
 
       $course = Course::find($courseid);
 
-      $player_scores = Score::all_game_scores($gameid);
+      Score::all_game_scores($game);
+      $player_scores = $game->scores;
 
       // Cycle through players
       foreach ($player_scores as $playerid => $scores) {

@@ -140,6 +140,13 @@
 
   		return null;
     }
+
+    public static function firstname_from_playerid_string($players, $playerid_string) {
+      // playerid_string is i.e. 'player4'
+      $playerid = (int) str_replace("player", "", $playerid_string);
+      $player_name = $players[$playerid - 1]->firstname; // $players ordered by playerid ascending
+      return $player_name;
+    }
   }
 
 // function hash_equals used for verifying crypted passwords (Not the best way)

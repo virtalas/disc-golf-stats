@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% set current_page = 'contest' %}
+
+{% block content %}
+
+  {% import "macros/list_games.html" as list_games %}
+
+  {% if message is not null %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+
+  <h2>{{contest.name}}</h2>
+
+  <a href="{{base_path}}/contest/{{contest.contestid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
+
+  <br><br>
+
+  {% if contest.creator == user_logged_in.playerid or user_logged_in.admin %}
+
+    <div class="row">
+      <div class="col-xs-4">
+        <label>Lisää peli kymmenestä uusimmasta</label>
+      </div>
+
+      <div class="col-xs-1"></div>
+
+      <div class="col-xs-4">
+        <label>Poista pelejä kisasta</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Adding games -->
+      <form method="post" action="{{base_path}}/contest/{{contest.contestid}}/add">
+        <div class="col-xs-2">
+          <select class="form-control" name="gameid">
+            {% for game in latest_games %}
+              <option value="{{game.gameid}}">
+                {{game.gamedate|date("d.m.Y H:i")}} {{game.course.name}}, {{game.course.city}}
+                {% if game.contest_name %}
+                  (Kisassa {{game.contest_name}})
+                {% endif %}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-xs-2">
+          {% if games|length == contest.number_of_games %}
+            <button type="submit" class="btn btn-default" disabled="true">Lisää peli</button>
+          {% else %}
+            <button type="submit" class="btn btn-default">Lisää peli</button>
+          {% endif %}
+        </div>
+      </form>
+
+      <div class="col-xs-1"></div>
+
+      <!-- Removing games -->
+      <form method="post" action="{{base_path}}/contest/{{contest.contestid}}/remove">
+        <div class="col-xs-2">
+          <select class="form-control" name="gameid">
+            {% for game in games %}
+              <option value="{{game.gameid}}">
+                {{game.gamedate|date("d.m.Y H:i")}} {{game.course.name}}, {{game.course.city}} (Kisassa {{game.contest_name}})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-xs-2">
+          <button type="submit" class="btn btn-default">Poista peli</button>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+
+  {% if games %}
+
+    <h3>Pisteet</h3>
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Sija</th>
+          <th>Pelaaja</th>
+            {% for contest_num in 1..contest.number_of_games %}
+              <th>#{{contest_num}}</th>
+            {% endfor %}
+          <th>Par</th>
+          <th>Yhteensä</th>
+        </tr>
+      </thead>
+
+      <tbody>
+          {% set placement = 1 %}
+          {% for player_name,player_points in points %}
+            <tr>
+              <td>{{placement}}.</td>
+              <td>{{player_name}}</td>
+
+              {% for game_points in player_points["game_points"] %}
+                <td>{{game_points}}</td>
+              {% endfor %}
+
+              <!-- Empty cels to fill the table -->
+              {% if player_points["game_points"]|length < contest.number_of_games %}
+                {% for i in player_points["game_points"]|length..contest.number_of_games - 1 %}
+                  <td></td>
+                {% endfor %}
+              {% endif %}
+
+              {% if player_points["to_par"] > 0 %}
+                <td>+{{player_points["to_par"]}}</td>
+              {% else %}
+                <td>{{player_points["to_par"]}}</td>
+              {% endif %}
+              <td>{{player_points["total_points"]}}</td>
+            </tr>
+            {% set placement = placement + 1 %}
+          {% endfor %}
+      </tbody>
+    </table>
+
+    <h3>Pelit</h3>
+
+    {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit)}}
+  {% else %}
+    Kisassa ei ole yhtään peliä.
+  {% endif %}
+
+{% endblock %}

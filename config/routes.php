@@ -136,6 +136,53 @@
     GraphController::index();
   });
 
+  // Kisat
+
+  // Kisojen listaussivu
+  $routes->get('/contest', 'check_logged_in', function(){
+    ContestController::index();
+  });
+
+  // Kisan lisäyssivu
+  $routes->get('/contest/new', 'check_logged_in', function(){
+    ContestController::create();
+  });
+
+  // Kisan tallentaminen tietokantaan
+  $routes->post('/contest', 'check_logged_in', function(){
+    ContestController::store();
+  });
+
+  // Kisan esittelysivu
+  $routes->get('/contest/:contestid', 'check_logged_in', function($contestid){
+    ContestController::show($contestid);
+  });
+
+  // Kisan muokkauslomakkeen esittäminen (vain kisan luoja)
+  $routes->get('/contest/:contestid/edit', 'check_logged_in', function($contestid){
+    ContestController::edit($contestid);
+  });
+
+  // Kisan muokkaaminen (vain kisan luoja)
+  $routes->post('/contest/:contestid/edit', 'check_logged_in', function($contestid){
+    ContestController::update($contestid);
+  });
+
+  // Pelin lisääinen kisaan
+  $routes->post('/contest/:contestid/add', 'check_logged_in', function($contestid){
+    ContestController::add_game($contestid);
+  });
+
+  // Pelin poistaminen kisasta
+  $routes->post('/contest/:contestid/remove', 'check_logged_in', function($contestid){
+    ContestController::remove_game($contestid);
+  });
+
+  // Kisan poistaminen
+  $routes->post('/contest/:contestid/destroy', 'check_logged_in', function($contestid){
+    ContestController::destroy($contestid);
+  });
+
   // Käyttäjä
 
   // Kirjautumislomakkeen esittäminen
