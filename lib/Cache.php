@@ -4,8 +4,8 @@
     // Turn caching on/off (true/false) for development
     // Turn ON for git commits
     public static function on() {
-      // return true; // on
-      return false; // off
+      return true; // on
+      // return false; // off
     }
 
     public static function getPage($stripped_url) {
