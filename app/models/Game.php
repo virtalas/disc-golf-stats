@@ -273,7 +273,10 @@
 
       $page_size = $options['page_size'];
       $page = $options['page'];
-      $year = $options['year'];
+      $year = "%%%%"; // returns any year
+      if (isset($options['year'])) {
+        $year = $options['year'];
+      }
       $offset = (int)$page_size * ((int)$page - 1);
 
       // 'course' and 'player' parameters determine what games are fetched
@@ -290,7 +293,7 @@
                 JOIN score ON score.gameid = game.gameid
                 WHERE score.playerid = :playerid
                 AND game.courseid = :courseid
-                AND to_char(gamedate, 'YYYY') = :year
+                AND to_char(gamedate, 'YYYY') LIKE :year
                 GROUP BY game.gameid
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
@@ -313,7 +316,7 @@
                 FROM game
                 JOIN score ON score.gameid = game.gameid
                 WHERE score.playerid = :playerid
-                AND to_char(gamedate, 'YYYY') = :year
+                AND to_char(gamedate, 'YYYY') LIKE :year
                 GROUP BY game.gameid
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
@@ -333,7 +336,7 @@
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
                 FROM game
                 WHERE courseid = :courseid
-                AND to_char(gamedate, 'YYYY') = :year
+                AND to_char(gamedate, 'YYYY') LIKE :year
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
         $query = DB::connection()->prepare($sql);
@@ -351,7 +354,7 @@
         $sql = "SELECT gameid, courseid, creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
                 FROM game
-                WHERE to_char(gamedate, 'YYYY') = :year
+                WHERE to_char(gamedate, 'YYYY') LIKE :year
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
         $query = DB::connection()->prepare($sql);

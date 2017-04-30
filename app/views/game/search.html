@@ -1,0 +1,48 @@
+{% block head %}
+  <!-- Bootstrap (tyylitiedosto) -->
+  <link href="{{base_path}}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Oma tyylitiedostomme -->
+  <link href="{{base_path}}/assets/css/site.css" rel="stylesheet">
+{% endblock %}
+
+{% import "macros/forms.html" as forms %}
+{% import "macros/list_games.html" as list_games %}
+
+{% set show_edit = false %}
+{{list_games.list_games(games, players, base_path, admin_logged_in, show_edit, user_logged_in)}}
+
+{% if games %}
+  <nav>
+    <ul class="pagination">
+      <li class="{% if not prev_page %}disabled{% endif %}">
+          <a class="{% if not prev_page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{prev_page}}&year={{current_year}}">
+            <span aria-hidden="true">«</span>
+            <span class="sr-only">Previous</span>
+          </a>
+      </li>
+      {% if pages > 0 %}
+        {% for page in 1..pages %}
+          <li class="{% if curr_page == page %}active{% endif %}">
+            <a class="{% if curr_page == page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{page}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}&year={{current_year}}">{{page}}</a>
+          </li>
+        {% endfor %}
+      {% else %}
+        <!-- For pages with no content (pages=0) -->
+        <li class="active">
+          <a class="disabled_link" href="{{base_path}}/game?page={{page}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}&year={{current_year}}">1</a>
+        </li>
+      {% endif %}
+      <li class="{% if not next_page %}disabled{% endif %}">
+        <a class="{% if not next_page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{next_page}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}&year={{current_year}}">
+          <span aria-hidden="true">»</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+{% else %}
+  <p>
+    Ei pelejä
+  </p>
+{% endif %}
