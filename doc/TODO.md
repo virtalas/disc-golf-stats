@@ -9,7 +9,6 @@ Features/bugs/etc planned for disc-golf-stats
 * set collation (order by name not working in page player for the course list, ä before a)
 * site icon
 * Date-picker http://eonasdan.github.io/bootstrap-datetimepicker/
-* Game-tauluun playerid (omistaja / pelin lisääjä), jolloin myös ei-admin voi muokata lisäämiään pelejä
 * testejä tietokannalle, malleille etc. myös testi onko cache päällä
 * tuloskortin laskennalle ja esittämiselle oma model player_scores-listan sijaan
 
@@ -30,7 +29,6 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Radat-sivu
 
-* sort by popularity or name
 * rate courses with 5 stars, how overall score and user's own score
 * väylien pituudet
 
