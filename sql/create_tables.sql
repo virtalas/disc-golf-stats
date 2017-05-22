@@ -32,6 +32,7 @@ number_of_games smallint NOT NULL
 CREATE TABLE Game(
 gameid SERIAL PRIMARY KEY,
 courseid INTEGER REFERENCES Course(courseid),
+creator INTEGER REFERENCES Player(playerid),
 contestid INTEGER REFERENCES Contest(contestid),
 gamedate timestamp,
 comment varchar(300),
