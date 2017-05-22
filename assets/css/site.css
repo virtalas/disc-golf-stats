@@ -66,6 +66,10 @@ blockquote {
   width: 160px;                 /* fixed width */
 }
 
+#game_comment {
+	height: 100px;
+}
+
 /*
 	Score card displaying
 */
