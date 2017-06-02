@@ -34,55 +34,56 @@
     <p>
       Hae pelejä tiedoilla:
     </p>
-    <table style="width: 100%;">
-      <tr>
-        <td>
-          <label>Sadetta</label>
-          <div class="radio">
-            <label><input type="radio" name="optradio">Kyllä</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="optradio">Ei</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="optradio" checked>Kumpi tahansa</label>
-          </div>
-        </td>
-        <td>
-          <label>Märkää (ei sadetta)</label>
-          <div class="radio">
-            <label><input type="radio" name="optradio">Kyllä</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="optradio">Ei</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="optradio" checked>Kumpi tahansa</label>
-          </div>
-        </td>
-        <td>
-          <label>Tuulista</label>
-          <div class="radio">
-            <label><input type="radio" name="optradio">Kyllä</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="optradio">Ei</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="optradio">Kumpi tahansa</label>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>poikkeava rata</td>
-        <td>pimeää</td>
-        <td>LED</td>
-      </tr>
-      <tr>
-        <td>lunta</td>
-      </tr>
-    </table>
-
+    <div class="form-group">
+      <table style="width: 100%;">
+        <tr>
+          <td>
+            <label>Sadetta:</label>
+            <div class="row">
+              <div class="col-sm-7">
+                <select class="form-control" id="rain">
+                  <option>Kumpi tahansa</option>
+                  <option>Kyllä</option>
+                  <option>Ei</option>
+                </select>
+              </div>
+            </div>
+          </td>
+          <td>
+            <label>Märkää (ei sadetta):</label>
+            <div class="row">
+              <div class="col-sm-7">
+                <select class="form-control" id="wet_no_rain">
+                  <option>Kumpi tahansa</option>
+                  <option>Kyllä</option>
+                  <option>Ei</option>
+                </select>
+              </div>
+            </div>
+          </td>
+          <td>
+            <label>Tuulista:</label>
+            <div class="row">
+              <div class="col-sm-7">
+                <select class="form-control" id="windy">
+                  <option>Kumpi tahansa</option>
+                  <option>Kyllä</option>
+                  <option>Ei</option>
+                </select>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>poikkeava rata</td>
+          <td>pimeää</td>
+          <td>LED</td>
+        </tr>
+        <tr>
+          <td>lunta</td>
+        </tr>
+      </table>
+    </div>
     <br><br>
   </div>
 
