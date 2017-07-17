@@ -4,7 +4,7 @@ Web-based mobile user interface for inputting a new game with scores.
 
 ### Specs
 
-Refer to mobile.jpg
+Refer to mobile_ui.jpg
 
 Flow:
 
@@ -13,7 +13,7 @@ Flow:
 3. User inputs scores for each hole.
 4. User presses the stop button.
 5. Views for the rest of the game details. Weather and end time are updated at this time.
-6. User submits game and is taken to the score card view.
+6. User submits the game and is taken to the score card view.
 
 ### Additional features
 
