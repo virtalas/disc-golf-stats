@@ -36,3 +36,7 @@ Features/bugs/etc planned for disc-golf-stats
 ### Pelaajat-sivu
 
 * "ratojen tulosten keskiarvot" Kivikon tulokset väärin (skipatut väylät)
+
+### Kisat-sivu
+
+* kisaa tehdessä ja muokatessa valita "laske pisteet" / "käytä pistelaskua", joka määrää näytetäänkö pistetaulukko
