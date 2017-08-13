@@ -10,7 +10,7 @@ Flow:
 
 1. User selects the course and players.
 2. Mobile is detected and mobile ui flow starts.
-3. User inputs scores for each hole.
+3. User inputs scores for each hole. The scores are kept up to date in the database in case the flow is closed and restarted.
 4. User presses the stop button.
 5. Views for the rest of the game details. Weather and end time are updated at this time.
 6. User submits the game and is taken to the score card view.
