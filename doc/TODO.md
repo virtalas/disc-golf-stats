@@ -30,6 +30,7 @@ Features/bugs/etc planned for disc-golf-stats
 ### Radat-sivu
 
 * vaihda popularity <-> name javascriptillä ja päivitä ratalinkkien get-parametri oikeaksi
+* pelaajakohtainen top5-näkymä, drop down pelaajavalinta (samaan kuin nykyinen ja default valinta "kaikki")
 * rate courses with 5 stars, how overall score and user's own score
 * väylien pituudet
 
@@ -39,4 +40,5 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Kisat-sivu
 
+* päivämäärän formaatti samaksi kuin pelit-sivulla
 * kisaa tehdessä ja muokatessa valita "laske pisteet" / "käytä pistelaskua", joka määrää näytetäänkö pistetaulukko
