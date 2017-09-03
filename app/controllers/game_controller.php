@@ -138,11 +138,24 @@
         $next_page = null;
       }
 
+      $conditions = array();
+
+      foreach ($_GET as $key => $value) {
+        switch ($value) {
+          case 'Kyllä':
+            $conditions[$key] = 'true';
+            break;
+          case 'Ei':
+            $conditions[$key] = 'false';
+            break;
+          default:
+            $conditions[$key] = null;
+            break;
+        }
+      }
+
       View::make('game/search.html', array(
-        'games' => Game::all(array(
-          'page' => $page,
-          'page_size' => $page_size
-        )),
+        'games' => Game::search($conditions, $page, $page_size),
         'prev_page' => $prev_page,
         'curr_page' => $page,
         'next_page' => $next_page,

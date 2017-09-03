@@ -277,7 +277,7 @@
       if (isset($options['year'])) {
         $year = $options['year'];
       }
-      $offset = (int)$page_size * ((int)$page - 1);
+      $offset = self::offset($page_size, $page);
 
       // 'course' and 'player' parameters determine what games are fetched
 
@@ -366,6 +366,42 @@
 
         return self::get_games_from_rows($rows);
       }
+    }
+
+    public static function search($conditions, $page, $page_size) {
+      $sql = "SELECT game.gameid, game.courseid, game.creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+              game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
+              game.snow, game.doubles, game.temp, game.contestid
+              FROM game ";
+
+      if (!empty($conditions)) {
+        $sql .= " WHERE ";
+      }
+
+      $search_conditions = array();
+
+      foreach ($conditions as $key => $value) {
+        if ($value !== null) {
+          if (!empty($search_conditions)) {
+            $sql .= " and ";
+          }
+          // game.key = :key
+          $sql .= " game.". $key. " = :". $key;
+          $search_conditions[$key] = $value;
+        }
+      }
+
+      $search_conditions["limit"] = $page_size;
+      $search_conditions["offset"] = self::offset($page_size, $page);
+
+      $sql .= " GROUP BY game.gameid
+                ORDER BY game.gamedate DESC
+                LIMIT :limit OFFSET :offset";
+      $query = DB::connection()->prepare($sql);
+      $query->execute($search_conditions);
+      $rows = $query->fetchAll();
+
+      return self::get_games_from_rows($rows);
     }
 
     public static function contest_games($contestid) {
@@ -718,6 +754,10 @@
       }
 
       return $games;
+    }
+
+    private static function offset($page_size, $page) {
+      return (int)$page_size * ((int)$page - 1);
     }
 
     /*
