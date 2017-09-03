@@ -97,7 +97,7 @@
           'next_page' => $next_page,
           'pages' => $pages,
           'courses' => Course::all(),
-          'courses_order_by_id' => Course::all_order_by_id(),
+          'course_name' => Course::find($courseid)->name,
           'players' => Player::all(),
           'playerid_param' => $playerid,
           'courseid_param' => $courseid,
