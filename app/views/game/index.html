@@ -6,7 +6,7 @@
 
   {% import "macros/forms.html" as forms %}
   {% import "macros/list_games.html" as list_games %}
-  {% import "macros/search.html" as search %}
+  {% import "macros/pagination.html" as pagination %}
 
   {% if message is not null %}
     <div class="alert alert-success" id="message-success">
@@ -15,25 +15,23 @@
   {% endif %}
 
   {% if playerid_param and courseid_param %}
-    <h2 id="title">Pelaajan {{players[playerid_param - 1].firstname}} pelit radalla {{courses_order_by_id[courseid_param - 1].name}}
+    <h2>Pelaajan {{players[playerid_param - 1].firstname}} pelit radalla {{courses_order_by_id[courseid_param - 1].name}}
   {% elseif playerid_param %}
-    <h2 id="title">Pelaajan {{players[playerid_param - 1].firstname}} pelit
+    <h2>Pelaajan {{players[playerid_param - 1].firstname}} pelit
   {% elseif courseid_param %}
-    <h2 id="title">Pelatut pelit radalla {{courses_order_by_id[courseid_param - 1].name}}
+    <h2>Pelatut pelit radalla {{courses_order_by_id[courseid_param - 1].name}}
   {% else %}
-    <h2 id="title">Pelatut pelit
+    <h2>Pelatut pelit
   {% endif %}
   vuonna {{current_year}}</h2>
 
   <p>
-    <button id="search-toggle" href="" class="btn btn-default">Tarkennettu haku</button>
+    <a href="{{base_path}}/search" class="btn btn-default">Tarkennettu haku</a>
   </p>
 
   <br>
 
-  {{search.search()}}
-
-  <div id="result">
+  <div>
     {% if courses %}
       {{forms.new_game(courses, players, base_path)}}
     {% else %}
@@ -65,34 +63,7 @@
       {% set show_edit = false %}
       {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit, user_logged_in)}}
 
-      <nav>
-        <ul class="pagination">
-          <li class="{% if not prev_page %}disabled{% endif %}">
-              <a class="{% if not prev_page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{prev_page}}&year={{current_year}}">
-                <span aria-hidden="true">«</span>
-                <span class="sr-only">Previous</span>
-              </a>
-          </li>
-          {% if pages > 0 %}
-            {% for page in 1..pages %}
-              <li class="{% if curr_page == page %}active{% endif %}">
-                <a class="{% if curr_page == page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{page}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}&year={{current_year}}">{{page}}</a>
-              </li>
-            {% endfor %}
-          {% else %}
-            <!-- For pages with no content (pages=0) -->
-            <li class="active">
-              <a class="disabled_link" href="{{base_path}}/game?page={{page}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}&year={{current_year}}">1</a>
-            </li>
-          {% endif %}
-          <li class="{% if not next_page %}disabled{% endif %}">
-            <a class="{% if not next_page %}disabled_link{% endif %}" href="{{base_path}}/game?page={{next_page}}{% if courseid_param %}&course={{courseid_param}}{% endif %}{% if playerid_param %}&player={{playerid_param}}{% endif %}&year={{current_year}}">
-              <span aria-hidden="true">»</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      {{pagination.game(base_path, pages, curr_page, prev_page, next_page, current_year, courseid_param, playerid_param)}}
 
     {% else %}
       <p>
@@ -101,8 +72,4 @@
     {% endif %}
   </div>
 
-{% endblock %}
-
-{% block scripts %}
-  <script src="{{base_path}}/assets/js/search.js"></script>
 {% endblock %}

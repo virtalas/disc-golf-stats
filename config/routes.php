@@ -67,9 +67,14 @@
     GameController::index(false);
   });
 
+  // Pelien hakusivu
+  $routes->get('/search', 'check_logged_in', function(){
+    SearchController::index();
+  });
+
   // Ajax pyynnöllä lista peleistä hakua varten
-  $routes->get('/game/search', 'check_logged_in', function(){
-    GameController::search();
+  $routes->get('/search/game', 'check_logged_in', function(){
+    SearchController::search();
   });
 
   // Pelin lisääminen tietokantaan

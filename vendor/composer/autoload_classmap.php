@@ -25,6 +25,7 @@ return array(
     'PlayerController' => $baseDir . '/app/controllers/player_controller.php',
     'Redirect' => $baseDir . '/lib/redirect.php',
     'Score' => $baseDir . '/app/models/Score.php',
+    'SearchController' => $baseDir . '/app/controllers/search_controller.php',
     'StatsController' => $baseDir . '/app/controllers/stats_controller.php',
     'UserController' => $baseDir . '/app/controllers/user_controller.php',
     'View' => $baseDir . '/lib/view.php',

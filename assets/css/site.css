@@ -21,7 +21,11 @@ a.hidden_link_black {
 	text-decoration: underline;
 }
 
-a.disabled_link {
+#pagination {
+	cursor: pointer;
+}
+
+a.disabled_link #pagination a.disabled_link {
 	pointer-events: none;
   cursor: default;
 }
