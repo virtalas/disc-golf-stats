@@ -97,7 +97,7 @@
           'next_page' => $next_page,
           'pages' => $pages,
           'courses' => Course::all(),
-          'course_name' => Course::find($courseid)->name,
+          'course_name' => $courseid ? Course::find($courseid)->name : null,
           'players' => Player::all(),
           'playerid_param' => $playerid,
           'courseid_param' => $courseid,
