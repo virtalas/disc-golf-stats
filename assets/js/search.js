@@ -14,7 +14,7 @@ $(document).ready(function(){
     refresh();
   });
 
-  $('ul li a').click(function(e) {
+  $('#next').on('click', function(e) {
     var txt = e.html();
     console.log("gf"+txt);
   });

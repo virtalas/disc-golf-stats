@@ -374,22 +374,9 @@
               game.snow, game.doubles, game.temp, game.contestid
               FROM game ";
 
-      if (!empty($conditions)) {
-        $sql .= " WHERE ";
-      }
-
-      $search_conditions = array();
-
-      foreach ($conditions as $key => $value) {
-        if ($value !== null) {
-          if (!empty($search_conditions)) {
-            $sql .= " and ";
-          }
-          // game.key = :key
-          $sql .= " game.". $key. " = :". $key;
-          $search_conditions[$key] = $value;
-        }
-      }
+      $prepared = self::prepare_sql_for_search_conditions($sql, $conditions);
+      $sql = $prepared["sql"];
+      $search_conditions = $prepared["search_conditions"];
 
       $search_conditions["limit"] = $page_size;
       $search_conditions["offset"] = self::offset($page_size, $page);
@@ -402,6 +389,41 @@
       $rows = $query->fetchAll();
 
       return self::get_games_from_rows($rows);
+    }
+
+    public static function count_all_for_search($conditions, $page, $page_size) {
+      $sql = "SELECT COUNT (*) as game_count FROM game ";
+
+      $prepared = self::prepare_sql_for_search_conditions($sql, $conditions);
+      $sql = $prepared["sql"];
+      $search_conditions = $prepared["search_conditions"];
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute($search_conditions);
+      $row = $query->fetch();
+
+      return $row["game_count"];
+    }
+
+    private static function prepare_sql_for_search_conditions($sql, $conditions) {
+      if (!empty($conditions)) {
+        $sql .= " WHERE ";
+      }
+
+      $search_conditions = array();
+
+      foreach ($conditions as $key => $value) {
+        if ($value !== null) {
+          if (!empty($search_conditions)) {
+            $sql .= " and ";
+          }
+          // game.key = :key
+          $sql .= " game.". $key. " = :". $key. " ";
+          $search_conditions[$key] = $value;
+        }
+      }
+
+      return array("sql" => $sql, "search_conditions" => $search_conditions);
     }
 
     public static function contest_games($contestid) {
