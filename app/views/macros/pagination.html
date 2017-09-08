@@ -41,7 +41,7 @@
       {% if pages > 0 %}
         {% for page in 1..pages %}
           <li class="{% if curr_page == page %}active{% endif %}">
-            <a class="{% if curr_page == page %}disabled_link{% endif %}">{{page}}</a>
+            <a class="{% if curr_page == page %}disabled_link{% else %}active_js_link{% endif %}">{{page}}</a>
           </li>
         {% endfor %}
       {% else %}

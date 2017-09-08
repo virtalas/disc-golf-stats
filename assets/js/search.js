@@ -1,23 +1,28 @@
 $(document).ready(function(){
   $("#result").html("Haetaan pelejä...");
 
-  var refresh = function() {
-    $("#result").html("Haetaan pelejä...");
-
-    $.get('search/game?' + $('#conditions').serialize(), function(data) {
-      console.log('search/game?' + $('#conditions').serialize());
-      $('#result').html(data);
-    });
-  }
-
   $('select').change(function() {
-    refresh();
+    fetchGames(1);
   });
 
-  $('#next').on('click', function(e) {
-    var txt = e.html();
-    console.log("gf"+txt);
-  });
-
-  refresh();
+  fetchGames(1);
 });
+
+function fetchGames(page) {
+  $("#result").html("Haetaan pelejä...");
+  var params = $('#conditions').serialize();
+  params += "&page=" + page;
+
+  $.get('search/game?' + params, function(data) {
+    console.log('search/game?' + $('#conditions').serialize());
+    $('#result').html(data);
+    listenForLinks();
+  });
+}
+
+function listenForLinks() {
+  $('a.active_js_link').click(function(e) {
+    var page = $(e.target).text();
+    fetchGames(page);
+  });
+}
