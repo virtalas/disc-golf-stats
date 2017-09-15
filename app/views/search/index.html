@@ -121,6 +121,26 @@
           </div>
         </td>
       </tr>
+      <tr>
+        <td></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <label>Rata:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="courseid">
+                <option value="-1">Kaikki radat</option>
+                {% for course in courses %}
+                  <option value="{{course.courseid}}">{{course.name}}, {{course.city}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </td>
+      </tr>
     </table>
   </div>
   <br><br>

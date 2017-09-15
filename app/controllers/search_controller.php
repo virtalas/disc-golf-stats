@@ -3,7 +3,7 @@
 
     public static function index() {
       View::make('search/index.html', array(
-
+        'courses' => Course::all()
       ));
     }
 
@@ -11,6 +11,10 @@
       $page = isset($_GET['page']) && $_GET['page']  ? $_GET['page'] : 1;
       $page_size = 15;
       $conditions = array();
+
+      if (isset($_GET['courseid']) && $_GET['courseid'] != -1) {
+        $conditions['courseid'] = $_GET['courseid'];
+      }
 
       foreach ($_GET as $key => $value) {
         switch ($value) {
