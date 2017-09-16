@@ -405,7 +405,10 @@
       return $row["game_count"];
     }
 
+    // This function adds search conditions to an SQL query.
+    // Returns for example $sql + "WHERE X = Y AND Z = Q" for $conditions = ["X" => "Y", "Z" => "Q"]
     private static function prepare_sql_for_search_conditions($sql, $conditions) {
+      // The $sql should already have "SELECT A FROM B"
       if (!empty($conditions)) {
         $sql .= " WHERE ";
       }
@@ -417,9 +420,15 @@
           if (!empty($search_conditions)) {
             $sql .= " and ";
           }
-          // game.key = :key
-          $sql .= " game.". $key. " = :". $key. " ";
-          $search_conditions[$key] = $value;
+          if ($key == "comment") {
+            $sql .= " game.". $key;
+            // If the key "comment" exists in $conditions, it is either Kyllä tai Ei.
+            $sql .= $value == "true" ? " != '' " : " = '' ";
+          } else {
+            // game.key = :key
+            $sql .= " game.". $key. " = :". $key. " ";
+            $search_conditions[$key] = $value;
+          }
         }
       }
 
