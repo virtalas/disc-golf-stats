@@ -273,8 +273,11 @@
 
       $page_size = $options['page_size'];
       $page = $options['page'];
-      $year = $options['year'];
-      $offset = (int)$page_size * ((int)$page - 1);
+      $year = "%%%%"; // returns any year
+      if (isset($options['year'])) {
+        $year = $options['year'];
+      }
+      $offset = self::offset($page_size, $page);
 
       // 'course' and 'player' parameters determine what games are fetched
 
@@ -290,7 +293,7 @@
                 JOIN score ON score.gameid = game.gameid
                 WHERE score.playerid = :playerid
                 AND game.courseid = :courseid
-                AND to_char(gamedate, 'YYYY') = :year
+                AND to_char(gamedate, 'YYYY') LIKE :year
                 GROUP BY game.gameid
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
@@ -313,7 +316,7 @@
                 FROM game
                 JOIN score ON score.gameid = game.gameid
                 WHERE score.playerid = :playerid
-                AND to_char(gamedate, 'YYYY') = :year
+                AND to_char(gamedate, 'YYYY') LIKE :year
                 GROUP BY game.gameid
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
@@ -333,7 +336,7 @@
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
                 FROM game
                 WHERE courseid = :courseid
-                AND to_char(gamedate, 'YYYY') = :year
+                AND to_char(gamedate, 'YYYY') LIKE :year
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
         $query = DB::connection()->prepare($sql);
@@ -351,7 +354,7 @@
         $sql = "SELECT gameid, courseid, creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
                 comment, rain, wet_no_rain, windy, variant, dark, led, snow, doubles, temp, contestid
                 FROM game
-                WHERE to_char(gamedate, 'YYYY') = :year
+                WHERE to_char(gamedate, 'YYYY') LIKE :year
                 ORDER BY game.gamedate DESC
                 LIMIT :limit OFFSET :offset";
         $query = DB::connection()->prepare($sql);
@@ -363,6 +366,73 @@
 
         return self::get_games_from_rows($rows);
       }
+    }
+
+    public static function search($conditions, $page, $page_size) {
+      $sql = "SELECT game.gameid, game.courseid, game.creator, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate,
+              game.comment, game.rain, game.wet_no_rain, game.windy, game.variant, game.dark, game.led,
+              game.snow, game.doubles, game.temp, game.contestid
+              FROM game ";
+
+      $prepared = self::prepare_sql_for_search_conditions($sql, $conditions);
+      $sql = $prepared["sql"];
+      $search_conditions = $prepared["search_conditions"];
+
+      $search_conditions["limit"] = $page_size;
+      $search_conditions["offset"] = self::offset($page_size, $page);
+
+      $sql .= " GROUP BY game.gameid
+                ORDER BY game.gamedate DESC
+                LIMIT :limit OFFSET :offset";
+      $query = DB::connection()->prepare($sql);
+      $query->execute($search_conditions);
+      $rows = $query->fetchAll();
+
+      return self::get_games_from_rows($rows);
+    }
+
+    public static function count_all_for_search($conditions, $page, $page_size) {
+      $sql = "SELECT COUNT (*) as game_count FROM game ";
+
+      $prepared = self::prepare_sql_for_search_conditions($sql, $conditions);
+      $sql = $prepared["sql"];
+      $search_conditions = $prepared["search_conditions"];
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute($search_conditions);
+      $row = $query->fetch();
+
+      return $row["game_count"];
+    }
+
+    // This function adds search conditions to an SQL query.
+    // Returns for example $sql + "WHERE X = Y AND Z = Q" for $conditions = ["X" => "Y", "Z" => "Q"]
+    private static function prepare_sql_for_search_conditions($sql, $conditions) {
+      // The $sql should already have "SELECT A FROM B"
+      if (!empty($conditions)) {
+        $sql .= " WHERE ";
+      }
+
+      $search_conditions = array();
+
+      foreach ($conditions as $key => $value) {
+        if ($value !== null) {
+          if (!empty($search_conditions)) {
+            $sql .= " and ";
+          }
+          if ($key == "comment") {
+            $sql .= " game.". $key;
+            // If the key "comment" exists in $conditions, it is either Kyllä tai Ei.
+            $sql .= $value == "true" ? " != '' " : " = '' ";
+          } else {
+            // game.key = :key
+            $sql .= " game.". $key. " = :". $key. " ";
+            $search_conditions[$key] = $value;
+          }
+        }
+      }
+
+      return array("sql" => $sql, "search_conditions" => $search_conditions);
     }
 
     public static function contest_games($contestid) {
@@ -715,6 +785,10 @@
       }
 
       return $games;
+    }
+
+    private static function offset($page_size, $page) {
+      return (int)$page_size * ((int)$page - 1);
     }
 
     /*

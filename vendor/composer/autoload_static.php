@@ -61,6 +61,7 @@ class ComposerStaticInite5687506ac72889f9b1fd85e60e64c2a
         'PlayerController' => __DIR__ . '/../..' . '/app/controllers/player_controller.php',
         'Redirect' => __DIR__ . '/../..' . '/lib/redirect.php',
         'Score' => __DIR__ . '/../..' . '/app/models/Score.php',
+        'SearchController' => __DIR__ . '/../..' . '/app/controllers/search_controller.php',
         'StatsController' => __DIR__ . '/../..' . '/app/controllers/stats_controller.php',
         'UserController' => __DIR__ . '/../..' . '/app/controllers/user_controller.php',
         'View' => __DIR__ . '/../..' . '/lib/view.php',

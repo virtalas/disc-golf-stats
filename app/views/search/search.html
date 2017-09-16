@@ -1,0 +1,18 @@
+{% import "macros/list_games.html" as list_games %}
+{% import "macros/pagination.html" as pagination %}
+
+<h4>Pelejä löytyi {{game_count}}</h4>
+
+<br>
+
+{% if games %}
+
+  {% set show_edit = false %}
+  {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit, user_logged_in)}}
+  {{pagination.search(pages, curr_page, prev_page, next_page)}}
+
+{% else %}
+  <p>
+    Ei pelejä
+  </p>
+{% endif %}

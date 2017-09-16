@@ -64,7 +64,17 @@
 
   // Pelien listaussivu
   $routes->get('/game', 'check_logged_in', function() {
-    GameController::index();
+    GameController::index(false);
+  });
+
+  // Pelien hakusivu
+  $routes->get('/search', 'check_logged_in', function(){
+    SearchController::index();
+  });
+
+  // Ajax pyynnöllä lista peleistä hakua varten
+  $routes->get('/search/game', 'check_logged_in', function(){
+    SearchController::search();
   });
 
   // Pelin lisääminen tietokantaan
@@ -82,21 +92,22 @@
     GameController::show($gameid);
   });
 
-  // Pelin muokkauslomakkeen esittäminen (vain admin)
+  // Pelin muokkauslomakkeen esittäminen (vain pelin luoja tai admin)
   $routes->get('/game/:gameid/edit', 'check_logged_in', function($gameid){
     GameController::edit($gameid);
   });
 
-  // Pelin muokkaaminen (vain admin)
+  // Pelin muokkaaminen (vain pelin luoja tai admin)
   $routes->post('/game/:gameid/edit', 'check_logged_in', function($gameid){
     GameController::update($gameid);
   });
 
-  // Pelin poisto (vain admin)
+  // Pelin poisto (vain pelin luoja tai admin)
   $routes->post('/game/:gameid/destroy', 'check_logged_in', function($gameid){
     GameController::destroy($gameid);
   });
 
+  // csv-tiedoston tulostus
   $routes->get('/game/:gameid/export', 'check_logged_in', function($gameid){
     GameController::export($gameid);
   });

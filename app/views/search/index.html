@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% set current_page = 'game' %}
+
+{% block content %}
+
+  {% import "macros/list_games.html" as list_games %}
+  {% import "macros/pagination.html" as pagination %}
+
+  <h2>Hae pelejä</h2>
+
+  <p>
+    <a href="{{base_path}}/game" class="btn btn-default">Lopeta haku</a>
+  </p>
+
+  <p>
+    Hae pelejä tiedoilla:
+  </p>
+
+  <form class="form-group" id="conditions">
+    <table style="width: 100%;">
+      <tr>
+        <td>
+          <label>Sadetta:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="rain">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+        <td>
+          <label>Märkää (ei sadetta):</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="wet_no_rain">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+        <td>
+          <label>Tuulista:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="windy">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Poikkeava rata:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="variant">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+        <td>
+          <label>Pimeää:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="dark">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+        <td>
+          <label>LED:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="led">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Lunta:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="snow">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+        <td>
+          <label>Parigolf:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="doubles">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Kommentti:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="comment">
+                <option>Kumpi tahansa</option>
+                <option>Kyllä</option>
+                <option>Ei</option>
+              </select>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <label>Rata:</label>
+          <div class="row">
+            <div class="col-sm-7">
+              <select class="form-control" name="courseid">
+                <option value="-1">Kaikki radat</option>
+                {% for course in courses %}
+                  <option value="{{course.courseid}}">{{course.name}}, {{course.city}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <br><br>
+
+  <div id="result">
+    <p>
+      Tuloskortit ovat päivämäärän perusteella laskevassa järjestyksessä.
+    </p>
+
+    {% if games %}
+
+      {% set show_edit = false %}
+      {{list_games.list_games(games, players, base_path, admin_logged_in, show_edit, user_logged_in)}}
+
+      {{pagination.search(pages, curr_page, prev_page, next_page)}}
+
+    {% else %}
+      <p>
+        Ei pelejä
+      </p>
+    {% endif %}
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{base_path}}/assets/js/search.js"></script>
+{% endblock %}
