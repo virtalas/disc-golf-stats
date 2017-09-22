@@ -139,6 +139,12 @@
       ));
     }
 
+    public static function mobileScoreCard() {
+      // Game index page "new game" button -> /game/mobile/new
+      // Mobile gui will have a button to redirect to /game/new, but mobile gui is the default
+      View::make('game/mobile_scorecard.html');
+    }
+
     public static function store() {
       $params = $_POST;
 

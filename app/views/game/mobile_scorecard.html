@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <link href="{{base_path}}/assets/css/mobilegui.css" rel="stylesheet">
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <ons-toolbar style="position: fixed;">
+      <div class="left" style="margin-left: 15px;">1. väylä</div>
+      <div class="center">Par 3</div>
+      <div class="right">
+        <ons-toolbar-button>
+          <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+    </ons-toolbar>
+
+    <ons-page style="margin-top: 45px;">
+      <div class="page__content">
+        <ons-list class="contact-block" modifier="material">
+          <ons-list-item modifier="material short-divider">
+            <div class="left">
+              <span class="list__item__title">
+                Seppo
+              </span>
+            </div>
+            <div class="right">
+              6
+            </div>
+            <div class="right">
+              +1
+            </div>
+            <div class="right">
+              OB:
+            </div>
+            <div class="right">
+              <div class="circle">
+                <ons-input
+                  type="number"
+                  value="3"
+                  min="0"
+                  max="99"
+                  inputmode="numeric"
+                  pattern="[0-9]*">
+                </ons-input>
+              </div>
+            </div>
+            <div class="right">
+              Heitot:
+            </div>
+            <div class="right">
+              <div class="circle">
+                <ons-input
+                  type="number"
+                  value="3"
+                  min="0"
+                  max="99"
+                  inputmode="numeric"
+                  pattern="[0-9]*">
+                </ons-input>
+              </div>
+            </div>
+          </ons-list-item>
+        </ons-list>
+      </div>
+    </ons-page>
+
+    <ons-bottom-toolbar style="height: 150px; position: fixed;">
+      <ons-row>
+         <ons-col width="30%">
+           <p style="text-align: center">
+             <ons-button modifier="large" style="height: 100px;"><<</ons-button>
+           </p>
+         </ons-col>
+         <ons-col width="40%"></ons-col>
+         <ons-col width="30%">
+           <p style="line-height: 100px; text-align: center">
+             <ons-button modifier="large" style="height: 100px;">>></ons-button>
+           </p>
+         </ons-col>
+      </ons-row>
+    </ons-bottom-toolbar>
+  </body>
+</html>
