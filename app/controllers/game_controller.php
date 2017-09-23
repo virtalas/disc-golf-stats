@@ -142,7 +142,23 @@
     public static function mobileScoreCard() {
       // Game index page "new game" button -> /game/mobile/new
       // Mobile gui will have a button to redirect to /game/new, but mobile gui is the default
-      View::make('game/mobile_scorecard.html');
+      $course = Course::find($_GET['course']);
+
+      $attributes = array();
+      $players = array();
+
+      foreach (Player::all() as $player) {
+        if (isset($_GET['player'. $player->playerid])) {
+          $players[] = $player;
+          $attributes["legal-player". $player->playerid] = 1;
+        }
+      }
+
+      View::make('game/mobilegui/score_input.html', array(
+        'course' => $course,
+        'players' => $players,
+        'attributes' => $attributes
+      ));
     }
 
     public static function store() {

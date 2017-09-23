@@ -3,15 +3,27 @@
   <head>
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-    <link href="{{base_path}}/assets/css/mobilegui.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{base_path}}/assets/css/mobilegui.css">
+
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <script src="{{base_path}}/assets/js/mobilegui/app.js"></script>
+    <script src="{{base_path}}/assets/js/mobilegui/controllers.js"></script>
+    <script src="{{base_path}}/assets/js/mobilegui/services.js"></script>
+    <script src="{{base_path}}/vendor/jquery.min.js"></script>
+
+    <script type="text/javascript">
+      var course = JSON.parse('{{ course|json_encode|raw }}');
+      var players = JSON.parse('{{ players|json_encode|raw }}');
+      var attributes = JSON.parse('{{ attributes|json_encode|raw }}');
+    </script>
+
     <meta charset="utf-8">
-    <title></title>
+    <title>Uusi peli</title>
   </head>
   <body>
     <ons-toolbar style="position: fixed;">
-      <div class="left" style="margin-left: 15px;">1. väylä</div>
-      <div class="center">Par 3</div>
+      <div class="left" style="margin-left: 15px;"><span id="toolbarHoleNum">1</span>. väylä</div>
+      <div class="center">Par <span id="toolbarPar"></span></div>
       <div class="right">
         <ons-toolbar-button>
           <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
@@ -19,7 +31,7 @@
       </div>
     </ons-toolbar>
 
-    <ons-page style="margin-top: 45px;">
+    <ons-page id="scoreInputPage" style="margin-top: 45px;">
       <div class="page__content">
         <ons-list class="contact-block" modifier="material">
           <ons-list-item modifier="material short-divider">
@@ -73,13 +85,17 @@
       <ons-row>
          <ons-col width="30%">
            <p style="text-align: center">
-             <ons-button modifier="large" style="height: 100px;"><<</ons-button>
+             <ons-button id="previous" modifier="large" style="height: 100px;"><<</ons-button>
            </p>
          </ons-col>
-         <ons-col width="40%"></ons-col>
+         <ons-col width="40%" vertical-align="bottom">
+           <p style="line-height: 100px; text-align: center; margin-left: 20%; margin-right: 20%;">
+             <ons-button id="par" modifier="large" style="height: 50px;">Par</ons-button>
+           </p>
+         </ons-col>
          <ons-col width="30%">
            <p style="line-height: 100px; text-align: center">
-             <ons-button modifier="large" style="height: 100px;">>></ons-button>
+             <ons-button id="next" modifier="large" style="height: 100px;">>></ons-button>
            </p>
          </ons-col>
       </ons-row>
