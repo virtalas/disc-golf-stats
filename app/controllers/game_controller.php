@@ -154,7 +154,7 @@
         }
       }
 
-      View::make('game/mobilegui/score_input.html', array(
+      View::make('game/mobilegui/index.html', array(
         'course' => $course,
         'players' => $players,
         'attributes' => $attributes

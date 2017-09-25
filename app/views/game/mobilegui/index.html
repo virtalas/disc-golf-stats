@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+    <link rel="stylesheet" href="{{base_path}}/assets/css/mobilegui.css">
+
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+    <script src="{{base_path}}/assets/js/mobilegui/app.js"></script>
+    <script src="{{base_path}}/assets/js/mobilegui/controllers.js"></script>
+    <script src="{{base_path}}/assets/js/mobilegui/services.js"></script>
+    <script src="{{base_path}}/vendor/jquery.min.js"></script>
+
+    <script type="text/javascript">
+      var course = JSON.parse('{{ course|json_encode|raw }}');
+      var players = JSON.parse('{{ players|json_encode|raw }}');
+      var attributes = JSON.parse('{{ attributes|json_encode|raw }}');
+    </script>
+
+    <meta charset="utf-8">
+    <title>Uusi peli</title>
+  </head>
+  <body>
+
+    <!-- First navigation component: Navigator. This will remain always on top of the app. -->
+    <!-- <ons-navigator id="myNavigator" page="splitter.html">
+    </ons-navigator>
+
+    <template id="splitter.html">
+      <ons-page>
+        <ons-splitter>
+          <ons-splitter-side id="menu" side="right" width="220px" collapse swipeable>
+
+            <ons-list>
+              <ons-list-item tappable>
+                Home
+              </ons-list-item>
+              <ons-list-item tappable>
+                Settings
+              </ons-list-item>
+              <ons-list-item tappable>
+                About
+              </ons-list-item>
+            </ons-list>
+
+          </ons-splitter-side>
+          <ons-splitter-content id="content" page="score_input"></ons-splitter-content>
+        </ons-splitter>
+      </ons-page>
+    </template>
+
+    <ons-template id="score_input">
+      <ons-page id="scoreInputPage">
+        <ons-toolbar style="position: fixed;">
+          <div class="left" style="margin-left: 15px;"><span id="toolbarHoleNum">1</span>. väylä</div>
+          <div class="center">Par <span id="toolbarPar"></span></div>
+          <div class="right">
+            <ons-toolbar-button>
+              <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+            </ons-toolbar-button>
+          </div>
+        </ons-toolbar>
+
+        <div class="page__content">
+          {% for player in players %}
+            <ons-list class="contact-block" modifier="material">
+              <ons-list-item modifier="material short-divider">
+                <div class="left">
+                  <span class="list__item__title">{{player.firstname}}</span>
+                </div>
+                <div class="right">
+                  <span class="toPar" id="{{player.playerid}}topar">0</span>
+                </div>
+                <div class="right">
+                  <span style="margin-right: 10px;">OB:</span>
+                  <div class="circle">
+                    <ons-input
+                      id="{{player.playerid}}ob"
+                      type="number"
+                      value="0"
+                      min="0"
+                      max="99"
+                      inputmode="numeric"
+                      pattern="[0-9]*">
+                    </ons-input>
+                  </div>
+                </div>
+                <div class="right">
+                  <span style="margin-right: 10px;">Heitot:</span>
+                  <div class="circle">
+                    <ons-input
+                      id="{{player.playerid}}stroke"
+                      type="number"
+                      value="0"
+                      min="0"
+                      max="99"
+                      inputmode="numeric"
+                      pattern="[0-9]*">
+                    </ons-input>
+                  </div>
+                </div>
+              </ons-list-item>
+            </ons-list>
+          {% endfor %}
+        </div>
+
+        <ons-bottom-toolbar style="height: 150px; position: fixed;">
+          <ons-row>
+             <ons-col width="30%">
+               <p style="text-align: center">
+                 <ons-button id="previous" modifier="large" style="height: 100px;"><<</ons-button>
+               </p>
+             </ons-col>
+             <ons-col width="40%" vertical-align="bottom">
+               <p style="line-height: 100px; text-align: center; margin-left: 20%; margin-right: 20%;">
+                 <ons-button id="par" modifier="large" style="height: 50px;">Par</ons-button>
+               </p>
+             </ons-col>
+             <ons-col width="30%">
+               <p style="line-height: 100px; text-align: center">
+                 <ons-button id="next" modifier="large" style="height: 100px;">>></ons-button>
+               </p>
+             </ons-col>
+          </ons-row>
+        </ons-bottom-toolbar>
+      </ons-page>
+    </ons-template> -->
+
+    <!--  FROM ^^ IS THIS NECESSARY FOR MOBILE SCROLLING: <div class="page__content"> -->
+
+    <ons-splitter id="mySplitter">
+      <ons-splitter-side id="menu" side="right" width="220px" collapse swipeable>
+        <ons-page>
+          <ons-list>
+            <ons-list-item id="splitter_score_input" onclick="fn.load('score_input.html')" tappable>
+              Score input
+            </ons-list-item>
+            <ons-list-item id="splitter_hole_info" onclick="fn.load('../../app/views/game/mobilegui/hole_info.html')" tappable>
+              Settings
+            </ons-list-item>
+            <ons-list-item>
+              <a href="{{base_path}}/game/new">Vanha lisäyssivu</a>
+            </ons-list-item>
+          </ons-list>
+        </ons-page>
+      </ons-splitter-side>
+      <ons-splitter-content id="content" page="score_input.html"></ons-splitter-content>
+    </ons-splitter>
+
+    <template id="score_input.html">
+      <ons-page id="scoreInputPage">
+        <ons-toolbar>
+          <div class="left" style="margin-left: 15px;"><span id="toolbarHoleNum">1</span>. väylä</div>
+          <div class="center">Par <span id="toolbarPar"></span></div>
+          <div class="right">
+            <ons-toolbar-button id="toolbarbutton" component="button/menu" onclick="fn.open()">
+              <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+            </ons-toolbar-button>
+          </div>
+        </ons-toolbar>
+
+        {% for player in players %}
+          <ons-list class="contact-block" modifier="material">
+            <ons-list-item modifier="material short-divider">
+              <div class="left">
+                <span class="list__item__title">{{player.firstname}}</span>
+              </div>
+              <div class="right">
+                <span class="toPar" id="{{player.playerid}}topar">0</span>
+              </div>
+              <div class="right">
+                <span style="margin-right: 10px;">OB:</span>
+                <div class="circle">
+                  <ons-input
+                    id="{{player.playerid}}ob"
+                    type="number"
+                    value="0"
+                    min="0"
+                    max="99"
+                    inputmode="numeric"
+                    pattern="[0-9]*">
+                  </ons-input>
+                </div>
+              </div>
+              <div class="right">
+                <span style="margin-right: 10px;">Heitot:</span>
+                <div class="circle">
+                  <ons-input
+                    id="{{player.playerid}}stroke"
+                    type="number"
+                    value="0"
+                    min="0"
+                    max="99"
+                    inputmode="numeric"
+                    pattern="[0-9]*">
+                  </ons-input>
+                </div>
+              </div>
+            </ons-list-item>
+          </ons-list>
+        {% endfor %}
+
+        <ons-bottom-toolbar style="height: 150px; position: fixed;">
+          <ons-row>
+             <ons-col width="30%">
+               <p style="text-align: center">
+                 <ons-button id="previous" modifier="large" style="height: 100px;"><<</ons-button>
+               </p>
+             </ons-col>
+             <ons-col width="40%" vertical-align="bottom">
+               <p style="line-height: 100px; text-align: center; margin-left: 20%; margin-right: 20%;">
+                 <ons-button id="par" modifier="large" style="height: 50px;">Par</ons-button>
+               </p>
+             </ons-col>
+             <ons-col width="30%">
+               <p style="line-height: 100px; text-align: center">
+                 <ons-button id="next" modifier="large" style="height: 100px;">>></ons-button>
+               </p>
+             </ons-col>
+          </ons-row>
+        </ons-bottom-toolbar>
+      </ons-page>
+    </template>
+
+  </body>
+</html>
