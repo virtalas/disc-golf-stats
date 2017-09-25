@@ -4,6 +4,9 @@ myApp.services = {
     if (myApp.holeIndex < course.holes.length - 1) {
       myApp.holeIndex++;
       myApp.services.updatePage();
+    } else if (myApp.holeIndex == course.holes.length - 1) {
+      // Pressing next on the last hole takes the user to game conditons page
+      fn.load("../../app/views/game/mobilegui/conditions.html");
     }
   },
 

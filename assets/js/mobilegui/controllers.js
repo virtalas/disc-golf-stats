@@ -22,6 +22,25 @@ myApp.controllers = {
     }
 
     myApp.services.updatePage();
+  },
+
+  conditionsPage: function(page) {
+    // Generate game legality switches for the first player
+    $("#game_legality_switch span").html(players[0].firstname);
+    $("#game_legality_switch ons-switch").attr("input-id", "legal-player" + players[0].playerid);
+
+    // Switches for the rest of the players
+    for (var i = 1; i < players.length; i++) {
+      var legality = $("#game_legality_switch").clone();
+      legality.find("span").html(players[i].firstname);
+      legality.find("ons-switch").attr("input-id", "legal-player" + players[i].playerid);
+      legality.appendTo("#legality_switches");
+    }
+
+    // Send button functionality
+    $("#add_game_button").click(function() {
+
+    });
   }
 };
 
