@@ -39,10 +39,47 @@ myApp.controllers = {
 
     // Send button functionality
     $("#add_game_button").click(function() {
-
+      myApp.services.postGame();
     });
+
+    // Set date and time to now
+    $("#date").val(dateNow());
+    $("#time").val(timeNow());
   }
 };
+
+function dateNow() {
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; // January is 0!
+  var yyyy = today.getFullYear();
+
+  if (dd < 10) {
+      dd = '0' + dd
+  }
+
+  if (mm < 10) {
+      mm = '0' + mm
+  }
+
+  return yyyy + "-" + mm + "-" + dd;
+}
+
+function timeNow() {
+  var today = new Date();
+  var h = today.getHours();
+  var min = today.getMinutes();
+
+  if (h < 10) {
+    h = "0" + h;
+  }
+
+  if (min < 10) {
+    min = "0" + min;
+  }
+
+  return h + ":" + min;
+}
 
 // https://stackoverflow.com/a/24035537
 function hideKeyboard() {

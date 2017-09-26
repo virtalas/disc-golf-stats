@@ -90,35 +90,36 @@
     <ons-list-header>Lämpötila – saa olla tyhjä</ons-list-header>
     <li class="list__item">
       <div class="list__item__center">
-        <input type="text" class="text-input" placeholder="°C">
+        <input type="text" class="text-input" placeholder="°C" id="temp">
       </div>
     </li>
 
     <ons-list-header>Päivämäärä ja kellonaika</ons-list-header>
     <li class="list__item">
       <div class="list__item__center">
-        <input type="text" class="text-input" placeholder="YYYY-MM-DD">
+        <input type="text" class="text-input" placeholder="YYYY-MM-DD" id="date">
       </div>
     </li>
     <li class="list__item">
       <div class="list__item__center">
-        <input type="text" class="text-input" placeholder="HH:MM">
+        <input type="text" class="text-input" placeholder="HH:MM" id="time">
       </div>
     </li>
 
     <ons-list-header>Kommentti</ons-list-header>
     <li class="list__item">
       <div class="list__item__center">
-        <textarea class="textarea textarea--transparent" placeholder="Olipahan peli!"></textarea>
+        <textarea class="textarea textarea--transparent" placeholder="Olipahan peli!" id="comment"></textarea>
       </div>
     </li>
   </ons-list>
-
-
 
   <div style="text-align: center; margin-top: 30px;">
     <p style="margin-top: 30px;">
       <ons-button id="add_game_button">Lisää peli</ons-button>
     </p>
   </div>
+
+  <!-- <form class="" action="/disc-golf-stats/game" method="post" style="display: none;" id="game_form">
+  </form> -->
 </ons-page>
