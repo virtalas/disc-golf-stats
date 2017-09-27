@@ -143,7 +143,7 @@
               Väylän tilastot
             </ons-list-item>
             <ons-list-item>
-              <a href="{{base_path}}/game/new">Vanha lisäyssivu</a>
+              <a href="{{base_path}}/game/new?course={{course.courseid}}{% for player in players %}&player{{player.playerid}}=1{% endfor %}">Vanha lisäyssivu</a>
             </ons-list-item>
           </ons-list>
         </ons-page>
