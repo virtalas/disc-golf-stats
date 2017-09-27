@@ -29,6 +29,9 @@ myApp.controllers = {
   },
 
   conditionsPage: function(page) {
+    // Show progress bar for fetching the weather
+    $("#animated_progress_bar").show();
+
     // Generate game legality switches for the first player
     $("#game_legality_switch span").html(players[0].firstname);
     $("#game_legality_switch ons-switch").attr("input-id", "legal-player" + players[0].playerid);

@@ -55,6 +55,9 @@ myApp.services = {
     // Collect all game information into an array and send it as a post request
     var game = {};
 
+    // Loading indicator
+    $("#animated_progress_circle").show();
+
     // Strokes and OBs
     for (var i = 0; i < players.length; i++) {
       var playerid = players[i].playerid;
@@ -90,10 +93,8 @@ myApp.services = {
     game["comment"] = $("#comment").val();
     game["courseid"] = course.courseid;
 
-    console.log($.param(game));
-    $.post("/disc-golf-stats/game", $.param(game), function(data) {
-      alert(data);
-    });
+    // POST and redirect
+    redirectPost("/disc-golf-stats/game", game);
   }
 };
 
@@ -112,4 +113,19 @@ function toPar(playerid) {
   }
 
   return par;
+}
+
+function redirectPost(url, data) {
+    var form = document.createElement('form');
+    form.method = 'post';
+    form.action = url;
+    for (var name in data) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = data[name];
+        form.appendChild(input);
+    }
+    $(document.body).append(form);
+    form.submit();
 }

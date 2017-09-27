@@ -12,6 +12,10 @@ ons-toolbar {
   padding: 15px;
 }
 
+ons-input {
+  font-size: 150%;
+}
+
 /* Conditions Page text inputs */
 
 .list__item__left {

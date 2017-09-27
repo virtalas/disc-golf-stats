@@ -57,5 +57,8 @@ $(document).ready(function () {
       $("#weathermessage").attr('class', 'alert alert-success');
       $("#weathermessage").text('Säätietoja valittiin automaattisesti. Tarkista valitut olosuhteet.')
     }
+
+    // Used for /mobile/new
+    $("#animated_progress_bar").delay(2000).hide();
   });
 });
