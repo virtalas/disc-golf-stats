@@ -17,6 +17,14 @@ myApp.services = {
     }
   },
 
+  setHoleScoresToPar: function() {
+    for (var i = 0; i < players.length; i++) {
+      var playerid = players[i].playerid;
+      myApp.services.updateStroke(playerid, course.holes[myApp.holeIndex].par);
+      myApp.services.updateOb(playerid, 0);
+    }
+  },
+
   updateStroke: function(playerid, stroke) {
     myApp.scores[playerid].strokes[myApp.holeIndex] = stroke;
     myApp.services.updatePage();
@@ -70,27 +78,32 @@ myApp.services = {
       game[$(this).attr("input-id")] = $(this).prop("checked") ? 1 : 0;
     });
 
+    // Players
+    for (var i = 0; i < players.length; i++) {
+      game["player" + players[i].playerid] = players[i].playerid;
+    }
+
     // Rest
-    game["temp"] = $("#temp").val();
+    game["temp"] = $("#inputtemp").val();
     game["date"] = $("#date").val();
     game["time"] = $("#time").val();
     game["comment"] = $("#comment").val();
     game["courseid"] = course.courseid;
 
+    console.log($.param(game));
     $.post("/disc-golf-stats/game", $.param(game), function(data) {
       alert(data);
     });
   }
 };
 
-
-
 function toPar(playerid) {
   var par = 0;
 
   for (var i = 0; i < course.holes.length; i++) {
+    // Stroke == 0 means a skipped hole
     if (myApp.scores[playerid].strokes[i] != 0) {
-      par += myApp.scores[playerid].strokes[i] - course.holes[i].par;
+      par += parseInt(myApp.scores[playerid].strokes[i]) + parseInt(myApp.scores[playerid].obs[i]) - parseInt(course.holes[i].par);
     }
   }
 

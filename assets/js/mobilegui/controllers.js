@@ -10,6 +10,10 @@ myApp.controllers = {
       myApp.services.previousHole();
     });
 
+    $("#set_to_par").click(function() {
+      myApp.services.setHoleScoresToPar();
+    });
+
     for (var i = 0; i < players.length; i++) {
       $("#" + players[i].playerid + "stroke").change(function() {
         var playerid = this.id.replace(/\D/g,'');
@@ -45,6 +49,9 @@ myApp.controllers = {
     // Set date and time to now
     $("#date").val(dateNow());
     $("#time").val(timeNow());
+
+    // Fetch course weather
+    $.getScript("../../assets/js/weather.js");
   }
 };
 
