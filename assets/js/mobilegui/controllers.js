@@ -1,20 +1,27 @@
 myApp.controllers = {
   scoreInputPage: function(page) {
 
+    // Button functionality
+
     $("#next").click(function() {
-      console.log("next clicked");
       myApp.services.nextHole();
+      // Send in-progress game to server if scores changed, then clear changed -flag
     });
 
     $("#previous").click(function() {
       myApp.services.previousHole();
+      // Send in-progress game to server if scores changed, then clear changed -flag
     });
 
     $("#set_to_par").click(function() {
       myApp.services.setHoleScoresToPar();
     });
 
+    // Listeners for score input fields
+
     for (var i = 0; i < players.length; i++) {
+
+      // After the field loses focus, update scores (apparently not called if the field is empty)
       $("#" + players[i].playerid + "stroke").change(function() {
         var playerid = this.id.replace(/\D/g,'');
         myApp.services.updateStroke(playerid, $(this).val());
@@ -23,6 +30,37 @@ myApp.controllers = {
         var playerid = this.id.replace(/\D/g,'');
         myApp.services.updateOb(playerid, $(this).val());
       });
+
+      // Clear input field when user taps on it
+      $("#" + players[i].playerid + "stroke").focus(function() {
+        $(this).val("");
+      });
+      $("#" + players[i].playerid + "ob").focus(function() {
+        $(this).val("");
+      });
+
+      // If the field is empty when it loses focus, set the value to 0
+      $("#" + players[i].playerid + "stroke").blur(function() {
+        if ($(this).val() == "") {
+          var playerid = this.id.replace(/\D/g,'');
+          $(this).val("0");
+          myApp.services.updateStroke(playerid, $(this).val());
+        }
+      });
+      $("#" + players[i].playerid + "ob").blur(function() {
+        if ($(this).val() == "") {
+          var playerid = this.id.replace(/\D/g,'');
+          $(this).val("0");
+          myApp.services.updateOb(playerid, $(this).val());
+        }
+      });
+
+      $("#" + players[i].playerid + "stroke").on("input", function() {
+        hideKeyboard();
+      })
+      $("#" + players[i].playerid + "ob").on("input", function() {
+        hideKeyboard();
+      })
     }
 
     myApp.services.updatePage();
@@ -91,35 +129,7 @@ function timeNow() {
   return h + ":" + min;
 }
 
-// https://stackoverflow.com/a/24035537
 function hideKeyboard() {
-  //this set timeout needed for case when hideKeyborad
-  //is called inside of 'onfocus' event handler
-  setTimeout(function() {
-
-    //creating temp field
-    var field = document.createElement('input');
-    field.setAttribute('type', 'text');
-    //hiding temp field from peoples eyes
-    //-webkit-user-modify is nessesary for Android 4.x
-    field.setAttribute('style', 'position:absolute; top: 0px; opacity: 0; -webkit-user-modify: read-write-plaintext-only; left:0px;');
-    document.body.appendChild(field);
-
-    //adding onfocus event handler for out temp field
-    field.onfocus = function(){
-      //this timeout of 200ms is nessasary for Android 2.3.x
-      setTimeout(function() {
-
-        field.setAttribute('style', 'display:none;');
-        setTimeout(function() {
-          document.body.removeChild(field);
-          document.body.focus();
-        }, 14);
-
-      }, 200);
-    };
-    //focusing it
-    field.focus();
-
-  }, 50);
+  document.activeElement.blur()
+  $(this).blur();
 }

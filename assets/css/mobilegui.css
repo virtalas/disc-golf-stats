@@ -12,8 +12,18 @@ ons-toolbar {
   padding: 15px;
 }
 
-ons-input {
-  font-size: 150%;
+input.text-input {
+    background: 0 0;
+    line-height: 1;
+    font-family: -apple-system,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #1f1f21;
+    font-size: 25px;
+    font-weight: 400;
+    box-sizing: border-box;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Conditions Page text inputs */
