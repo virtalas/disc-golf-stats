@@ -46,6 +46,9 @@ myApp.services = {
 
       // Update to par
       $("#" + players[i].playerid + "topar").html(toPar(players[i].playerid));
+
+      // Update hole number label
+      $("#hole_num_label").html((myApp.holeIndex + 1) + ".");
     }
 
     console.log("page updated");
