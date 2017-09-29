@@ -166,40 +166,48 @@
         {% for player in players %}
           <ons-list class="contact-block" modifier="material">
             <ons-list-item modifier="material short-divider">
-              <div class="left">
-                <span class="list__item__title">{{player.firstname}}</span>
-              </div>
-              <div class="right">
-                <span class="toPar" id="{{player.playerid}}topar">0</span>
-              </div>
-              <div class="right">
-                <span style="margin-right: 10px;">OB:</span>
-                <div class="circle">
-                  <ons-input
-                    id="{{player.playerid}}ob"
-                    type="number"
-                    value="0"
-                    min="0"
-                    max="99"
-                    inputmode="numeric"
-                    pattern="[0-9]*">
-                  </ons-input>
-                </div>
-              </div>
-              <div class="right">
-                <span style="margin-right: 10px;">Heitot:</span>
-                <div class="circle">
-                  <ons-input
-                    id="{{player.playerid}}stroke"
-                    type="number"
-                    value="0"
-                    min="0"
-                    max="99"
-                    inputmode="numeric"
-                    pattern="[0-9]*">
-                  </ons-input>
-                </div>
-              </div>
+              <ons-row>
+                <ons-col align="center">
+                  <span class="">{{player.firstname}}</span>
+                </ons-col>
+                <ons-col align="center">
+                  <span class="toPar" id="{{player.playerid}}topar">0</span>
+                </ons-col>
+                <ons-col align="center" style="text-align: right;">
+                  <span style="margin-right: 10px;">OB:</span>
+                </ons-col>
+                <ons-col align="center">
+                  <div class="circle">
+                    <input
+                      id="{{player.playerid}}ob"
+                      class="score-input"
+                      type="number"
+                      value="0"
+                      min="0"
+                      max="99"
+                      inputmode="numeric"
+                      pattern="[0-9]*">
+                    </input>
+                  </div>
+                </ons-col>
+                <ons-col align="center" style="text-align: right;">
+                  <span style="margin-right: 10px;">Heitot:</span>
+                </ons-col>
+                <ons-col align="center">
+                  <div class="circle">
+                    <input
+                      id="{{player.playerid}}stroke"
+                      class="score-input"
+                      type="number"
+                      value="0"
+                      min="0"
+                      max="99"
+                      inputmode="numeric"
+                      pattern="[0-9]*">
+                    </input>
+                  </div>
+                </ons-col>
+              </ons-row>
             </ons-list-item>
           </ons-list>
         {% endfor %}

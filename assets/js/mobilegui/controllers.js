@@ -91,6 +91,22 @@ myApp.controllers = {
     $("#date").val(dateNow());
     $("#time").val(timeNow());
 
+    // Validators for date and time
+    $("#date").change(function() {
+      if (validateDate($(this).val())) {
+        $(this).css('color', 'black');
+      } else {
+        $(this).css('color', 'red');
+      }
+    })
+    $("#time").change(function() {
+      if (validateTime($(this).val())) {
+        $(this).css('color', 'black');
+      } else {
+        $(this).css('color', 'red');
+      }
+    })
+
     // Fetch course weather
     $.getScript("../../assets/js/weather.js");
   }
@@ -132,4 +148,12 @@ function timeNow() {
 function hideKeyboard() {
   document.activeElement.blur()
   $(this).blur();
+}
+
+function validateDate(dateString) {
+  return /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(dateString);
+};
+
+function validateTime(timeString) {
+  return /^[0-5][0-9]:[0-5][0-9]$/.test(timeString);
 }

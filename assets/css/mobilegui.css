@@ -12,11 +12,13 @@ ons-toolbar {
   padding: 15px;
 }
 
-input.text-input {
+input.score-input {
     background: 0 0;
     line-height: 1;
     font-family: -apple-system,'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;
     -webkit-font-smoothing: antialiased;
+    -webkit-appearance: none;
+    border: 0;
     color: #1f1f21;
     font-size: 25px;
     font-weight: 400;
@@ -24,7 +26,14 @@ input.text-input {
     text-align: center;
     display: block;
     margin: 0 auto;
-    margin-top: 4px;
+    padding-top: 4px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 /* Conditions Page text inputs */
