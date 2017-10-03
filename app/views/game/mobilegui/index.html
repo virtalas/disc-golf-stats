@@ -142,8 +142,11 @@
             <ons-list-item id="splitter_hole_info" onclick="fn.load('../../app/views/game/mobilegui/hole_info.html')" tappable>
               Väylän tilastot
             </ons-list-item>
+            <ons-list-item id="splitter_high_scores" onclick="fn.load('../../app/views/game/mobilegui/high_scores.html')" tappable>
+              Ennätykset
+            </ons-list-item>
             <ons-list-item>
-              <a href="{{base_path}}/game/new?course={{course.courseid}}{% for player in players %}&player{{player.playerid}}=1{% endfor %}">Vanha lisäyssivu</a>
+              <a style="color: black; text-decoration: none;" onclick="return confirm('Poistutaanko sivulta? Syöttämäsi tulokset katoavat.');" href="{{base_path}}/game/new?course={{course.courseid}}{% for player in players %}&player{{player.playerid}}=1{% endfor %}">Vanha lisäyssivu</a>
             </ons-list-item>
           </ons-list>
         </ons-page>
