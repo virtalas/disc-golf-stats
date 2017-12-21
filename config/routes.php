@@ -72,11 +72,6 @@
     SearchController::index();
   });
 
-  // Ajax pyynnöllä lista peleistä hakua varten
-  $routes->get('/search/game', 'check_logged_in', function(){
-    SearchController::search();
-  });
-
   // Pelin lisääminen tietokantaan
   $routes->post('/game', 'check_logged_in', function(){
     GameController::store();
@@ -120,6 +115,23 @@
   // Näytä tuloskortti-kuvat
   $routes->get('/game/old/:year', 'check_logged_in', function($year){
     GameController::display_score_card_pictures_by_year($year);
+  });
+
+  // Ajax get for Javascript
+
+  // Ajax pyynnöllä lista peleistä hakua varten
+  $routes->get('/search/game', 'check_logged_in', function(){
+    SearchController::search();
+  });
+
+  // Ajax pyynnöllä väylän tulokset pelaajalle
+  $routes->get('/hole/:holeid/player/:playerid/stats', 'check_logged_in', function($holeid, $playerid){
+    Hole::score_distribution($holeid, $playerid);
+  });
+
+  // Ajax pyynnöllä väylän tulokset kaikille pelaajille
+  $routes->get('/hole/:holeid/stats', 'check_logged_in', function($holeid){
+    Hole::score_distribution($holeid, null);
   });
 
   // Pelaaja
