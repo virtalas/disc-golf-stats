@@ -10,4 +10,6 @@ return array(
     'Whoops' => array($vendorDir . '/filp/whoops/src'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Slim' => array($vendorDir . '/slim/slim'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
+    'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
 );
