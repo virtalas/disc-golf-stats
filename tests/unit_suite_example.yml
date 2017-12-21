@@ -1,0 +1,20 @@
+# Codeception Test Suite Configuration
+#
+# Suite for unit or integration tests.
+
+# How to use:
+# Create a copy called unit.suite.yml and modify configuration
+
+actor: UnitTester
+modules:
+    enabled:
+        - Asserts
+        - Db:
+            dsn: 'pgsql:host=localhost;port=0000;dbname=testdb'
+            user: 'root'
+            password: ''
+            dump: 'tests/_data/dump.sql'
+            populate: true # load dump before all tests
+            cleanup: true # load dump for each test
+            reconnect: false
+        - \Helper\Unit
