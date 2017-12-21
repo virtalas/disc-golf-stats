@@ -87,6 +87,11 @@
     GameController::create();
   });
 
+  // Pelin merkkaus mobiili UI:ssa
+  $routes->get('/game/mobile/new', 'check_logged_in', function(){
+    GameController::mobileScoreCard();
+  });
+
   // Pelin esittelysivu
   $routes->get('/game/:gameid', 'check_logged_in', function($gameid){
     GameController::show($gameid);

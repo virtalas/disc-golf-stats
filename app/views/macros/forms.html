@@ -7,7 +7,7 @@
 
 
 {% macro new_game(courses, players, base_path) %}
-  <form method="get" action="{{base_path}}/game/new">
+  <form method="get" action="{{base_path}}/game/mobile/new">
     <label>Lisää peli valitsemalla ensin pelaajat ja rata</label>
     <div class="row">
       {% if players | length > 1 %}

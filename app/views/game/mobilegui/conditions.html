@@ -1,0 +1,138 @@
+<ons-page id="conditionsPage">
+  <ons-toolbar>
+    <div class="center">Pelin tiedot</div>
+    <div class="right">
+      <ons-toolbar-button id="toolbarbutton" component="button/menu" onclick="fn.open()">
+        <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+      </ons-toolbar-button>
+    </div>
+  </ons-toolbar>
+
+  <ons-progress-bar indeterminate id="animated_progress_bar"></ons-progress-bar>
+
+  <div id="animated_progress_circle" style="position: fixed;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  zoom: 270%;
+  margin-top: -10px;
+  margin-left: -16px;
+  display: none;
+  z-index: 999"><ons-progress-circular indeterminate></ons-progress-circular></div>
+
+  <ons-list>
+    <ons-list-header>Olosuhteet</ons-list-header>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="rain"></ons-checkbox>
+      </label>
+      <label for="rain" class="center">
+        Sadetta
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="wet_no_rain"></ons-checkbox>
+      </label>
+      <label for="wet_no_rain" class="center">
+        Märkää (ei sadetta)
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="windy" id="inputwindy"></ons-checkbox>
+      </label>
+      <label for="windy" class="center">
+        Tuulta
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="variant"></ons-checkbox>
+      </label>
+      <label for="variant" class="center">
+        Poikkeava rata
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="dark" id="inputdark"></ons-checkbox>
+      </label>
+      <label for="dark" class="center">
+        Pimeää
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="led"></ons-checkbox>
+      </label>
+      <label for="led" class="center">
+        LED
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="snow" id="inputsnow"></ons-checkbox>
+      </label>
+      <label for="snow" class="center">
+        Lunta
+      </label>
+    </ons-list-item>
+    <ons-list-item tappable>
+      <label class="left">
+        <ons-checkbox input-id="doubles"></ons-checkbox>
+      </label>
+      <label for="doubles" class="center">
+        Parigolf
+      </label>
+    </ons-list-item>
+
+    <div id="legality_switches">
+      <ons-list-header>Pelin laillisuus</ons-list-header>
+      <ons-list-item id="game_legality_switch">
+        <div class="center">
+          <span></span>
+        </div>
+        <div class="right">
+          <ons-switch checked></ons-switch>
+        </div>
+      </ons-list-item>
+    </div>
+
+    <ons-list-header>Lämpötila – saa olla tyhjä</ons-list-header>
+    <li class="list__item">
+      <div class="list__item__center">
+        <input type="text" class="text-input" placeholder="°C" id="inputtemp">
+      </div>
+    </li>
+
+    <ons-list-header>Päivämäärä ja kellonaika</ons-list-header>
+    <li class="list__item">
+      <div class="list__item__center">
+        <input type="text" class="text-input" placeholder="YYYY-MM-DD" id="date">
+      </div>
+    </li>
+    <li class="list__item">
+      <div class="list__item__center">
+        <input type="text" class="text-input" placeholder="HH:MM" id="time">
+      </div>
+    </li>
+
+    <ons-list-header>Kommentti</ons-list-header>
+    <li class="list__item">
+      <div class="list__item__center">
+        <textarea class="textarea textarea--transparent" placeholder="Olipahan peli!" id="comment"></textarea>
+      </div>
+    </li>
+  </ons-list>
+
+  <div style="text-align: center; margin-top: 30px;">
+    <p style="margin-top: 30px;">
+      <ons-button id="add_game_button">Lisää peli</ons-button>
+    </p>
+  </div>
+
+  <!-- <form class="" action="/disc-golf-stats/game" method="post" style="display: none;" id="game_form">
+  </form> -->
+</ons-page>
