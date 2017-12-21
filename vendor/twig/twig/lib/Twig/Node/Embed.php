@@ -28,15 +28,11 @@ class Twig_Node_Embed extends Twig_Node_Include
     protected function addGetTemplate(Twig_Compiler $compiler)
     {
         $compiler
-            ->write('$this->loadTemplate(')
+            ->write("\$this->env->loadTemplate(")
             ->string($this->getAttribute('filename'))
             ->raw(', ')
-            ->repr($compiler->getFilename())
-            ->raw(', ')
-            ->repr($this->getLine())
-            ->raw(', ')
             ->string($this->getAttribute('index'))
-            ->raw(')')
+            ->raw(")")
         ;
     }
 }

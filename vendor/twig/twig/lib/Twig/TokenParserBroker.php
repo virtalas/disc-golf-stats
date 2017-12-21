@@ -14,7 +14,6 @@
  * Default implementation of a token parser broker.
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
- *
  * @deprecated since 1.12 (to be removed in 2.0)
  */
 class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
@@ -29,12 +28,8 @@ class Twig_TokenParserBroker implements Twig_TokenParserBrokerInterface
      * @param array|Traversable $parsers A Traversable of Twig_TokenParserInterface instances
      * @param array|Traversable $brokers A Traversable of Twig_TokenParserBrokerInterface instances
      */
-    public function __construct($parsers = array(), $brokers = array(), $triggerDeprecationError = true)
+    public function __construct($parsers = array(), $brokers = array())
     {
-        if ($triggerDeprecationError) {
-            @trigger_error('The '.__CLASS__.' class is deprecated since version 1.12 and will be removed in 2.0.', E_USER_DEPRECATED);
-        }
-
         foreach ($parsers as $parser) {
             if (!$parser instanceof Twig_TokenParserInterface) {
                 throw new LogicException('$parsers must a an array of Twig_TokenParserInterface');

@@ -18,7 +18,7 @@
 class Twig_TokenStream
 {
     protected $tokens;
-    protected $current = 0;
+    protected $current;
     protected $filename;
 
     /**
@@ -29,8 +29,9 @@ class Twig_TokenStream
      */
     public function __construct(array $tokens, $filename = null)
     {
-        $this->tokens = $tokens;
-        $this->filename = $filename;
+        $this->tokens     = $tokens;
+        $this->current    = 0;
+        $this->filename   = $filename;
     }
 
     /**
@@ -114,7 +115,7 @@ class Twig_TokenStream
     }
 
     /**
-     * Tests the current token.
+     * Tests the current token
      *
      * @return bool
      */
@@ -124,7 +125,7 @@ class Twig_TokenStream
     }
 
     /**
-     * Checks if end of stream was reached.
+     * Checks if end of stream was reached
      *
      * @return bool
      */
@@ -134,7 +135,7 @@ class Twig_TokenStream
     }
 
     /**
-     * Gets the current token.
+     * Gets the current token
      *
      * @return Twig_Token
      */
@@ -144,7 +145,7 @@ class Twig_TokenStream
     }
 
     /**
-     * Gets the filename associated with this stream.
+     * Gets the filename associated with this stream
      *
      * @return string
      */

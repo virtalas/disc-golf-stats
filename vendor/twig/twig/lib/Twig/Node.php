@@ -74,8 +74,6 @@ class Twig_Node implements Twig_NodeInterface
      */
     public function toXml($asDom = false)
     {
-        @trigger_error(sprintf('%s is deprecated.', __METHOD__), E_USER_DEPRECATED);
-
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
         $dom->appendChild($xml = $dom->createElement('twig'));
@@ -124,7 +122,7 @@ class Twig_Node implements Twig_NodeInterface
     /**
      * Returns true if the attribute is defined.
      *
-     * @param string $name The attribute name
+     * @param  string  The attribute name
      *
      * @return bool true if the attribute is defined, false otherwise
      */
@@ -134,11 +132,11 @@ class Twig_Node implements Twig_NodeInterface
     }
 
     /**
-     * Gets an attribute value by name.
+     * Gets an attribute.
      *
-     * @param string $name
+     * @param  string The attribute name
      *
-     * @return mixed
+     * @return mixed The attribute value
      */
     public function getAttribute($name)
     {
@@ -150,10 +148,10 @@ class Twig_Node implements Twig_NodeInterface
     }
 
     /**
-     * Sets an attribute by name to a value.
+     * Sets an attribute.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string The attribute name
+     * @param mixed  The attribute value
      */
     public function setAttribute($name, $value)
     {
@@ -161,9 +159,9 @@ class Twig_Node implements Twig_NodeInterface
     }
 
     /**
-     * Removes an attribute by name.
+     * Removes an attribute.
      *
-     * @param string $name
+     * @param string The attribute name
      */
     public function removeAttribute($name)
     {
@@ -171,11 +169,11 @@ class Twig_Node implements Twig_NodeInterface
     }
 
     /**
-     * Returns true if the node with the given name exists.
+     * Returns true if the node with the given identifier exists.
      *
-     * @param string $name
+     * @param  string  The node name
      *
-     * @return bool
+     * @return bool true if the node with the given name exists, false otherwise
      */
     public function hasNode($name)
     {
@@ -185,9 +183,9 @@ class Twig_Node implements Twig_NodeInterface
     /**
      * Gets a node by name.
      *
-     * @param string $name
+     * @param  string The node name
      *
-     * @return Twig_Node
+     * @return Twig_Node A Twig_Node instance
      */
     public function getNode($name)
     {
@@ -201,8 +199,8 @@ class Twig_Node implements Twig_NodeInterface
     /**
      * Sets a node.
      *
-     * @param string    $name
-     * @param Twig_Node $node
+     * @param string    The node name
+     * @param Twig_Node A Twig_Node instance
      */
     public function setNode($name, $node = null)
     {
@@ -212,7 +210,7 @@ class Twig_Node implements Twig_NodeInterface
     /**
      * Removes a node by name.
      *
-     * @param string $name
+     * @param string The node name
      */
     public function removeNode($name)
     {

@@ -30,9 +30,6 @@ class Twig_Node_Expression_Filter extends Twig_Node_Expression_Call
         if ($filter instanceof Twig_FilterCallableInterface || $filter instanceof Twig_SimpleFilter) {
             $this->setAttribute('callable', $filter->getCallable());
         }
-        if ($filter instanceof Twig_SimpleFilter) {
-            $this->setAttribute('is_variadic', $filter->isVariadic());
-        }
 
         $this->compileCallable($compiler);
     }
