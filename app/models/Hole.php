@@ -91,6 +91,45 @@
     }
 
     /*
+    *  Graph functions
+    */
+
+    public static function score_distribution($holeid, $playerid) {
+      $params = array('holeid' => $holeid);
+
+      $sql = "SELECT COUNT(hole_in_one) AS hole_in_one,
+              COUNT(birdie) AS birdie,
+              COUNT(par) AS par,
+              COUNT(bogey) AS bogey,
+              COUNT(over_bogey) AS over_bogey
+              FROM (
+                SELECT hole.hole_num,
+                CASE WHEN score.stroke = 1 THEN 1 END AS hole_in_one,
+                CASE WHEN hole.par - score.stroke - score.ob = 1 THEN 1 END AS birdie,
+                CASE WHEN hole.par - score.stroke - score.ob = 0 THEN 1 END AS par,
+                CASE WHEN hole.par - score.stroke - score.ob = -1 THEN 1 END AS bogey,
+                CASE WHEN hole.par - score.stroke - score.ob < -1 THEN 1 END AS over_bogey
+                FROM score
+                JOIN hole ON hole.holeid = score.holeid
+                WHERE hole.holeid = :holeid AND score.legal = true ";
+
+      if (!is_null($playerid) && $playerid != "") {
+        $sql .= " AND score.playerid = :playerid ";
+        $params["playerid"] = $playerid;
+      }
+
+      $sql .= ") t1
+                GROUP BY hole_num
+                ORDER BY hole_num";
+
+      $query = DB::connection()->prepare($sql);
+      $query->execute($params);
+      $rows = $query->fetchAll();
+
+      return $rows;
+    }
+
+    /*
     *  Validators
     */
 
