@@ -18,6 +18,8 @@ class ContestCest {
     }
 
     public function _after(UnitTester $I) {
+        $this->contest->destroy();
+        $this->contest2->destroy();
     }
 
     public function contestCanBeSaved(UnitTester $I) {
