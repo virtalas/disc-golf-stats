@@ -49,7 +49,7 @@ class ContestCest {
         $I->dontSeeInDatabase('contest', ['creator' => "1", 'name' => "Winter Cup", 'number_of_games' => "5", "contestid" => $this->contest->contestid]);
     }
 
-    public function isCreatorOfContest(UnitTester $I) {
+    public function contestHasCorrectCreator(UnitTester $I) {
         $this->contest->save();
         $player = new Player(array(
           'playerid' => 1,
