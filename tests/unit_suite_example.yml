@@ -13,8 +13,9 @@ modules:
             dsn: 'pgsql:host=localhost;port=0000;dbname=testdb'
             user: 'root'
             password: ''
-            dump: 'tests/_data/dump.sql'
+            dump: 'tests/_data/db.dump'
             populate: true # load dump before all tests
-            cleanup: true # load dump for each test
+            cleanup: false # load dump for each test (seems to be awfully slow)
+            populator: 'pg_restore -c -h $host -d $dbname < $dump'
             reconnect: false
         - \Helper\Unit
