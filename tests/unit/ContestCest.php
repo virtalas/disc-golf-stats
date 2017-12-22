@@ -74,7 +74,7 @@ class ContestCest {
         $I->assertFalse($this->contest->is_creator($player));
     }
 
-    public function contestCanBeFound(UnitTester $I) {
+    public function contestCanBeFoundById(UnitTester $I) {
         $this->contest->save();
         $found_contest = Contest::find($this->contest->contestid);
         $I->assertEquals($this->contest->contestid, $found_contest->contestid);
@@ -83,11 +83,11 @@ class ContestCest {
         $I->assertEquals($this->contest->number_of_games, $found_contest->number_of_games);
     }
 
-    public function returnAllContests(UnitTester $I) {
+    public function returnAllReturnsCorrectNumberOfContests(UnitTester $I) {
         $this->contest->save();
         $this->contest2->save();
         $contests = Contest::all();
-        $I->assertTrue(sizeof($contests) >= 2);
+        $I->assertTrue(sizeof($contests) === 5);
         $I->assertTrue($this->_arrayContainsContestWithName($contests, "Winter Cup", $this->contest->contestid));
         $I->assertTrue($this->_arrayContainsContestWithName($contests, "Summer Cup", $this->contest2->contestid));
     }
@@ -108,17 +108,17 @@ class ContestCest {
 
     */
 
-    public function numberOfGamesPlayedWhenZeroGames(UnitTester $I) {
+    public function correctNumberOfGamesPlayedWhenZeroGames(UnitTester $I) {
         $contests = Contest::all_with_games_played();
         $I->assertTrue($this->_arrayContainsContestWithGameCount($contests, 0, 37));
     }
 
-    public function numberOfGamesPlayedWhenMoreThanZeroGames(UnitTester $I) {
+    public function correctNumberOfGamesPlayedWhenMoreThanZeroGames(UnitTester $I) {
         $contests = Contest::all_with_games_played();
         $I->assertTrue($this->_arrayContainsContestWithGameCount($contests, 4, 17));
     }
 
-    public function eventTiedForFirstGetsBoth4Points(UnitTester $I) {
+    public function eventWinnersWhoAreTiedGetBothFourPoints(UnitTester $I) {
         $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][1]);
         $I->assertEquals(4, $this->tie_points["Matti"]["game_points"][1]);
         $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][3]);
@@ -129,7 +129,7 @@ class ContestCest {
         $this->_contestWinnerIs("Admin", $this->tie_points, $I);
     }
 
-    public function contestWinnerChosenByPoints(UnitTester $I) {
+    public function contestWinnerChosenByPointsWhenNoTies(UnitTester $I) {
         $points = $this->_contestPoints(59);
         $this->_contestWinnerIs("Admin", $points, $I);
     }
@@ -169,7 +169,7 @@ class ContestCest {
         $I->assertEquals("+4", $this->tie_points["Esko"]["to_par"]);
     }
 
-    public function playerPointsCalculatedCorrectly(UnitTester $I) {
+    public function playersTotalPointsCalculatedCorrectly(UnitTester $I) {
         $I->assertEquals(15, $this->tie_points["Admin"]["total_points"]);
         $I->assertEquals(15, $this->tie_points["Matti"]["total_points"]);
         $I->assertEquals(4, $this->tie_points["Teppo"]["total_points"]);
@@ -177,7 +177,7 @@ class ContestCest {
         $I->assertEquals(0, $this->tie_points["Esko"]["total_points"]);
     }
 
-    public function playersInOrderOfTotalPoints(UnitTester $I) {
+    public function playersListedInOrderOfTotalPoints(UnitTester $I) {
         $order = array("Admin", "Matti", "Teppo", "Seppo", "Esko");
         $correct_order = true;
         $i = 0;
@@ -190,7 +190,7 @@ class ContestCest {
         $I->assertTrue($correct_order);
     }
 
-    public function playersPointsDisplayedCorrectly(UnitTester $I) {
+    public function allPointsCalculatedCorrectly(UnitTester $I) {
         $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][0]);
         $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][1]);
         $I->assertEquals(3, $this->tie_points["Admin"]["game_points"][2]);
