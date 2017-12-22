@@ -6,6 +6,9 @@ class ContestCest {
     private $contest;
     private $contest2;
 
+    private $tie_points;
+    private $tie_contest_points_calculated = false;
+
     public function _before(UnitTester $I) {
         $this->contest = new Contest(array(
             'creator' => 1,
@@ -15,6 +18,11 @@ class ContestCest {
             'creator' => 1,
             'name' => "Summer Cup",
             'number_of_games' => 1));
+
+        if (!$this->tie_contest_points_calculated) {
+            $this->tie_points = $this->_tieContestPoints();
+            $this->tie_contest_points_calculated = true;
+        }
     }
 
     public function _after(UnitTester $I) {
@@ -90,11 +98,13 @@ class ContestCest {
 
     Tyhjä kisa (id=37)
 
+    Voitto pisteillä (id=59)
+
     Tasapeli voitolla ja häviöllä (id=17)
-    1. event: Admin -5, Matti -3
+    1. event: Admin -5, Matti -3, Teppo -2, Seppo -1, Esko 0
     2. event: Admin -4, Matti -4
     3. event: Admin -4, Matti -5
-    4. event: Admin -4, Matti -4, Teppo +14
+    4. event: Admin -4, Matti -4, Teppo +2, Seppo +3, Esko +4
 
     */
 
@@ -109,18 +119,102 @@ class ContestCest {
     }
 
     public function eventTiedForFirstGetsBoth4Points(UnitTester $I) {
-        $points = $this->_tieContestPoints();
-        $I->assertEquals(4, $points["Admin"]["game_points"][1]);
-        $I->assertEquals(4, $points["Matti"]["game_points"][1]);
-        $I->assertEquals(4, $points["Admin"]["game_points"][3]);
-        $I->assertEquals(4, $points["Matti"]["game_points"][3]);
+        $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][1]);
+        $I->assertEquals(4, $this->tie_points["Matti"]["game_points"][1]);
+        $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][3]);
+        $I->assertEquals(4, $this->tie_points["Matti"]["game_points"][3]);
     }
 
     public function contestWinnerChosenByParWhenTiedByPoints(UnitTester $I) {
-        $points = $this->_tieContestPoints();
-        reset($points);
-        $first_key = key($points);
-        $I->assertEquals("Admin", $first_key);
+        $this->_contestWinnerIs("Admin", $this->tie_points, $I);
+    }
+
+    public function contestWinnerChosenByPoints(UnitTester $I) {
+        $points = $this->_contestPoints(59);
+        $this->_contestWinnerIs("Admin", $points, $I);
+    }
+
+    public function eventPointsDistributedCorrectlyWhenWinnersTied(UnitTester $I) {
+        $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][3]);
+        $I->assertEquals(4, $this->tie_points["Matti"]["game_points"][3]);
+        $I->assertEquals(2, $this->tie_points["Teppo"]["game_points"][3]);
+        $I->assertEquals(1, $this->tie_points["Seppo"]["game_points"][3]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][3]);
+    }
+
+    public function eventPointsDistributedCorrectlyWhenNoTies(UnitTester $I) {
+        $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][0]);
+        $I->assertEquals(3, $this->tie_points["Matti"]["game_points"][0]);
+        $I->assertEquals(2, $this->tie_points["Teppo"]["game_points"][0]);
+        $I->assertEquals(1, $this->tie_points["Seppo"]["game_points"][0]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][0]);
+    }
+
+    public function skippedEventGivesZeroPoints(UnitTester $I) {
+        $I->assertEquals(0, $this->tie_points["Teppo"]["game_points"][1]);
+        $I->assertEquals(0, $this->tie_points["Teppo"]["game_points"][2]);
+        $I->assertEquals(0, $this->tie_points["Seppo"]["game_points"][1]);
+        $I->assertEquals(0, $this->tie_points["Seppo"]["game_points"][2]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][0]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][1]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][2]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][3]);
+    }
+
+    public function playerParsCalculatedCorrectly(UnitTester $I) {
+        $I->assertEquals("-17", $this->tie_points["Admin"]["to_par"]);
+        $I->assertEquals("-16", $this->tie_points["Matti"]["to_par"]);
+        $I->assertEquals("0", $this->tie_points["Teppo"]["to_par"]);
+        $I->assertEquals("+2", $this->tie_points["Seppo"]["to_par"]);
+        $I->assertEquals("+4", $this->tie_points["Esko"]["to_par"]);
+    }
+
+    public function playerPointsCalculatedCorrectly(UnitTester $I) {
+        $I->assertEquals(15, $this->tie_points["Admin"]["total_points"]);
+        $I->assertEquals(15, $this->tie_points["Matti"]["total_points"]);
+        $I->assertEquals(4, $this->tie_points["Teppo"]["total_points"]);
+        $I->assertEquals(2, $this->tie_points["Seppo"]["total_points"]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["total_points"]);
+    }
+
+    public function playersInOrderOfTotalPoints(UnitTester $I) {
+        $order = array("Admin", "Matti", "Teppo", "Seppo", "Esko");
+        $correct_order = true;
+        $i = 0;
+
+        foreach ($this->tie_points as $firstname => $data) {
+            if ($firstname !== $order[$i]) $correct_order = false;
+            $i++;
+        }
+
+        $I->assertTrue($correct_order);
+    }
+
+    public function playersPointsDisplayedCorrectly(UnitTester $I) {
+        $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][0]);
+        $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][1]);
+        $I->assertEquals(3, $this->tie_points["Admin"]["game_points"][2]);
+        $I->assertEquals(4, $this->tie_points["Admin"]["game_points"][3]);
+
+        $I->assertEquals(3, $this->tie_points["Matti"]["game_points"][0]);
+        $I->assertEquals(4, $this->tie_points["Matti"]["game_points"][1]);
+        $I->assertEquals(4, $this->tie_points["Matti"]["game_points"][2]);
+        $I->assertEquals(4, $this->tie_points["Matti"]["game_points"][3]);
+
+        $I->assertEquals(2, $this->tie_points["Teppo"]["game_points"][0]);
+        $I->assertEquals(0, $this->tie_points["Teppo"]["game_points"][1]);
+        $I->assertEquals(0, $this->tie_points["Teppo"]["game_points"][2]);
+        $I->assertEquals(2, $this->tie_points["Teppo"]["game_points"][3]);
+
+        $I->assertEquals(1, $this->tie_points["Seppo"]["game_points"][0]);
+        $I->assertEquals(0, $this->tie_points["Seppo"]["game_points"][1]);
+        $I->assertEquals(0, $this->tie_points["Seppo"]["game_points"][2]);
+        $I->assertEquals(1, $this->tie_points["Seppo"]["game_points"][3]);
+
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][0]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][1]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][2]);
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][3]);
     }
 
     // Functions with "_" prefix are not run as tests
@@ -139,9 +233,19 @@ class ContestCest {
         return false;
     }
 
-    private function _tieContestPoints() {
-        $tieContest = Contest::find(17);
+    private function _contestPoints($id) {
+        $tieContest = Contest::find($id);
         $games = Game::contest_games($tieContest->contestid);
         return Contest::points($tieContest, $games);
+    }
+
+    private function _tieContestPoints() {
+        return $this->_contestPoints(17);
+    }
+
+    private function _contestWinnerIs($firstname, $points, $I) {
+        reset($points);
+        $firstkey = key($points);
+        $I->assertEquals($firstname, $firstkey);
     }
 }
