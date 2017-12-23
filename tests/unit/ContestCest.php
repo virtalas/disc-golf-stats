@@ -150,6 +150,12 @@ class ContestCest {
         $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][0]);
     }
 
+    public function eventPointsDistributedCorrectlyWhenOnlyTwoPlayers(UnitTester $I) {
+        $points = $this->_contestPoints(59);
+        $I->assertEquals(4, $points["Admin"]["game_points"][0]);
+        $I->assertEquals(3, $points["Matti"]["game_points"][0]);
+    }
+
     public function skippedEventGivesZeroPoints(UnitTester $I) {
         $I->assertEquals(0, $this->tie_points["Teppo"]["game_points"][1]);
         $I->assertEquals(0, $this->tie_points["Teppo"]["game_points"][2]);
@@ -217,7 +223,27 @@ class ContestCest {
         $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][3]);
     }
 
-    // Functions with "_" prefix are not run as tests
+    /*
+    *  Validator tests
+    */
+
+    public function nameCannotBeEmpty(UnitTester $I) {
+        $I->assertTrue(sizeof($this->contest->validate_name()) === 0);
+
+        $this->contest->name = "";
+        $I->assertTrue(sizeof($this->contest->validate_name()) > 0);
+    }
+
+    public function numberOfEventsCannotBeNegative(UnitTester $I) {
+        $I->assertTrue(sizeof($this->contest->validate_number_of_games()) === 0);
+
+        $this->contest->number_of_games = -1;
+        $I->assertTrue(sizeof($this->contest->validate_number_of_games()) > 0);
+    }
+
+    /*
+    *  Functions with "_" prefix are not run as tests
+    */
 
     private function _arrayContainsContestWithName($contests, $name, $id) {
         for ($i = 0; $i < sizeof($contests); $i++) {
