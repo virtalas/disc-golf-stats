@@ -33,6 +33,14 @@ Run tests:
 ./vendor/bin/codecept run
 ```
 
+## Code coverage
+
+Generate testing code coverage by running the following command, and view the report from tests/\_output/coverage/index.html
+
+```shell
+./vendor/bin/codecept run unit --coverage --coverage-xml --coverage-html
+```
+
 ## Changing a password
 
 A password changing service is not implemented yet, but here are the steps that can be taken to let a user change their password.
