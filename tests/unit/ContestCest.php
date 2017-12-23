@@ -167,6 +167,10 @@ class ContestCest {
         $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][3]);
     }
 
+    public function skippedEventGivesZeroPointsForFirstEvent(UnitTester $I) {
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][0]);
+    }
+
     public function playerParsCalculatedCorrectly(UnitTester $I) {
         $I->assertEquals("-17", $this->tie_points["Admin"]["to_par"]);
         $I->assertEquals("-16", $this->tie_points["Matti"]["to_par"]);
