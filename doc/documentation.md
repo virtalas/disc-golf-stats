@@ -23,12 +23,12 @@ psql
 \i path/to/imported_database_2015XXXXXXXX.sql
 ```
 
-## Run tests
+## Running tests
 
 Disc-golf-stats uses [Codeception](http://codeception.com) for testing.
 
 Tests use a database called testdb that is cleared and populated automatically before running tests.
-The data comes from tests/\_data/db.dump. Dump data from testdb into this file by running `pg_dump -Fc testdb > tests/_data/db.dump`.
+The data comes from tests/\_data/db.dump. Dump data from testdb into this file by running `pg_dump -Fc testdb > tests/_data/db.dump`. Be careful about changing the dump since some tests assume existing test data.
 
 Run all tests:
 
@@ -36,7 +36,7 @@ Run all tests:
 ./vendor/bin/codecept run
 ```
 
-Run specific test (e.g. tests for Contest.php):
+Run specific test (e.g. tests for app/models/Contest.php):
 
 ```shell
 ./vendor/bin/codecept run unit ContestCest
