@@ -27,10 +27,19 @@ psql
 
 Disc-golf-stats uses [Codeception](http://codeception.com) for testing.
 
-Run tests:
+Tests use a database called testdb that is cleared and populated automatically before running tests.
+The data comes from tests/\_data/db.dump. Dump data from testdb into this file by running `pg_dump -Fc testdb > tests/_data/db.dump`.
+
+Run all tests:
 
 ```shell
 ./vendor/bin/codecept run
+```
+
+Run specific test (e.g. tests for Contest.php):
+
+```shell
+./vendor/bin/codecept run unit ContestCest
 ```
 
 ## Code coverage
