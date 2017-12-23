@@ -1,24 +1,12 @@
 <?php
 
-  class DatabaseConfig{
-
-    // PostgreSQL (psql)
-    private static $use_database = 'psql';
-
-    // Add config here after pgsql:
-    private static $connection_config = array(
-      'psql' => array(
-        'resource' => 'pgsql:'
-      )
-    );
+class DatabaseConfig {
 
     public static function connection_config(){
-      $config = array(
-        'db' => self::$use_database,
-        'config' => self::$connection_config[self::$use_database]
-      );
-
-      return $config;
+        $config = array(
+            'db' => 'psql',
+            'config' => array('resource' => 'pgsql:host=localhost;port=0000;dbname=testdb')
+        );
+        return $config;
     }
-
-  }
+}
