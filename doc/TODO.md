@@ -23,12 +23,15 @@ Features/bugs/etc planned for disc-golf-stats
 * longest birdie streak
 * (longest par streak)
 
-### Pelit-sivu
+### Pelit
 
-* olosuhteiden perusteella pelien etsintä
+* mobile gui luo pelin heti ja updateaa sitä POSTilla väylää vaihtaessa (max 1 per 15s)
+* pelikortin katselusivulta voi käynnistää pelin mobile guihin
+* harkintaan: heitot nimen viereen, ob oikeaan laitaan, alusta par:eilla eikä nollilla, +- napit tulokselle
 
 ### Radat-sivu
 
+* lisää eagle tulosten jakautuminen -kuvaan
 * vaihda popularity <-> name javascriptillä ja päivitä ratalinkkien get-parametri oikeaksi
 * pelaajakohtainen top5-näkymä, drop down pelaajavalinta (samaan kuin nykyinen ja default valinta "kaikki")
 * rate courses with 5 stars, how overall score and user's own score
@@ -41,4 +44,5 @@ Features/bugs/etc planned for disc-golf-stats
 ### Kisat-sivu
 
 * päivämäärän formaatti samaksi kuin pelit-sivulla
+* pisteet menevät väärin jos jollain laiton peli (ainakin jos laiton + kaikki tulokset nollia)
 * kisaa tehdessä ja muokatessa valita "laske pisteet" / "käytä pistelaskua", joka määrää näytetäänkö pistetaulukko
