@@ -101,9 +101,21 @@ class CourseCest {
         }
     }
 
-    public function highScoreListParsAreCorrect(UnitTester $I) {
+    public function highScoreListToPars(UnitTester $I) {
         $scores = Course::high_scores(2);
         $course_par = Course::find(2)->par;
+
+        foreach ($scores as $key => $high_score) {
+            $total_score = $high_score[2];
+            $real_to_par = $total_score - $course_par;
+            $given_to_par = str_replace("+", "", $high_score[3]);
+            $I->assertEquals($real_to_par, $given_to_par);
+        }
+    }
+
+    public function highScoreListToParUnderPar(UnitTester $I) {
+        $scores = Course::high_scores(127);
+        $course_par = Course::find(127)->par;
 
         foreach ($scores as $key => $high_score) {
             $total_score = $high_score[2];
@@ -130,9 +142,19 @@ class CourseCest {
         $I->assertEquals(2, Course::number_of_games_played(127));
     }
 
+    public function gamesPlayedOnCourseNullWhenNonexistantCourse(UnitTester $I) {
+        $I->assertEquals(null, Course::number_of_games_played(-1));
+        $I->assertEquals(null, Course::number_of_games_played(10));
+    }
+
     public function par(UnitTester $I) {
         $I->assertEquals(58, Course::par(1));
         $I->assertEquals(56, Course::par(2));
+    }
+
+    public function parNullWhenNonexistantCourse(UnitTester $I) {
+        $I->assertEquals(null, Course::par(-1));
+        $I->assertEquals(null, Course::par(10));
     }
 
     public function latestGameDate(UnitTester $I) {
@@ -142,6 +164,16 @@ class CourseCest {
         $game->save();
         $I->assertEquals($date_output, Course::latest_game_date(1));
         $game->destroy();
+    }
+
+    public function averageScoringOverPar(UnitTester $I) {
+        // 194: over par
+        $I->assertEquals("66.5 (+6.5)", Course::average_scoring(194));
+    }
+
+    public function averageScoringUnderPar(UnitTester $I) {
+        // 195: under par
+        $I->assertEquals("49.67 (-4.33)", Course::average_scoring(195));
     }
 
     /*

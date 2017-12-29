@@ -218,9 +218,9 @@
       $to_par = round($to_par, 2);
 
       if ($to_par > 0) {
-        return $row['avg_score']. " (+". $to_par. ")";
+        return (double) $row['avg_score']. " (+". $to_par. ")";
       } else {
-        return $row['avg_score']. " (". $to_par. ")";
+        return (double) $row['avg_score']. " (". $to_par. ")";
       }
     }
 
