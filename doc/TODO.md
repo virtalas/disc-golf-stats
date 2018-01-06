@@ -15,7 +15,7 @@ Features/bugs/etc planned for disc-golf-stats
 ### Graphs
 
 * pelien määrä kuukausittain -kaavio: kun painaa 'kaikki pelit', kaavio liikahtaa paikoilleen, korjaa ettei liikahda
-* jonkinlainen diagrammi pelien lopetusajasta, myös viikonpäivä mukaan(?) (vain sopiva kaavio puuttuu http://raphaeljs.com/github/dots.html http://visible.io/charts/column/punch-card.html)
+* jonkinlainen diagrammi (käytä heatmap, kuten githubissa) pelien lopetusajasta, myös viikonpäivä mukaan(?) (vain sopiva kaavio puuttuu http://raphaeljs.com/github/dots.html http://visible.io/charts/column/punch-card.html)
 
 ### Tilastot-sivu
 
@@ -28,6 +28,7 @@ Features/bugs/etc planned for disc-golf-stats
 * mobile gui luo pelin heti ja updateaa sitä POSTilla väylää vaihtaessa (max 1 per 15s)
 * pelikortin katselusivulta voi käynnistää pelin mobile guihin
 * harkintaan: heitot nimen viereen, ob oikeaan laitaan, alusta par:eilla eikä nollilla, +- napit tulokselle
+* pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5
 
 ### Radat-sivu
 

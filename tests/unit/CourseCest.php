@@ -176,6 +176,59 @@ class CourseCest {
         $I->assertEquals("49.67 (-4.33)", Course::average_scoring(195));
     }
 
+    public function averageScoringDoesntCountIllegalGames(UnitTester $I) {
+        // 237: Laittomia pelejä ei lasketa tuloskeskiarvoon
+        $I->assertEquals("54 (0)", Course::average_scoring(237));
+    }
+
+    public function averagePlayerScoringByYearReturnsAllYears(UnitTester $I) {
+        // 236: Vuosittaiset tuloskeskiarvot
+        $I->assertFalse(empty(Course::average_player_scoring_by_year(1, 2015)));
+        $I->assertFalse(empty(Course::average_player_scoring_by_year(1, 2016)));
+        $I->assertFalse(empty(Course::average_player_scoring_by_year(1, 2017)));
+    }
+
+    public function averagePlayerScoringByYearReturnsEmptyForYearWithNoGames(UnitTester $I) {
+        $avg = Course::average_player_scoring_by_year(1, 2014);
+        foreach ($avg as $key => $value) {
+            $I->assertTrue($value["avg_score"] == "");
+        }
+    }
+
+    public function averagePlayerScoringByYearWhenOneGame(UnitTester $I) {
+        $avg = Course::average_player_scoring_by_year(1, 2015);
+        $index = -1;
+        for ($i = 0; $i < sizeof($avg); $i++) {
+            if ($avg[$i]["courseid"] == 236) $index = $i;
+        }
+        $I->assertEquals(54.0, (double) $avg[$index]["avg_score"]);
+    }
+
+    public function averagePlayerScoringByYearWhenMoreThanOneGame(UnitTester $I) {
+        $avg = Course::average_player_scoring_by_year(1, 2016);
+        $index = -1;
+        for ($i = 0; $i < sizeof($avg); $i++) {
+            if ($avg[$i]["courseid"] == 236) $index = $i;
+        }
+        $I->assertEquals(55.5, (double) $avg[$index]["avg_score"]);
+    }
+
+    public function averagePlayerScoringByYearIllegalGamesNotCounted(UnitTester $I) {
+        $avg = Course::average_player_scoring_by_year(1, 2017);
+        $index = -1;
+        for ($i = 0; $i < sizeof($avg); $i++) {
+            if ($avg[$i]["courseid"] == 236) $index = $i;
+        }
+        $I->assertEquals(54.0, (double) $avg[$index]["avg_score"]);
+    }
+
+    public function popularCoursesByPlayer(UnitTester $I) {
+        $games = array();
+        for ($i = 0; $i < 30; $i++) {
+            $game = new Game(array("courseid" => 1));
+        }
+    }
+
     /*
     *  Functions with "_" prefix are not run as tests
     */
