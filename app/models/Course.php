@@ -381,9 +381,10 @@
       return $high_scores;
     }
 
-    public static function score_distribution($courseid, $n) {
+    public static function score_distribution($courseid) {
       $sql = "SELECT hole_num,
               COUNT(hole_in_one) AS hole_in_one,
+              COUNT(eagle) AS eagle,
               COUNT(birdie) AS birdie,
               COUNT(par) AS par,
               COUNT(bogey) AS bogey,
@@ -391,6 +392,7 @@
               FROM (
                 SELECT hole.hole_num,
                 CASE WHEN score.stroke = 1 THEN 1 END AS hole_in_one,
+                CASE WHEN hole.par - score.stroke - score.ob = 2 AND score.stroke != 1 THEN 1 END AS eagle,
                 CASE WHEN hole.par - score.stroke - score.ob = 1 THEN 1 END AS birdie,
                 CASE WHEN hole.par - score.stroke - score.ob = 0 THEN 1 END AS par,
                 CASE WHEN hole.par - score.stroke - score.ob = -1 THEN 1 END AS bogey,

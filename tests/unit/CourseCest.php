@@ -229,6 +229,130 @@ class CourseCest {
         }
     }
 
+    public function chronologicalHighScoresForOnePlayerFirstGameIsHighScore(UnitTester $I) {
+        // Course "Chronological high scores" and player admin.
+        $high_scores = Course::chronological_high_scores(292, 1);
+        $I->assertEquals($high_scores["2018-01-01"], 62);
+    }
+
+    public function chronologicalHighScoresForOnePlayerBetterScoreIsHighScore(UnitTester $I) {
+        // Course "Chronological high scores" and player admin.
+        $high_scores = Course::chronological_high_scores(292, 1);
+        $I->assertEquals($high_scores["2018-01-03"], 58);
+    }
+
+    public function chronologicalHighScoresForOnePlayerSameScoreAsPreviosBestIsHighScore(UnitTester $I) {
+        // Course "Chronological high scores" and player admin.
+        $high_scores = Course::chronological_high_scores(292, 1);
+        $I->assertEquals($high_scores["2018-01-04"], 58);
+    }
+
+    public function chronologicalHighScoresForAllPlayersFirstGameIsHighScore(UnitTester $I) {
+        // Course "Chronological high scores" and all players.
+        $high_scores = Course::chronological_high_scores(292, 0);
+        $I->assertEquals($high_scores["2018-01-01"], 62);
+    }
+
+    public function chronologicalHighScoresForAllPlayersBetterScoreIsHighScore(UnitTester $I) {
+        // Course "Chronological high scores" and all players.
+        $high_scores = Course::chronological_high_scores(292, 0);
+        $I->assertEquals($high_scores["2018-01-03"], 58);
+    }
+
+    public function chronologicalHighScoresForAllPlayersBetterScoreByDifferentPlayerIsHighScore(UnitTester $I) {
+        // Course "Chronological high scores" and all players.
+        $high_scores = Course::chronological_high_scores(292, 0);
+        $I->assertEquals($high_scores["2018-01-05"], 53);
+    }
+
+    public function chronologicalHighScoresForAllPlayersSameScoreAsPreviosBestIsHighScore(UnitTester $I) {
+        // Course "Chronological high scores" and all players.
+        $high_scores = Course::chronological_high_scores(292, 0);
+        $I->assertEquals($high_scores["2018-01-04"], 58);
+    }
+
+    public function scoreDistributionForDifferentPars(UnitTester $I) {
+        $dist = Course::score_distribution(453);
+        $I->assertEquals(1, $dist[0]["hole_num"]);
+        $I->assertEquals(0, $dist[0]["hole_in_one"]);
+        $I->assertEquals(0, $dist[0]["eagle"]);
+        $I->assertEquals(0, $dist[0]["birdie"]);
+        $I->assertEquals(2, $dist[0]["par"]);
+        $I->assertEquals(0, $dist[0]["bogey"]);
+        $I->assertEquals(0, $dist[0]["over_bogey"]);
+
+        $I->assertEquals(2, $dist[1]["hole_num"]);
+        $I->assertEquals(0, $dist[1]["hole_in_one"]);
+        $I->assertEquals(0, $dist[1]["eagle"]);
+        $I->assertEquals(0, $dist[1]["birdie"]);
+        $I->assertEquals(2, $dist[1]["par"]);
+        $I->assertEquals(0, $dist[1]["bogey"]);
+        $I->assertEquals(0, $dist[1]["over_bogey"]);
+
+        $I->assertEquals(3, $dist[2]["hole_num"]);
+        $I->assertEquals(0, $dist[2]["hole_in_one"]);
+        $I->assertEquals(0, $dist[2]["eagle"]);
+        $I->assertEquals(0, $dist[2]["birdie"]);
+        $I->assertEquals(2, $dist[2]["par"]);
+        $I->assertEquals(0, $dist[2]["bogey"]);
+        $I->assertEquals(0, $dist[2]["over_bogey"]);
+    }
+
+    public function scoreDistributionForBogies(UnitTester $I) {
+        $dist = Course::score_distribution(453);
+        $I->assertEquals(4, $dist[3]["hole_num"]);
+        $I->assertEquals(0, $dist[3]["hole_in_one"]);
+        $I->assertEquals(0, $dist[3]["eagle"]);
+        $I->assertEquals(0, $dist[3]["birdie"]);
+        $I->assertEquals(1, $dist[3]["par"]);
+        $I->assertEquals(1, $dist[3]["bogey"]);
+        $I->assertEquals(0, $dist[3]["over_bogey"]);
+    }
+
+    public function scoreDistributionForBogiesWithOb(UnitTester $I) {
+        $dist = Course::score_distribution(453);
+        $I->assertEquals(5, $dist[4]["hole_num"]);
+        $I->assertEquals(0, $dist[4]["hole_in_one"]);
+        $I->assertEquals(0, $dist[4]["eagle"]);
+        $I->assertEquals(0, $dist[4]["birdie"]);
+        $I->assertEquals(1, $dist[4]["par"]);
+        $I->assertEquals(1, $dist[4]["bogey"]);
+        $I->assertEquals(0, $dist[4]["over_bogey"]);
+    }
+
+    public function scoreDistributionForBirdies(UnitTester $I) {
+        $dist = Course::score_distribution(453);
+        $I->assertEquals(6, $dist[5]["hole_num"]);
+        $I->assertEquals(0, $dist[5]["hole_in_one"]);
+        $I->assertEquals(0, $dist[5]["eagle"]);
+        $I->assertEquals(1, $dist[5]["birdie"]);
+        $I->assertEquals(1, $dist[5]["par"]);
+        $I->assertEquals(0, $dist[5]["bogey"]);
+        $I->assertEquals(0, $dist[5]["over_bogey"]);
+    }
+
+    public function scoreDistributionForEagles(UnitTester $I) {
+        $dist = Course::score_distribution(453);
+        $I->assertEquals(7, $dist[6]["hole_num"]);
+        $I->assertEquals(0, $dist[6]["hole_in_one"]);
+        $I->assertEquals(1, $dist[6]["eagle"]);
+        $I->assertEquals(0, $dist[6]["birdie"]);
+        $I->assertEquals(1, $dist[6]["par"]);
+        $I->assertEquals(0, $dist[6]["bogey"]);
+        $I->assertEquals(0, $dist[6]["over_bogey"]);
+    }
+
+    public function scoreDistributionForAces(UnitTester $I) {
+        $dist = Course::score_distribution(453);
+        $I->assertEquals(8, $dist[7]["hole_num"]);
+        $I->assertEquals(1, $dist[7]["hole_in_one"]);
+        $I->assertEquals(0, $dist[7]["eagle"]);
+        $I->assertEquals(0, $dist[7]["birdie"]);
+        $I->assertEquals(1, $dist[7]["par"]);
+        $I->assertEquals(0, $dist[7]["bogey"]);
+        $I->assertEquals(0, $dist[7]["over_bogey"]);
+    }
+
     /*
     *  Functions with "_" prefix are not run as tests
     */
