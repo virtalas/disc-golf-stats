@@ -23,8 +23,4 @@ class GameCest {
     public function worseScoreIsNotHighScore(UnitTester $I) {
         $scores = Course::high_scores(2);
     }
-
-    public function firstGameOnCourseIsHighScore(UnitTester $I) {
-        $scores = Course::high_scores(2);
-    }
 }

@@ -353,6 +353,54 @@ class CourseCest {
         $I->assertEquals(0, $dist[7]["over_bogey"]);
     }
 
+    public function coursePopularity(UnitTester $I) {
+        $found = false;
+        foreach (Course::course_popularity() as $key => $row) {
+            if ($row["name"] === "Rata jolla kaksi peliä") {
+                $found = true;
+                $I->assertEquals(2, $row["count"]);
+            }
+        }
+        $I->assertTrue($found);
+    }
+
+    public function coursePopularityForPlayerWhoHasPlayedOnCourse(UnitTester $I) {
+        $found = false;
+        foreach (Course::player_course_popularity(5) as $key => $row) {
+            if ($row["name"] === "Rata jolla kaksi peliä") {
+                $found = true;
+                $I->assertEquals(2, $row["count"]);
+            }
+        }
+        $I->assertTrue($found);
+    }
+
+    public function coursePopularityForPlayerWhoHasNotPlayedOnCourse(UnitTester $I) {
+        $found = false;
+        foreach (Course::player_course_popularity(1) as $key => $row) {
+            if ($row["name"] === "Rata jolla kaksi peliä") {
+                $found = true;
+            }
+        }
+        $I->assertFalse($found);
+    }
+
+    public function nameCannotBeEmpty(UnitTester $I) {
+        $this->course->name = "";
+        $I->assertFalse(empty($this->course->validate_name()));
+
+        $this->course->name = "Name";
+        $I->assertTrue(empty($this->course->validate_name()));
+    }
+
+    public function cityCannotBeEmpty(UnitTester $I) {
+        $this->course->city = "";
+        $I->assertFalse(empty($this->course->validate_city()));
+
+        $this->course->city = "City";
+        $I->assertTrue(empty($this->course->validate_city()));
+    }
+
     /*
     *  Functions with "_" prefix are not run as tests
     */
