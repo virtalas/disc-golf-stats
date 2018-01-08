@@ -18,6 +18,8 @@ class ContestCest {
             'creator' => 1,
             'name' => "Summer Cup",
             'number_of_games' => 1));
+        $this->contest->save();
+        $this->contest2->save();
 
         if (!$this->tie_contest_points_calculated) {
             $this->tie_points = $this->_tieContestPoints();
@@ -31,12 +33,10 @@ class ContestCest {
     }
 
     public function contestCanBeSaved(UnitTester $I) {
-        $this->contest->save();
         $I->seeInDatabase('contest', ['creator' => "1", 'name' => "Winter Cup", 'number_of_games' => "5"]);
     }
 
     public function contestCanBeUpdated(UnitTester $I) {
-        $this->contest->save();
         $this->contest->name = "Summer Cup";
         $this->contest->number_of_games = 1;
         $this->contest->update();
@@ -44,13 +44,11 @@ class ContestCest {
     }
 
     public function contestCanBeDestroyed(UnitTester $I) {
-        $this->contest->save();
         $this->contest->destroy();
         $I->dontSeeInDatabase('contest', ['creator' => "1", 'name' => "Winter Cup", 'number_of_games' => "5", "contestid" => $this->contest->contestid]);
     }
 
     public function contestHasCorrectCreator(UnitTester $I) {
-        $this->contest->save();
         $player = new Player(array(
           'playerid' => 1,
           'firstname' => "Admin",
@@ -75,7 +73,6 @@ class ContestCest {
     }
 
     public function contestCanBeFoundById(UnitTester $I) {
-        $this->contest->save();
         $found_contest = Contest::find($this->contest->contestid);
         $I->assertEquals($this->contest->contestid, $found_contest->contestid);
         $I->assertEquals($this->contest->creator, $found_contest->creator);
@@ -84,8 +81,6 @@ class ContestCest {
     }
 
     public function returnAllReturnsCorrectNumberOfContests(UnitTester $I) {
-        $this->contest->save();
-        $this->contest2->save();
         $contests = Contest::all();
         $I->assertTrue(sizeof($contests) === 5);
         $I->assertTrue($this->_arrayContainsContestWithName($contests, "Winter Cup", $this->contest->contestid));
@@ -165,6 +160,10 @@ class ContestCest {
         $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][1]);
         $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][2]);
         $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][3]);
+    }
+
+    public function skippedEventGivesZeroPointsForFirstEvent(UnitTester $I) {
+        $I->assertEquals(0, $this->tie_points["Esko"]["game_points"][0]);
     }
 
     public function playerParsCalculatedCorrectly(UnitTester $I) {

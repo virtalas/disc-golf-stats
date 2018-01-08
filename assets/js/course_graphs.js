@@ -239,14 +239,16 @@ $(document).ready(function(){
   $(".scoredistributionforjs").each(function(index) {
     var holeNum = $(this).text().split(",")[0];
     var holeInOnes = $(this).text().split(",")[1];
-    var birdies = $(this).text().split(",")[2];
-    var pars = $(this).text().split(",")[3];
-    var bogies = $(this).text().split(",")[4];
-    var overBogies = $(this).text().split(",")[5];
+    var eagles = $(this).text().split(",")[2];
+    var birdies = $(this).text().split(",")[3];
+    var pars = $(this).text().split(",")[4];
+    var bogies = $(this).text().split(",")[5];
+    var overBogies = $(this).text().split(",")[6];
 
     scoreDistribution.push({
         "hole": holeNum,
         "holeInOnes": holeInOnes,
+        "eagles": eagles,
         "birdies": birdies,
         "pars": pars,
         "bogies": bogies,
@@ -283,6 +285,16 @@ $(document).ready(function(){
 	      "color": "#000000",
         "fillColors": "red",
         "valueField": "holeInOnes"
+    }, {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>Väylä [[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0,
+        "title": "Eagle",
+        "type": "column",
+	      "color": "#000000",
+        "fillColors": "yellow",
+        "valueField": "eagles"
     }, {
         "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>Väylä [[category]]: <b>[[value]]</b></span>",
         "fillAlphas": 0.8,
