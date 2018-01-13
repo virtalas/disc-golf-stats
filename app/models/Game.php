@@ -576,6 +576,14 @@
       return $row['name']. " (". $row['gamedate']. ")";
     }
 
+    public static function latest_gameid() {
+        $sql = "SELECT gameid FROM game ORDER BY gameid DESC LIMIT 1";
+        $query = DB::connection()->prepare($sql);
+        $query->execute();
+        $row = $query->fetch();
+        return $row['gameid'];
+    }
+
     public static function latest_player_game($playerid) {
       $sql = "SELECT course.name, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate
               FROM game

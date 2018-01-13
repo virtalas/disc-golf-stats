@@ -6,11 +6,13 @@ myApp.controllers = {
     $("#next").click(function() {
       myApp.services.nextHole();
       // Send in-progress game to server if scores changed, then clear changed -flag
+      myApp.services.updateGame();
     });
 
     $("#previous").click(function() {
       myApp.services.previousHole();
       // Send in-progress game to server if scores changed, then clear changed -flag
+      myApp.services.updateGame();
     });
 
     $("#set_to_par").click(function() {
@@ -84,12 +86,12 @@ myApp.controllers = {
 
     // Send button functionality
     $("#add_game_button").click(function() {
-      myApp.services.postGame();
+      myApp.services.finishGame();
     });
 
     // Set date and time to now
-    $("#date").val(dateNow());
-    $("#time").val(timeNow());
+    $("#date").val(myApp.services.dateNow());
+    $("#time").val(myApp.services.timeNow());
 
     // Validators for date and time
     $("#date").change(function() {
@@ -111,39 +113,6 @@ myApp.controllers = {
     $.getScript("../../assets/js/weather.js");
   }
 };
-
-function dateNow() {
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth() + 1; // January is 0!
-  var yyyy = today.getFullYear();
-
-  if (dd < 10) {
-      dd = '0' + dd
-  }
-
-  if (mm < 10) {
-      mm = '0' + mm
-  }
-
-  return yyyy + "-" + mm + "-" + dd;
-}
-
-function timeNow() {
-  var today = new Date();
-  var h = today.getHours();
-  var min = today.getMinutes();
-
-  if (h < 10) {
-    h = "0" + h;
-  }
-
-  if (min < 10) {
-    min = "0" + min;
-  }
-
-  return h + ":" + min;
-}
 
 function hideKeyboard() {
   document.activeElement.blur()
