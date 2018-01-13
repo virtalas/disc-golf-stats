@@ -139,29 +139,74 @@
       ));
     }
 
-    public static function mobileScoreCard() {
+    public static function initMobileScoreCard() {
       // Game index page "new game" button -> /game/mobile/new
       // Mobile gui will have a button to redirect to /game/new, but mobile gui is the default
+      // This function will create a new game and redirect to the mobile gui for that game.
       $course = Course::find($_GET['course']);
-
-      $attributes = array();
+      $course->prepare();
       $players = array();
 
+      // Legality
       foreach (Player::all() as $player) {
         if (isset($_GET['player'. $player->playerid])) {
-          $players[] = $player;
-          $attributes["legal-player". $player->playerid] = 1;
+            $players[] = $player;
+            $_POST["legal-player". $player->playerid] = 0; // init with illegal game
         }
       }
 
-      View::make('game/mobilegui/index.html', array(
-        'course' => $course,
-        'players' => $players,
-        'attributes' => $attributes
-      ));
+      // Strokes and OB
+      for ($i = 0; $i < sizeof($players); $i++) {
+          $playerid = $players[$i]->playerid;
+          for ($j = 0; $j < $course->number_of_holes; $j++) {
+              // e.g. "player1-hole1"
+              $_POST["player". $playerid. "-hole". ($j+1)] = 0;
+              // e.g. "player1-obhole1"
+              $_POST["player". $playerid. "-obhole". ($j+1)] = 0;
+          }
+      }
+
+      // Players
+      for ($i = 0; $i < sizeof($players); $i++) {
+          $_POST["player". $players[$i]->playerid] = $players[$i]->playerid;
+      }
+
+      $_POST["date"] = date("Y-m-d");
+      $_POST["time"] = date("H:i");
+      $_POST["courseid"] = $course->courseid;
+
+      // Create game in the database but don't redirect.
+      $latest_gameid = Game::latest_gameid();
+      GameController::store(False);
+      $new_gameid = Game::latest_gameid();
+
+      if ($new_gameid <= $latest_gameid) {
+        Redirect::to('/game', array('error' => 'Peliä ei voitu luoda.'));
+      } else {
+        // Redirect to the mobile interface with the new game.
+        Redirect::to("/game/mobile/". $new_gameid);
+      }
     }
 
-    public static function store() {
+    public static function mobileScoreCard($gameid) {
+        $game = Game::find($gameid);
+        $game->prepare();
+
+        // Passwords may contain special characters that disturb JSON.parse().
+        $players = Game::games_players($gameid);
+        foreach ($players as $player) {
+            $player->password = "";
+        }
+
+        View::make('game/mobilegui/index.html', array(
+          'game' => $game,
+          'course' => Course::find($game->courseid),
+          'players' => $players,
+          'attributes' => array()
+        ));
+    }
+
+    public static function store($redirect) {
       $params = $_POST;
 
       $player = self::get_user_logged_in();
@@ -173,10 +218,10 @@
       $led = isset($_POST['led']) && $_POST['led']  ? "1" : "0"; // checked=1, unchecked=0
       $snow = isset($_POST['snow']) && $_POST['snow']  ? "1" : "0"; // checked=1, unchecked=0
       $doubles = isset($_POST['doubles']) && $_POST['doubles']  ? "1" : "0"; // checked=1, unchecked=0
-      $temp = $_POST['temp'] != ""  ? $_POST['temp'] : null; // temperature can be null (or 0!)
+      $temp = isset($_POST['temp']) && $_POST['temp'] != ""  ? $_POST['temp'] : null; // temperature can be null (or 0!)
       $date = $_POST['date'];
       $time = $_POST['time'];
-      $comment = $_POST['comment'];
+      $comment = isset($_POST['comment']) ? $_POST['comment'] : "";
 
       $courseid = $_POST['courseid'];
       $gamedate = $date. " ". $time. ":00";
@@ -223,13 +268,15 @@
             // Clear cached pages
             Cache::clear();
 
-            Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
-          } else {
+            if ($redirect) {
+                Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
+            }
+          } else if ($redirect) {
             // Scores had errors, nothing was saved
             $errors = array_merge($errors, $score_errors);
             View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
           }
-        } else {
+        } else if ($redirect) {
           View::make('game/new.html', array('errors' => $errors, 'attributes' => $params, 'course' => $course));
         }
       } else {
@@ -280,8 +327,10 @@
           // Clear cached pages
           Cache::clear();
 
-          Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
-        } else {
+          if ($redirect) {
+              Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset lisätty.'));
+          }
+        } else  if ($redirect) {
           View::make('game/new.html', array(
             'errors' => $errors,
             'attributes' => $params,
@@ -327,12 +376,14 @@
       ));
     }
 
-    public static function update($gameid) {
+    public static function update($gameid, $redirect) {
       $attributes = $_POST;
       $player = self::get_user_logged_in();
 
       if (Game::get_creator($gameid) != $player->playerid && !$player->admin) {
-        Redirect::to('/game', array('message' => 'Vain pelin tekijä tai admin voi muokata peliä.'));
+        if ($redirect) {
+            Redirect::to('/game', array('message' => 'Vain pelin tekijä tai admin voi muokata peliä.'));
+        }
         return;
       }
 
@@ -344,10 +395,10 @@
       $led = isset($_POST['led']) && $_POST['led']  ? "1" : "0"; // checked=1, unchecked=0
       $snow = isset($_POST['snow']) && $_POST['snow']  ? "1" : "0"; // checked=1, unchecked=0
       $doubles = isset($_POST['doubles']) && $_POST['doubles']  ? "1" : "0"; // checked=1, unchecked=0
-      $temp = $_POST['temp'] != ""  ? $_POST['temp'] : null; // temperature can be null (or 0!)
+      $temp = isset($_POST['temp']) && $_POST['temp'] != ""  ? $_POST['temp'] : null; // temperature can be null (or 0!)
       $date = $_POST['date'];
       $time = $_POST['time'];
-      $comment = $_POST['comment'];
+      $comment = isset($_POST['comment']) ? $_POST['comment'] : "";
 
       $courseid = $_POST['courseid'];
       $gamedate = $date. " ". $time. ":00";
@@ -405,8 +456,10 @@
         // Clear cached pages
         Cache::clear();
 
-        Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset päivitetty.'));
-      } else {
+        if ($redirect) {
+            Redirect::to('/game/'. $game->gameid, array('message' => 'Peli ja sen tulokset päivitetty.'));
+        }
+    } else if ($redirect) {
         $game->prepare();
         View::make('game/edit.html', array(
           'errors' => $errors,

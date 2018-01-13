@@ -183,6 +183,10 @@
       <a href="{{base_path}}/game/{{game.gameid}}/edit" class="btn btn-default btn-xs" role="button">Muokkaa</a>
     {% endif %}
 
+    {% if (user_logged_in.playerid == game.creator or admin_logged_in) and show_edit %}
+      <a href="{{base_path}}/game/mobile/{{game.gameid}}" class="btn btn-default btn-xs" role="button">Jatka tulosten syöttämistä (päivittää olosuhteet ja päivämäärän)</a>
+    {% endif %}
+
   {% endfor %}
 
 {% endmacro %}

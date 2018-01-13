@@ -13,6 +13,7 @@
     <script src="{{base_path}}/assets/js/mobilegui/services.js"></script>
 
     <script type="text/javascript">
+      var preparedGame = JSON.parse('{{ game|json_encode|raw }}');
       var course = JSON.parse('{{ course|json_encode|raw }}');
       var players = JSON.parse('{{ players|json_encode|raw }}');
       var attributes = JSON.parse('{{ attributes|json_encode|raw }}');
@@ -59,6 +60,8 @@
             </ons-toolbar-button>
           </div>
         </ons-toolbar>
+
+        <ons-progress-bar indeterminate id="animated_progress_bar" style="display: none;"></ons-progress-bar>
 
         {% for player in players %}
           <ons-list class="contact-block" modifier="material">
