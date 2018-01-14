@@ -83,3 +83,7 @@ window.fn.load = function(page) {
     content.load(page)
         .then(menu.close.bind(menu));
 };
+
+window.fn.sendScores = function() {
+    myApp.services.updateGameWithFeedback();
+}

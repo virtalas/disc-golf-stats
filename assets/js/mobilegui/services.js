@@ -78,6 +78,11 @@ myApp.services = {
         postNoRedirect("/disc-golf-stats/game/" + preparedGame.gameid + "/mobile/edit", game);
     },
 
+    updateGameWithFeedback: function() {
+        var game = createGameWithStrokes();
+        postNoRedirectWithFeedback("/disc-golf-stats/game/" + preparedGame.gameid + "/mobile/edit", game);
+    },
+
     finishGame: function() {
         var game = createGameWithStrokes();
 
@@ -224,6 +229,29 @@ function postNoRedirect(url, data) {
             myApp.scoresChanged = false;
             scoresSent();
             console.log("scores sent succesfully");
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
+        }
+    });
+}
+
+function postNoRedirectWithFeedback(url, data) {
+    var form = createForm(url, data);
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: $('form').serialize(),
+        success: function(){
+            myApp.lastUpdateTime = new Date().getTime();
+            myApp.scoresChanged = false;
+            console.log("scores sent succesfully");
+            alert("Tulokset lähetettiin onnistuneesti.");
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
         }
     });
 }
