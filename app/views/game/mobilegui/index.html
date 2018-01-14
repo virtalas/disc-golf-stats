@@ -109,8 +109,19 @@
                 </ons-col>
               </ons-row>
             </ons-list-item>
-          </ons-list>
+
         {% endfor %}
+
+            <ons-list-item modifier="material short-divider">
+              <ons-row>
+                <ons-col align="center" width="100%" style="color: grey;">
+                  <span id="timesincelastupdatetext">Tulokset lähettetiin viimeksi <span id="timesincelastupdate">0</span> min sitten.</span>
+                  <span id="sending" style="display: none;">Lähetetään...</span>
+                </ons-col>
+              </ons-row>
+            </ons-list-item>
+
+        </ons-list>
 
         <ons-bottom-toolbar style="height: 150px; position: fixed;">
           <ons-row>

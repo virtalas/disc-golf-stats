@@ -4,15 +4,15 @@ myApp.controllers = {
     // Button functionality
 
     $("#next").click(function() {
-      myApp.services.nextHole();
       // Send in-progress game to server if scores changed, then clear changed -flag
       myApp.services.updateGame();
+      myApp.services.nextHole();
     });
 
     $("#previous").click(function() {
-      myApp.services.previousHole();
       // Send in-progress game to server if scores changed, then clear changed -flag
       myApp.services.updateGame();
+      myApp.services.previousHole();
     });
 
     $("#set_to_par").click(function() {

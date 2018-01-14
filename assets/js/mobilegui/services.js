@@ -27,11 +27,13 @@ myApp.services = {
 
     updateStroke: function(playerid, stroke) {
         myApp.scores[playerid].strokes[myApp.holeIndex] = stroke;
+        myApp.scoresChanged = true;
         myApp.services.updatePage();
     },
 
     updateOb: function(playerid, ob) {
         myApp.scores[playerid].obs[myApp.holeIndex] = ob;
+        myApp.scoresChanged = true;
         myApp.services.updatePage();
     },
 
@@ -51,7 +53,10 @@ myApp.services = {
             $("#hole_num_label").html((myApp.holeIndex + 1) + ".");
         }
 
-        myApp.scoresChanged = true;
+        var timeSinceLastUpdate = new Date().getTime() - myApp.lastUpdateTime;
+        var minutesSinceLastUpdate = Math.round(timeSinceLastUpdate / 60000);
+        $("#timesincelastupdate").html(minutesSinceLastUpdate);
+        console.log("time since last update: "+timeSinceLastUpdate);
 
         console.log("page updated");
     },
@@ -60,15 +65,16 @@ myApp.services = {
     updateGame: function() {
         var now = new Date().getTime();
 
-        // Time doesn't work?
-        if (now - myApp.lastUpdateTime > 5000 && myApp.scoresChanged) {
-            myApp.lastUpdateTime = new Date().getTime();
-            myApp.scoresChanged = false;
+        if (now - myApp.lastUpdateAttemptTime > 5000 && myApp.scoresChanged) {
+            // Time is updated here so no new requests are made until the first one finishes.
+            // Then the time is also updated in the ajax success function.
+            myApp.lastUpdateAttemptTime = new Date().getTime();
         } else {
             return;
         }
 
         var game = createGameWithStrokes();
+        sendingScores();
         postNoRedirect("/disc-golf-stats/game/" + preparedGame.gameid + "/mobile/edit", game);
     },
 
@@ -214,6 +220,23 @@ function postNoRedirect(url, data) {
         success: function(){
             // $("#animated_progress_circle").hide();
             // $("#animated_progress_bar").delay(2000).hide();
+            myApp.lastUpdateTime = new Date().getTime();
+            myApp.scoresChanged = false;
+            scoresSent();
+            console.log("scores sent succesfully");
         }
     });
+}
+
+// Tell the user the scores are being sent.
+function sendingScores() {
+    $("#timesincelastupdatetext").hide();
+    $("#sending").show();
+}
+
+// Tell the user scores were sent succesfully.
+function scoresSent() {
+    $("#timesincelastupdate").html(0);
+    $("#sending").hide();
+    $("#timesincelastupdatetext").show();
 }

@@ -2,6 +2,7 @@ window.myApp = {};
 myApp.holeIndex = -1;
 myApp.scores = {};
 myApp.lastUpdateTime = 0;
+myApp.lastUpdateAttemptTime = 0;
 myApp.scoresChanged = false;
 
 document.addEventListener('init', function(event) {
@@ -42,6 +43,7 @@ document.addEventListener('init', function(event) {
     if (myApp.holeIndex == -1) {
         loadScores();
         myApp.services.nextHole();
+        myApp.lastUpdateTime = new Date().getTime();
     }
 });
 
