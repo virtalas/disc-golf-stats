@@ -8,7 +8,7 @@ Disc golf stats keeps track of players' scores on different courses and presents
 
 The service provides numerous statistics for players and courses. It is possible to create a competition with multiple events.
 
-Adding scores during a round is handy with a mobile user interface built with [Onsen UI](https://onsen.io).
+Adding scores during a round is handy with a mobile user interface built with [Onsen UI](https://onsen.io), featuring live scoring.
 
 Disc golf stats uses a PostgreSQL database implemented with PHP. Its features include page caching, interactive graphs, course weather, admin/regular users and creating/reading/updating/deleting data through user interfaces.
 
