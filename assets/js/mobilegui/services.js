@@ -108,6 +108,14 @@ myApp.services = {
         postAndRedirect("/disc-golf-stats/game/" + preparedGame.gameid + "/edit", game);
     },
 
+    showScoreCardPopOver: function(target) {
+        document.getElementById('popover').show(target);
+
+        $.get('/disc-golf-stats/search/game/' + preparedGame.gameid, function(data) {
+          $('#gamecard').html(data);
+        });
+    },
+
     dateNow: function() {
         var today = new Date();
         var dd = today.getDate();

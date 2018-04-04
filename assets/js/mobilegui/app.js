@@ -87,3 +87,7 @@ window.fn.load = function(page) {
 window.fn.sendScores = function() {
     myApp.services.updateGameWithFeedback();
 }
+
+window.fn.scoreCardPopOver = function(target) {
+    myApp.services.showScoreCardPopOver(target);
+}

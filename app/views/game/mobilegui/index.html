@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
     <link rel="stylesheet" href="{{base_path}}/assets/css/mobilegui.css">
+    <link rel="stylesheet" href="{{base_path}}/assets/css/site.css">
 
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
     <script src="{{base_path}}/vendor/jquery.min.js"></script>
@@ -33,6 +34,9 @@
             </ons-list-item>
             <ons-list-item onclick="fn.load('../../app/views/game/mobilegui/conditions.html')" tappable>
               Pelin tiedot
+            </ons-list-item>
+            <ons-list-item onclick="fn.scoreCardPopOver(this)" tappable>
+              Tuloskortti
             </ons-list-item>
             <ons-list-item onclick="fn.sendScores()" tappable>
               Lähetä tulokset
@@ -158,6 +162,10 @@
         </ons-bottom-toolbar>
       </ons-page>
     </template>
+
+      <ons-popover id="popover" cover-target cancelable direction="down" style="height: 55%; width: 97%">
+          <div id="gamecard" style="padding: 5px;">&nbsp;&nbsp;&nbsp;Ladataan...</div>
+      </ons-popover>
 
     <div id="coursecity" style="display: none;">
       {{course.city}}

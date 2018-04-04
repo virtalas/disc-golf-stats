@@ -139,6 +139,10 @@
     SearchController::search();
   });
 
+  $routes->get('/search/game/:gameid', 'check_logged_in', function($gameid){
+    SearchController::searchById($gameid);
+  });
+
   // Ajax pyynnöllä väylän tulokset pelaajalle
   $routes->get('/hole/:holeid/player/:playerid/stats', 'check_logged_in', function($holeid, $playerid){
     Hole::score_distribution($holeid, $playerid);
