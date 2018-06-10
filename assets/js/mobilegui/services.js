@@ -258,8 +258,10 @@ function postNoRedirectWithFeedback(url, data) {
             alert("Tulokset lähetettiin onnistuneesti.");
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("Status: " + textStatus);
-            alert("Error: " + errorThrown);
+            alert("Virhe! Lataa sivu uudelleen.");
+//          TODO: Invesitage error
+//            alert("Status: " + textStatus);
+//            alert("Error: " + errorThrown);
         }
     });
 }
