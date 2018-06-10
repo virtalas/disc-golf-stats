@@ -25,8 +25,8 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Pelit
 
-* mobile gui luo pelin heti ja updateaa sitä POSTilla väylää vaihtaessa (max 1 per 15s)
-* pelikortin katselusivulta voi käynnistää pelin mobile guihin
+* mobile gui: lisää validointi sille että 'sadetta' ja 'märkää_ei_sadetta' ei voi olla samaan aikaan
+* mobile gui: tutki miksi virheviesti tulee välillä
 * harkintaan: heitot nimen viereen, ob oikeaan laitaan, alusta par:eilla eikä nollilla, +- napit tulokselle
 * pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5
 
