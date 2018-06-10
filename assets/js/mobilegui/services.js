@@ -259,7 +259,7 @@ function postNoRedirectWithFeedback(url, data) {
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Virhe! Lataa sivu uudelleen.");
-//          TODO: Invesitage error
+//          TODO: Invesitage error. Maybe notify a reload and then reload the page?
 //            alert("Status: " + textStatus);
 //            alert("Error: " + errorThrown);
         }
