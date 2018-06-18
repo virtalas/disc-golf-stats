@@ -239,8 +239,10 @@ function postNoRedirect(url, data) {
             console.log("scores sent succesfully");
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("Status: " + textStatus);
-            alert("Error: " + errorThrown);
+//          TODO: Invesitage error. Maybe notify a reload and then reload the page?
+            alert("Virhe! Lataa sivu uudelleen.");
+//            alert("Status: " + textStatus);
+//            alert("Error: " + errorThrown);
         }
     });
 }
@@ -258,10 +260,9 @@ function postNoRedirectWithFeedback(url, data) {
             alert("Tulokset lähetettiin onnistuneesti.");
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("Virhe! Lataa sivu uudelleen.");
 //          TODO: Invesitage error. Maybe notify a reload and then reload the page?
-//            alert("Status: " + textStatus);
-//            alert("Error: " + errorThrown);
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
         }
     });
 }
