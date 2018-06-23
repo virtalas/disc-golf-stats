@@ -32,7 +32,8 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Radat-sivu
 
-* muokkaa-painike radan sivulle, ettei tarvitse etsiä sitä
+* pelaaja voi muokata lisäämiään ratoja
+* (muokkaa-painike radan sivulle, ettei tarvitse etsiä sitä)
 * lisää eagle tulosten jakautuminen -kuvaan
 * korjaa radan lisäysnäkymä jos on monta väylää (uusi rivi tai jotain)
 * vaihda popularity <-> name javascriptillä ja päivitä ratalinkkien get-parametri oikeaksi
