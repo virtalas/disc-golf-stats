@@ -32,7 +32,9 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Radat-sivu
 
+* muokkaa-painike radan sivulle, ettei tarvitse etsiä sitä
 * lisää eagle tulosten jakautuminen -kuvaan
+* korjaa radan lisäysnäkymä jos on monta väylää (uusi rivi tai jotain)
 * vaihda popularity <-> name javascriptillä ja päivitä ratalinkkien get-parametri oikeaksi
 * pelaajakohtainen top5-näkymä, drop down pelaajavalinta (samaan kuin nykyinen ja default valinta "kaikki")
 * rate courses with 5 stars, how overall score and user's own score
