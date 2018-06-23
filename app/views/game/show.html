@@ -17,7 +17,7 @@
 
   <br>
 
-  {{forms.new_game(courses, players, base_path)}}
+  {{forms.new_game(courses, players_without_guests, base_path)}}
 
   <br>
 
@@ -26,4 +26,8 @@
 
   <a href="{{base_path}}/game/{{games[0].gameid}}/export" class="btn btn-default btn-xs" role="button">Export</a>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{base_path}}/assets/js/guests.js"></script>
 {% endblock %}

@@ -42,4 +42,13 @@ $(document).ready(function () {
     }
     return "";
   }
-})
+});
+
+// Ask for confirmation before continuing score inputting (updates date and time)
+$(document).ready(function () {
+    $("#continueScoreInputtingButton").click(function(e) {
+        if (!confirm("really")) {
+            e.preventDefault();
+        }
+    });
+});

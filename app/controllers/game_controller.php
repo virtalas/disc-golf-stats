@@ -99,6 +99,7 @@
           'courses' => Course::all(),
           'course_name' => $courseid ? Course::find($courseid)->name : null,
           'players' => Player::all(),
+          'players_without_guests' => Player::all_without_guests(),
           'playerid_param' => $playerid,
           'courseid_param' => $courseid,
           'game_years' => $game_years,
@@ -140,6 +141,14 @@
     }
 
     public static function initMobileScoreCard() {
+      // Check for adding guests
+      if (isset($_GET['guests']) && $_GET['guests']) {
+          GameController::createGuestsFromGET();
+          $all_players = Player::all();
+      } else {
+          $all_players = Player::all_without_guests();
+      }
+
       // Game index page "new game" button -> /game/mobile/new
       // Mobile gui will have a button to redirect to /game/new, but mobile gui is the default
       // This function will create a new game and redirect to the mobile gui for that game.
@@ -148,7 +157,7 @@
       $players = array();
 
       // Legality
-      foreach (Player::all() as $player) {
+      foreach ($all_players as $player) {
         if (isset($_GET['player'. $player->playerid])) {
             $players[] = $player;
             $_POST["legal-player". $player->playerid] = 0; // init with illegal game
@@ -181,11 +190,29 @@
       $new_gameid = Game::latest_gameid();
 
       if ($new_gameid <= $latest_gameid) {
+        Player::destroy_guests_with_no_games();
         Redirect::to('/game', array('error' => 'Peliä ei voitu luoda.'));
       } else {
         // Redirect to the mobile interface with the new game.
         Redirect::to("/game/mobile/". $new_gameid);
       }
+    }
+
+    public static function createGuestsFromGET() {
+        $guestCount = isset($_GET['guestCount']) ? $_GET['guestCount'] : 0;
+        $time = time();
+
+        for ($i = 1; $i <= $guestCount; $i++) {
+            $newPlayer = new Player(array(
+                'firstname' => $_GET['guest'. $i],
+                'username' => "guest_". date("Y-m-d_H-i-s_". $i, $time),
+                'password' => "",
+                'salt' => "",
+                'guest' => True
+            ));
+            if ($newPlayer->firstname != "") $newPlayer->save();
+            $_GET['player'. $newPlayer->playerid] = "1";
+        }
     }
 
     public static function mobileScoreCard($gameid) {
@@ -480,7 +507,8 @@
       View::make('game/show.html', array(
         'games' => $games,
         'courses' => Course::all(),
-        'players' => Player::all()
+        'players' => Player::all(),
+        'players_without_guests' => Player::all_without_guests()
       ));
     }
 
@@ -658,6 +686,9 @@
       }
 
       $game->destroy();
+
+      // Destroy possible guests in the game
+      Player::destroy_guests_with_no_games();
 
       // Clear cached pages
       Cache::clear();

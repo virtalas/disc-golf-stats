@@ -33,7 +33,7 @@
 
   <div>
     {% if courses %}
-      {{forms.new_game(courses, players, base_path)}}
+      {{forms.new_game(courses, players_without_guests, base_path)}}
     {% else %}
       <label>Lisää ratoja ennen kuin voit lisätä pelejä</label>
     {% endif %}
@@ -72,4 +72,8 @@
     {% endif %}
   </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{base_path}}/assets/js/guests.js"></script>
 {% endblock %}
