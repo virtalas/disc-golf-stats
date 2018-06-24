@@ -64,7 +64,9 @@
 
   <br><br>
 
-  {{forms.new_game(courses, players_without_guests, base_path)}}
+  {% if user_logged_in %}
+    {{forms.new_game(courses, players_without_guests, base_path)}}
+  {% endif %}
 
   <br>
 
