@@ -2,7 +2,7 @@
 
   class Player extends BaseModel {
 
-  	public $playerid, $admin, $firstname, $lastname, $username, $password, $salt; // Ready to use after creation
+  	public $playerid, $admin, $firstname, $lastname, $username, $password, $salt, $guest; // Ready to use after creation
 
   	public function __construct($attributes) {
   		parent::__construct($attributes);
@@ -54,19 +54,36 @@
     */
 
     public function save() {
-      $sql = "INSERT INTO player (firstname, username, password, salt)
-              VALUES (:firstname, :username, :password, :salt) RETURNING playerid";
+      $sql = "INSERT INTO player (firstname, username, password, salt, guest)
+              VALUES (:firstname, :username, :password, :salt, :guest) RETURNING playerid";
       $query = DB::connection()->prepare($sql);
       $query->execute(array('firstname' => $this->firstname,
                             'username' => $this->username,
                             'password' => $this->password,
-                            'salt' => $this->salt));
+                            'salt' => $this->salt,
+                            'guest' => $this->guest));
       $row = $query->fetch();
       $this->playerid = $row['playerid'];
     }
 
+    public function destroy() {
+      $sql = "DELETE FROM player WHERE playerid = :playerid";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $this->playerid));
+    }
+
   	public static function all() {
-  		$query = DB::connection()->prepare('SELECT * FROM player ORDER BY playerid ASC');
+  		$sql = 'SELECT * FROM player ORDER BY playerid ASC';
+        return Player::fetch_list_of_players($sql);
+  	}
+
+    public static function all_without_guests() {
+        $sql = 'SELECT * FROM player WHERE guest = false ORDER BY playerid ASC';
+        return Player::fetch_list_of_players($sql);
+    }
+
+    private static function fetch_list_of_players($sql) {
+        $query = DB::connection()->prepare($sql);
   		$query->execute();
   		$rows = $query->fetchAll();
   		$players = array();
@@ -76,15 +93,16 @@
   				'playerid' => $row['playerid'],
   				'firstname' => $row['firstname'],
   				'lastname' => $row['lastname'],
-  				'username' => $row['username']
+  				'username' => $row['username'],
+                'guest' => $row['guest']
   			));
   		}
 
   		return $players;
-  	}
+    }
 
     public static function all_firstnames() {
-      $sql = "SELECT firstname FROM player";
+      $sql = "SELECT firstname FROM player WHERE guest = false";
       $query = DB::connection()->prepare($sql);
       $query->execute();
       $rows = $query->fetchAll();
@@ -98,47 +116,49 @@
     }
 
   	public static function find($playerid) {
-      $sql = "SELECT * FROM player WHERE playerid = :playerid LIMIT 1";
+        $sql = "SELECT * FROM player WHERE playerid = :playerid LIMIT 1";
 	    $query = DB::connection()->prepare($sql);
 	    $query->execute(array('playerid' => $playerid));
 	    $row = $query->fetch();
 
-      if ($row) {
-  			$player = new Player(array(
-  				'playerid' => $row['playerid'],
-          'admin' => $row['admin'],
-  				'firstname' => $row['firstname'],
-  				'lastname' => $row['lastname'],
-  				'username' => $row['username'],
-  				'password' => $row['password']
-  			));
+        if ($row) {
+            $player = new Player(array(
+                'playerid' => $row['playerid'],
+                'admin' => $row['admin'],
+                'firstname' => $row['firstname'],
+                'lastname' => $row['lastname'],
+                'username' => $row['username'],
+                'password' => $row['password'],
+                'guest' => $row['guest']
+            ));
 
-  			return $player;
-  		}
+            return $player;
+        }
 
-  		return null;
+        return null;
   	}
 
     public static function find_by_firstname($firstname) {
-      $sql = "SELECT * FROM player WHERE firstname = :firstname LIMIT 1";
+        $sql = "SELECT * FROM player WHERE firstname = :firstname AND guest = false LIMIT 1";
 	    $query = DB::connection()->prepare($sql);
 	    $query->execute(array('firstname' => $firstname));
 	    $row = $query->fetch();
 
-      if ($row) {
-  			$player = new Player(array(
-  				'playerid' => $row['playerid'],
-          'admin' => $row['admin'],
-  				'firstname' => $row['firstname'],
-  				'lastname' => $row['lastname'],
-  				'username' => $row['username'],
-  				'password' => $row['password']
-  			));
+        if ($row) {
+            $player = new Player(array(
+            'playerid' => $row['playerid'],
+            'admin' => $row['admin'],
+            'firstname' => $row['firstname'],
+            'lastname' => $row['lastname'],
+            'username' => $row['username'],
+            'password' => $row['password'],
+            'guest' => $row['guest']
+            ));
 
-  			return $player;
-  		}
+            return $player;
+        }
 
-  		return null;
+        return null;
     }
 
     public static function firstname_from_playerid_string($players, $playerid_string) {
@@ -146,6 +166,20 @@
       $playerid = (int) str_replace("player", "", $playerid_string);
       $player_name = $players[$playerid - 1]->firstname; // $players ordered by playerid ascending
       return $player_name;
+    }
+
+    public static function destroy_guests_with_no_games() {
+        $sql = "SELECT DISTINCT playerid FROM player WHERE guest = true AND playerid NOT IN
+                    (SELECT DISTINCT player.playerid FROM player JOIN score ON player.playerid = score.playerid)";
+
+        $query = DB::connection()->prepare($sql);
+  		$query->execute();
+  		$rows = $query->fetchAll();
+
+  		foreach ($rows as $row) {
+  			$guest_with_no_games = Player::find($row['playerid']);
+            $guest_with_no_games->destroy();
+  		}
     }
   }
 

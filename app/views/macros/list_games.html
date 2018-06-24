@@ -14,7 +14,7 @@
     {% endif %}
 
     {% if (user_logged_in.playerid == game.creator or admin_logged_in) and show_edit %}
-      <a href="{{base_path}}/game/mobile/{{game.gameid}}" class="btn btn-default btn-xs" role="button">Jatka tulosten syöttämistä (päivittää olosuhteet ja päivämäärän)</a>
+      <a href="{{base_path}}/game/mobile/{{game.gameid}}" class="btn btn-default btn-xs" role="button" id="continueScoreInputtingButton">Jatka tulosten syöttämistä (päivittää olosuhteet ja päivämäärän)</a>
     {% endif %}
 
   {% endfor %}
@@ -88,9 +88,13 @@
         <!-- Cycle through every player's scores in the game and display them on their own row -->
         {% for playerid,scores in game.scores %}
           <tr>
-          <!-- Array 'players' is ordered by playerid ASC, so to get the player by id: players[playerid - 1] -->
-          <!-- <td class='names'>{{players[playerid].firstname}}</td> -->
-          <td class='names'>{{players[playerid|trim('player') - 1].firstname}}</td>
+          {% set firstname = 'Tuntematon' %}
+          {% for player in players %}
+            {% if player.playerid == playerid|trim('player') %}
+                {% set firstname = player.firstname %}
+            {% endif %}
+          {% endfor %}
+          <td class='names'>{{firstname}}</td>
 
           {% set total_score = 0 %}
           {% set total_par = 0 %}
