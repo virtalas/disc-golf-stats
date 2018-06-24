@@ -53,7 +53,7 @@
 
         $page_html = View::make('player/index.html', array(
           'player' => $player,
-          'players' => Player::all(),
+          'players' => Player::all_without_guests(),
           'game_count' => $game_count,
           'throw_count' => $throw_count,
           'latest_game' => $latest_game,
