@@ -47,7 +47,7 @@ $(document).ready(function () {
 // Ask for confirmation before continuing score inputting (updates date and time)
 $(document).ready(function () {
     $("#continueScoreInputtingButton").click(function(e) {
-        if (!confirm("really")) {
+        if (!confirm("Pelin päivämäärä ja aika päivitetään! Haluatko jatkaa tulosten syöttämistä?")) {
             e.preventDefault();
         }
     });
