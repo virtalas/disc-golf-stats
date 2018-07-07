@@ -2,8 +2,9 @@ $(document).ready(function () {
   var city = $("#coursecity").text();
   var country = "fi";
 
+  // use crossorigin.me to make non-https calls from https pages
   $.ajax({
-    url: "http://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&units=metric&appid=076ac060620f271da6d88921f859c5dd"
+    url: "https://crossorigin.me/http://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&units=metric&appid=076ac060620f271da6d88921f859c5dd"
   }).done(function(data) {
     console.log("main: " + data.weather[0].main);
     console.log("description: " + data.weather[0].description);
