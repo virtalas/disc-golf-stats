@@ -35,6 +35,7 @@
         $courseid = $course->courseid;
         $games_played = Course::number_of_games_played($courseid);
         $latest_game = Course::latest_game_date($courseid);
+        $latest_gameid = Course::latest_gameid($courseid);
         $avg_score = Course::average_scoring($courseid);
         $par = Course::par($courseid);
         $high_scores = Course::high_scores($courseid);
@@ -51,6 +52,7 @@
           'player' => $player,
           'games_played' => $games_played,
           'latest_game' => $latest_game,
+          'latest_gameid' => $latest_gameid,
           'avg_score' => $avg_score,
           'par' => $par,
           'high_scores' => $high_scores,

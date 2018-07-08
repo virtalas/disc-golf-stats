@@ -1,7 +1,7 @@
 
 <!-- When updating this macro's parameters, update also macro calls in course/index.html and course/show.html -->
 
-{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, high_scores_by_user, chrono_high_scores, chrono_high_scores_player, score_distribution) %}
+{% macro course_show(base_path, course, player, games_played, latest_game, latest_gameid, avg_score, par, high_scores, high_scores_by_user, chrono_high_scores, chrono_high_scores_player, score_distribution) %}
 
   <table style="width:300px">
     <tr>
@@ -10,7 +10,8 @@
     </tr>
     <tr>
       <td>Viimeisin peli:</td>
-      <td>{% if games_played > 0 %}{{latest_game}}{% else %}Ei pelejä{% endif %}</td>
+      <td>{% if games_played > 0 %}<a href="{{base_path}}/game/{{latest_gameid}}">{{latest_game}}</a>
+          {% else %}Ei pelejä{% endif %}</td>
     </tr>
     <tr>
       <td>Tulosten keskiarvo:</td>

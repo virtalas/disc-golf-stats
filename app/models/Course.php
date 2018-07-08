@@ -234,6 +234,22 @@
       return null;
     }
 
+    public static function latest_gameid($courseid) {
+      $sql = "SELECT gameid
+              FROM game
+              WHERE courseid = :courseid
+              ORDER BY game.gamedate DESC LIMIT 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+      $row = $query->fetch();
+
+      if ($row) {
+        return $row['gameid'];
+      }
+
+      return null;
+    }
+
     public static function average_scoring($courseid) {
       $sql = "SELECT to_char(AVG(score_sum), '999D99') as avg_score
               FROM (SELECT SUM(score.stroke + score.ob) as score_sum
