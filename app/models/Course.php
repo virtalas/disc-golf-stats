@@ -121,7 +121,6 @@
         $query = self::high_scores_by_player_query($courseid, $playerid);
       }
 
-
       $rows = $query->fetchAll();
       $high_scores = array();
 

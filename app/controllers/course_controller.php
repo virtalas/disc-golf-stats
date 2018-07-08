@@ -37,7 +37,6 @@
         $latest_game = Course::latest_game_date($courseid);
         $avg_score = Course::average_scoring($courseid);
         $par = Course::par($courseid);
-
         $high_scores = Course::high_scores($courseid);
         $high_scores_by_user = Course::high_scores($courseid, $player->playerid);
 
