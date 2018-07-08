@@ -115,7 +115,7 @@
     */
 
     public static function high_scores($courseid, $playerid=null) {
-      if($playerid == null) {
+      if($playerid === null) {
         $query = self::high_scores_query($courseid);
       } else {
         $query = self::high_scores_by_player_query($courseid, $playerid);
