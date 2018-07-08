@@ -1,7 +1,7 @@
 
 <!-- When updating this macro's parameters, update also macro calls in course/index.html and course/show.html -->
 
-{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, chrono_high_scores, chrono_high_scores_player, score_distribution) %}
+{% macro course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, high_scores_by_user, chrono_high_scores, chrono_high_scores_player, score_distribution) %}
 
   <table style="width:300px">
     <tr>
@@ -68,31 +68,66 @@
 
   <h3>Parhaat tulokset</h3>
 
-  {% if games_played > 0 %}
-    <table style="width:700px">
-      <tr>
-        <td><b>Sija</b></td>
-        <td><b>Päivämäärä</b></td>
-        <td><b>Pelaaja</b></td>
-        <td><b>Tulos</b></td>
-        <td align="right"><b>Par</b></td>
-      </tr>
-      {% for i in 0..high_scores|length - 1 %}
+  <a class="btn btn-primary btn-xs disabled_link" id="user_high_score_button">Omat pelit</a>
+  <a class="btn btn-default btn-xs" id="high_score_button">Kaikki pelit</a>
+
+  <br><br>
+
+  <div class="hidden_high_scores" id="high_scores">
+    {% if games_played > 0 %}
+      <table style="width:700px">
         <tr>
-          <td>{{i + 1}}.</td>
-          <td>{{high_scores[i][0]}}</td>
-          <td>{{high_scores[i][1]}}</td>
-          <td>{{high_scores[i][2]}}</td>
-          <td align="right">{{high_scores[i][3]}}</td></td>
-          <td style="padding-left:30px">
-            <a href="{{base_path}}/game/{{high_scores[i][4]}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
-          </td>
+          <td><b>Sija</b></td>
+          <td><b>Päivämäärä</b></td>
+          <td><b>Pelaaja</b></td>
+          <td><b>Tulos</b></td>
+          <td align="right"><b>Par</b></td>
         </tr>
-      {% endfor %}
-    </table>
-  {% else %}
-    <p>Ei pelejä</p>
-  {% endif %}
+        {% for i in 0..high_scores|length - 1 %}
+          <tr>
+            <td>{{i + 1}}.</td>
+            <td>{{high_scores[i][0]}}</td>
+            <td>{{high_scores[i][1]}}</td>
+            <td>{{high_scores[i][2]}}</td>
+            <td align="right">{{high_scores[i][3]}}</td></td>
+            <td style="padding-left:30px">
+              <a href="{{base_path}}/game/{{high_scores[i][4]}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>Ei pelejä</p>
+    {% endif %}
+  </div>
+
+  <div id="high_scores_by_user">
+    {% if games_played > 0 %}
+      <table style="width:700px">
+        <tr>
+          <td><b>Sija</b></td>
+          <td><b>Päivämäärä</b></td>
+          <td><b>Pelaaja</b></td>
+          <td><b>Tulos</b></td>
+          <td align="right"><b>Par</b></td>
+        </tr>
+        {% for i in 0..high_scores_by_user|length - 1 %}
+          <tr>
+            <td>{{i + 1}}.</td>
+            <td>{{high_scores_by_user[i][0]}}</td>
+            <td>{{high_scores_by_user[i][1]}}</td>
+            <td>{{high_scores_by_user[i][2]}}</td>
+            <td align="right">{{high_scores_by_user[i][3]}}</td></td>
+            <td style="padding-left:30px">
+              <a href="{{base_path}}/game/{{high_scores_by_user[i][4]}}" class="btn btn-default btn-xs" role="button">Katso tuloskortti</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>Ei pelejä</p>
+    {% endif %}
+  </div>
 
   <br><br>
 
@@ -105,7 +140,6 @@
   <div id="courseplayerhighscores" style="width: 700px; height: 450px;"></div>
 
   <br><br>
-
   <h3>Tulosten jakautuminen väylillä</h3>
 
   <div id="scoredistribution" style="width: 790px; height: 450px;"></div>

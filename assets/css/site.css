@@ -21,6 +21,10 @@ a.hidden_link_black {
 	text-decoration: underline;
 }
 
+.hidden_high_scores {
+	display: none;
+}
+
 #pagination {
 	cursor: pointer;
 }

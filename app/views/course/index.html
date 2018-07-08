@@ -35,7 +35,7 @@
 
   {% if courses %}
     <h2>{{course.name}}, <span id="coursecity">{{course.city}}</span></h2>
-    {{course_show.course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, chrono_high_scores, chrono_high_scores_player, score_distribution)}}
+    {{course_show.course_show(base_path, course, player, games_played, latest_game, avg_score, par, high_scores, high_scores_by_user, chrono_high_scores, chrono_high_scores_player, score_distribution)}}
   {% else %}
     <p>
       <a href="{{base_path}}/course/list" class="btn btn-default btn-sm" role="button">Lisää uusi rata</a>
@@ -50,6 +50,8 @@
   <script src="{{base_path}}/vendor/amcharts/lang/fi.js"></script>
 
   <script src="{{base_path}}/assets/js/course_graphs.js"></script>
+
+  <script src="{{base_path}}/assets/js/course.js"></script>
 
   <script src="{{base_path}}/assets/js/weather.js"></script>
   <script src="{{base_path}}/assets/js/course_list_sorting.js"></script>
