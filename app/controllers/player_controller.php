@@ -19,6 +19,7 @@
 
         $game_count = Game::count_all_player_games($player->playerid);
         $latest_game = Game::latest_player_game($player->playerid);
+        $latest_gameid = Game::latest_player_gameid($player->playerid);
         $high_scores = Game::player_high_scores($player->playerid);
         $years = Game::game_years();
 
@@ -57,6 +58,7 @@
           'game_count' => $game_count,
           'throw_count' => $throw_count,
           'latest_game' => $latest_game,
+          'latest_gameid' => $latest_gameid,
           'high_scores' => $high_scores,
           'popular_courses' => $popular_courses,
           'birdies' => $birdies,

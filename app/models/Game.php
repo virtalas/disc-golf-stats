@@ -598,6 +598,19 @@
       return $row['name']. " (". $row['gamedate']. ")";
     }
 
+    public static function latest_player_gameid($playerid) {
+      $sql = "SELECT gameid
+              FROM game
+              WHERE game.gameid IN
+              (SELECT gameid FROM score WHERE playerid = :playerid)
+              ORDER BY gameid DESC LIMIT 1";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('playerid' => $playerid));
+      $row = $query->fetch();
+
+      return $row['gameid'];
+    }
+
     public static function player_high_scores($playerid) {
       // If there are multiple games with the same high score, this returns them both.
       // Duplicate scores come in a row, with the newest one first (the correct one).
