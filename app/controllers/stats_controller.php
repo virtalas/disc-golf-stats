@@ -30,6 +30,7 @@
           'game_count' => Game::count_all(),
           'throw_count' => Score::count_all(),
           'latest_game' => Game::latest_game(),
+          'latest_gameid' => Game::latest_gameid(),
           'popular_courses' => Course::popular_courses_all_players(),
           'player' => $player,
           'high_scores' => $high_scores,
