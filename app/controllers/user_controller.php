@@ -69,7 +69,8 @@
           'firstname' => $firstname,
           'username' => $username,
           'password' => crypt($password, $salt),
-          'salt' => $salt
+          'salt' => $salt,
+          'guest' => false
         ));
         $player->save();
 

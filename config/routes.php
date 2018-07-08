@@ -74,7 +74,12 @@
 
   // Pelin lisääminen tietokantaan
   $routes->post('/game', 'check_logged_in', function(){
-    GameController::store();
+    GameController::store(True);
+  });
+
+  // Viimeisin gameid
+  $routes->get('/game/latest/id', "check_logged_in", function(){
+    echo Game::latest_gameid();
   });
 
   // Pelin lisäyssivu
@@ -84,7 +89,12 @@
 
   // Pelin merkkaus mobiili UI:ssa
   $routes->get('/game/mobile/new', 'check_logged_in', function(){
-    GameController::mobileScoreCard();
+    GameController::initMobileScoreCard();
+  });
+
+  // Pelin muokkaus mobile guissa (eli tulosten lisäys)
+  $routes->get('/game/mobile/:gameid', 'check_logged_in', function($gameid){
+    GameController::mobileScoreCard($gameid);
   });
 
   // Pelin esittelysivu
@@ -99,7 +109,12 @@
 
   // Pelin muokkaaminen (vain pelin luoja tai admin)
   $routes->post('/game/:gameid/edit', 'check_logged_in', function($gameid){
-    GameController::update($gameid);
+    GameController::update($gameid, True);
+  });
+
+  // Pelin päivittäminen (vain pelin luoja tai admin) mobile guista tuloksia merkatessa
+  $routes->post('/game/:gameid/mobile/edit', 'check_logged_in', function($gameid){
+    GameController::update($gameid, False);
   });
 
   // Pelin poisto (vain pelin luoja tai admin)
@@ -124,6 +139,10 @@
     SearchController::search();
   });
 
+  $routes->get('/search/game/:gameid', 'check_logged_in', function($gameid){
+    SearchController::searchById($gameid);
+  });
+
   // Ajax pyynnöllä väylän tulokset pelaajalle
   $routes->get('/hole/:holeid/player/:playerid/stats', 'check_logged_in', function($holeid, $playerid){
     Hole::score_distribution($holeid, $playerid);
@@ -133,6 +152,8 @@
   $routes->get('/hole/:holeid/stats', 'check_logged_in', function($holeid){
     Hole::score_distribution($holeid, null);
   });
+
+
 
   // Pelaaja
 

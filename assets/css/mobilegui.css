@@ -9,6 +9,11 @@
   margin:auto;
 }
 
+.popover__content {
+    height: 100%;
+    width: 100%;
+}
+
 ons-toolbar {
   padding: 15px;
 }

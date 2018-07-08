@@ -2,6 +2,7 @@
 {% block content %}
 
   {% import "macros/high_scores.html" as high_scores_macro %}
+  {% import "macros/forms.html" as forms %}
 
   {% if error %}
     <div class="alert alert-danger">
@@ -61,11 +62,13 @@
 
   </section>
 
-  <br>
-
-  <a href="{{base_path}}/info" class="btn btn-default" role="button">Tietoa</a>
-
   <br><br>
+
+  {% if user_logged_in %}
+    {{forms.new_game(courses, players_without_guests, base_path)}}
+  {% endif %}
+
+  <br>
 
   {% if user_logged_in and high_scores | length != 0 %}
     <h3>Omat ennätykset</h3>
@@ -75,4 +78,11 @@
 
   {{high_scores_macro.display_high_scores(high_scores, base_path, user_logged_in)}}
 
+  <br>
+  <a href="{{base_path}}/info" class="btn btn-default" role="button">Tietoa</a>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{base_path}}/assets/js/guests.js"></script>
 {% endblock %}

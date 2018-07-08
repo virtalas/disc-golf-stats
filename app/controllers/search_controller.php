@@ -53,4 +53,10 @@
         'players' => Player::all()
       ));
     }
+
+    public static function searchById($gameid) {
+        $conditions['gameid'] = $gameid;
+        $games = Game::search($conditions, 1, 1);
+        View::make('search/searchbyid.html', array('game' => $games[0], 'players' => Player::all()));
+    }
   }

@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
     <link rel="stylesheet" href="{{base_path}}/assets/css/mobilegui.css">
+    <link rel="stylesheet" href="{{base_path}}/assets/css/site.css">
 
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
     <script src="{{base_path}}/vendor/jquery.min.js"></script>
@@ -13,6 +14,7 @@
     <script src="{{base_path}}/assets/js/mobilegui/services.js"></script>
 
     <script type="text/javascript">
+      var preparedGame = JSON.parse('{{ game|json_encode|raw }}');
       var course = JSON.parse('{{ course|json_encode|raw }}');
       var players = JSON.parse('{{ players|json_encode|raw }}');
       var attributes = JSON.parse('{{ attributes|json_encode|raw }}');
@@ -32,6 +34,12 @@
             </ons-list-item>
             <ons-list-item onclick="fn.load('../../app/views/game/mobilegui/conditions.html')" tappable>
               Pelin tiedot
+            </ons-list-item>
+            <ons-list-item onclick="fn.scoreCardPopOver(this)" tappable>
+              Tuloskortti
+            </ons-list-item>
+            <ons-list-item onclick="fn.sendScores()" tappable>
+              Lähetä tulokset
             </ons-list-item>
             <ons-list-item id="splitter_hole_info" onclick="fn.load('../../app/views/game/mobilegui/hole_info.html')" tappable>
               Väylän tilastot
@@ -59,6 +67,8 @@
             </ons-toolbar-button>
           </div>
         </ons-toolbar>
+
+        <ons-progress-bar indeterminate id="animated_progress_bar" style="display: none;"></ons-progress-bar>
 
         {% for player in players %}
           <ons-list class="contact-block" modifier="material">
@@ -106,8 +116,19 @@
                 </ons-col>
               </ons-row>
             </ons-list-item>
-          </ons-list>
+
         {% endfor %}
+
+            <ons-list-item modifier="material short-divider">
+              <ons-row>
+                <ons-col align="center" width="100%" style="color: grey;">
+                  <span id="timesincelastupdatetext">Tulokset lähettetiin viimeksi <span id="timesincelastupdate">0</span> min sitten.</span>
+                  <span id="sending" style="display: none;">Lähetetään...</span>
+                </ons-col>
+              </ons-row>
+            </ons-list-item>
+
+        </ons-list>
 
         <ons-bottom-toolbar style="height: 150px; position: fixed;">
           <ons-row>
@@ -141,6 +162,10 @@
         </ons-bottom-toolbar>
       </ons-page>
     </template>
+
+      <ons-popover id="popover" cover-target cancelable direction="down" style="height: 55%; width: 97%">
+          <div id="gamecard" style="padding: 5px;">&nbsp;&nbsp;&nbsp;Ladataan...</div>
+      </ons-popover>
 
     <div id="coursecity" style="display: none;">
       {{course.city}}
