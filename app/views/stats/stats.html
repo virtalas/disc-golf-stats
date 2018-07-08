@@ -32,7 +32,8 @@
           </tr>
           <tr>
             	<td>Viimeisin peli: </td>
-            	<td>{% if game_count > 0 %}{{latest_game}}{% else %}Ei pelejä{% endif %}</td>
+            	<td>{% if game_count > 0 %}<a href="{{base_path}}/game/{{latest_gameid}}">{{latest_game}}</a>
+                {% else %}Ei pelejä{% endif %}</td>
           </tr>
           <tr>
             <!-- Empty row -->
