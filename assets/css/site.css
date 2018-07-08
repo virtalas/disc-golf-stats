@@ -21,6 +21,10 @@ a.hidden_link_black {
 	text-decoration: underline;
 }
 
+.hidden_element {
+	display: none;
+}
+
 #pagination {
 	cursor: pointer;
 }

@@ -114,24 +114,13 @@
     *  Information functions
     */
 
-    public static function high_scores($courseid) {
-      $sql = "SELECT gameid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, firstname, total_score, total_score - total_par as to_par
-              FROM (
-              SELECT score.gameid, gamedate, player.firstname,
-              SUM(score.stroke) + SUM(score.ob) as total_score,
-              SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
-              FROM score
-              JOIN hole ON score.holeid = hole.holeid
-              JOIN course ON hole.courseid = course.courseid
-              JOIN game ON score.gameid = game.gameid
-              JOIN player ON player.playerid = score.playerid
-              WHERE score.legal = TRUE
-              AND hole.courseid = :courseid
-              GROUP BY score.gameid, gamedate, firstname
-              ) t1
-              ORDER BY total_score ASC, t1.gamedate DESC LIMIT 5";
-      $query = DB::connection()->prepare($sql);
-      $query->execute(array('courseid' => $courseid));
+    public static function high_scores($courseid, $playerid=null) {
+      if($playerid === null) {
+        $query = self::high_scores_query($courseid);
+      } else {
+        $query = self::high_scores_by_player_query($courseid, $playerid);
+      }
+
       $rows = $query->fetchAll();
       $high_scores = array();
 
@@ -155,6 +144,51 @@
       }
 
       return $high_scores;
+    }
+
+    public static function high_scores_query($courseid) {
+      $sql = "SELECT gameid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, firstname, total_score, total_score - total_par as to_par
+              FROM (
+              SELECT score.gameid, gamedate, player.firstname,
+              SUM(score.stroke) + SUM(score.ob) as total_score,
+              SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              JOIN course ON hole.courseid = course.courseid
+              JOIN game ON score.gameid = game.gameid
+              JOIN player ON player.playerid = score.playerid
+              WHERE score.legal = TRUE
+              AND hole.courseid = :courseid
+              GROUP BY score.gameid, gamedate, firstname
+              ) t1
+              ORDER BY total_score ASC, t1.gamedate DESC LIMIT 5";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid));
+
+      return $query;
+    }
+
+    public static function high_scores_by_player_query($courseid, $playerid) {
+      $sql = "SELECT gameid, to_char(gamedate, 'HH24:MI DD.MM.YYYY') as gamedate, firstname, total_score, total_score - total_par as to_par
+              FROM (
+              SELECT score.gameid, gamedate, player.firstname,
+              SUM(score.stroke) + SUM(score.ob) as total_score,
+              SUM(CASE WHEN score.stroke = 0 THEN 0 ELSE hole.par END) as total_par
+              FROM score
+              JOIN hole ON score.holeid = hole.holeid
+              JOIN course ON hole.courseid = course.courseid
+              JOIN game ON score.gameid = game.gameid
+              JOIN player ON player.playerid = score.playerid
+              WHERE score.legal = TRUE
+              AND hole.courseid = :courseid
+              AND score.playerid = :playerid
+              GROUP BY score.gameid, gamedate, firstname
+              ) t1
+              ORDER BY total_score ASC, t1.gamedate DESC LIMIT 5";
+      $query = DB::connection()->prepare($sql);
+      $query->execute(array('courseid' => $courseid, 'playerid' => $playerid));
+
+      return $query;
     }
 
     public static function number_of_games_played($courseid) {

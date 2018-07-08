@@ -38,6 +38,7 @@
         $avg_score = Course::average_scoring($courseid);
         $par = Course::par($courseid);
         $high_scores = Course::high_scores($courseid);
+        $high_scores_by_user = Course::high_scores($courseid, $player->playerid);
 
         // Graph data
         $chrono_high_scores = Course::chronological_high_scores($courseid, 0);
@@ -53,6 +54,7 @@
           'avg_score' => $avg_score,
           'par' => $par,
           'high_scores' => $high_scores,
+          'high_scores_by_user' => $high_scores_by_user,
           'chrono_high_scores' => $chrono_high_scores,
           'chrono_high_scores_player' => $chrono_high_scores_player,
           'score_distribution' => $score_distribution,
