@@ -47,6 +47,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Kisat-sivu
 
+* korjaa kisan muokkaus (ei onnistu ollenkaan)
 * päivämäärän formaatti samaksi kuin pelit-sivulla
 * pisteet menevät väärin jos jollain laiton peli (ainakin jos laiton + kaikki tulokset nollia)
 * kisaa tehdessä ja muokatessa valita "laske pisteet" / "käytä pistelaskua", joka määrää näytetäänkö pistetaulukko
