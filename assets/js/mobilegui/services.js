@@ -205,6 +205,7 @@ function toPar(playerid) {
 }
 
 function createForm(url, data) {
+    $('form').remove();
     var form = document.createElement('form');
     form.method = 'post';
     form.action = url;
