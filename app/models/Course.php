@@ -441,9 +441,9 @@
               COUNT(over_bogey) AS over_bogey
               FROM (
                 SELECT hole.hole_num,
-                CASE WHEN score.stroke = 1 THEN 1 END AS hole_in_one,
+                CASE WHEN score.stroke = 1 AND hole.par != 1 THEN 1 END AS hole_in_one,
                 CASE WHEN hole.par - score.stroke - score.ob = 2 AND score.stroke != 1 THEN 1 END AS eagle,
-                CASE WHEN hole.par - score.stroke - score.ob = 1 THEN 1 END AS birdie,
+                CASE WHEN hole.par - score.stroke - score.ob = 1 AND score.stroke != 1 THEN 1 END AS birdie,
                 CASE WHEN hole.par - score.stroke - score.ob = 0 THEN 1 END AS par,
                 CASE WHEN hole.par - score.stroke - score.ob = -1 THEN 1 END AS bogey,
                 CASE WHEN hole.par - score.stroke - score.ob < -1 THEN 1 END AS over_bogey
