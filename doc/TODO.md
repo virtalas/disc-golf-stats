@@ -26,21 +26,19 @@ Features/bugs/etc planned for disc-golf-stats
 ### Pelit
 
 * mobile gui: lisää validointi sille että 'sadetta' ja 'märkää_ei_sadetta' ei voi olla samaan aikaan
-* mobile gui: tutki miksi virheviesti tulee välillä
 * mobile gui: tyhjä peli ilmestyy kun valitaan 'vanha lisäyssivu'
+* mobile gui: pelaajat eivät mahdu näytölle jos pelaajia on liian monta eikä sivua voi skrollata
 * harkintaan: heitot nimen viereen, ob oikeaan laitaan, alusta par:eilla eikä nollilla, +- napit tulokselle
-* (pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5)
+* (pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5) (not a defect?)
 
 ### Radat-sivu
 
 * pelaaja voi muokata lisäämiään ratoja
-* (muokkaa-painike radan sivulle, ettei tarvitse etsiä sitä)
-* lisää eagle tulosten jakautuminen -kuvaan
-* korjaa radan lisäysnäkymä jos on monta väylää (uusi rivi tai jotain)
+    * (muokkaa-painike radan sivulle, ettei tarvitse etsiä sitä)
+* korjaa radan lisäysnäkymä jos on monta väylää (ja kapea näyttö), uusi rivi tai jotain
 * vaihda popularity <-> name javascriptillä ja päivitä ratalinkkien get-parametri oikeaksi
-* pelaajakohtainen top5-näkymä, drop down pelaajavalinta (samaan kuin nykyinen ja default valinta "kaikki")
 * rate courses with 5 stars, how overall score and user's own score
-* väylien pituudet
+* (väylien pituudet) (liikaa ylläpitotyötä?)
 
 ### Pelaajat-sivu
 
