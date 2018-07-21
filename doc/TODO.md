@@ -27,6 +27,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 * mobile gui: lisää validointi sille että 'sadetta' ja 'märkää_ei_sadetta' ei voi olla samaan aikaan
 * mobile gui: tyhjä peli ilmestyy kun valitaan 'vanha lisäyssivu'
+* mobile gui: pelaajat eivät mahdu näytölle jos pelaajia on liian monta eikä sivua voi skrollata
 * harkintaan: heitot nimen viereen, ob oikeaan laitaan, alusta par:eilla eikä nollilla, +- napit tulokselle
 * (pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5) (not a defect?)
 
