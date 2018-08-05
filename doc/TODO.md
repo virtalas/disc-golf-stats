@@ -4,6 +4,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Misc
 
+* change indentation to four everywhere
 * remember me -functionality (http://fishbowl.pastiche.org/2004/01/19/persistent%5Flogin%5Fcookie%5Fbest%5Fpractice/)
 * reset password -functionality
 * set collation (order by name not working in page player for the course list, ä before a)
