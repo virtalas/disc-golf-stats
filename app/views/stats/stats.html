@@ -1,86 +1,91 @@
 {% extends "base.html" %}
 {% block content %}
 
-  {% import "macros/high_scores.html" as high_scores_macro %}
-  {% import "macros/forms.html" as forms %}
+    {% import "macros/high_scores.html" as high_scores_macro %}
+    {% import "macros/forms.html" as forms %}
 
-  {% if error %}
-    <div class="alert alert-danger">
-      {{error}}
-    </div>
-  {% endif %}
+    {% if error %}
+        <div class="alert alert-danger">
+    {{error}}
+        </div>
+    {% endif %}
 
-  {% if message %}
-    <div class="alert alert-success" id="message-success">
-      {{message}}
-    </div>
-  {% endif %}
+    {% if message %}
+        <div class="alert alert-success" id="message-success">
+    {{message}}
+        </div>
+    {% endif %}
 
-  <section>
-  	<h2>Tilastoja</h2>
+    <section>
+        <h2>Tilastoja</h2>
+
+        <br>
+
+        <table style="width:530px">
+            <tr>
+                <td>Pelejä:</td>
+                <td>{{game_count}}</td>
+            </tr>
+            <tr>
+                <td>Heittoja:</td>
+                <td>{{throw_count}}</td>
+            </tr>
+            <tr>
+                <td>Viimeisin peli: </td>
+                <td>{% if game_count > 0 %}<a href="{{base_path}}/game/{{latest_gameid}}">{{latest_game}}</a>
+                {% else %}Ei pelejä{% endif %}</td>
+            </tr>
+            <tr>
+                <!-- Empty row -->
+                <td height=30></td>
+            </tr>
+
+            {% if popular_courses | length == 0 %}
+                <tr>
+                    <td>Suosituimmat radat (eniten pelejä):</td>
+                    <td>Ei pelejä</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>Suosituimmat radat (eniten pelejä):</td>
+                    <td>1. {{popular_courses[0].name}} ({{popular_courses[0].occurance}})</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>2. {{popular_courses[1].name}} ({{popular_courses[1].occurance}})</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>3. {{popular_courses[2].name}} ({{popular_courses[2].occurance}})</td>
+                </tr>
+            {% endif %}
+        </table>
+
+    </section>
+
+    <br><br>
+
+    {% if user_logged_in %}
+        {{forms.new_game(courses, players_without_guests, base_path)}}
+    {% endif %}
 
     <br>
 
-  	<table style="width:530px">
-          <tr>
-            	<td>Pelejä:</td>
-            	<td>{{game_count}}</td>
-          </tr>
-          <tr>
-            	<td>Heittoja:</td>
-            	<td>{{throw_count}}</td>
-          </tr>
-          <tr>
-            	<td>Viimeisin peli: </td>
-            	<td>{% if game_count > 0 %}<a href="{{base_path}}/game/{{latest_gameid}}">{{latest_game}}</a>
-                {% else %}Ei pelejä{% endif %}</td>
-          </tr>
-          <tr>
-            <!-- Empty row -->
-            <td height=30></td>
-          </tr>
+    {% if user_logged_in and high_scores | length != 0 %}
+        <h3>Omat ennätykset</h3>
+    {% endif %}
 
-          {% if popular_courses | length == 0 %}
-            <tr>
-              <td>Suosituimmat radat (eniten pelejä):</td>
-              <td>Ei pelejä</td>
-            </tr>
-          {% else %}
-            <tr>
-              <td>Suosituimmat radat (eniten pelejä):</td>
-              <td>1. {{popular_courses[0].name}} ({{popular_courses[0].occurance}})</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>2. {{popular_courses[1].name}} ({{popular_courses[1].occurance}})</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>3. {{popular_courses[2].name}} ({{popular_courses[2].occurance}})</td>
-            </tr>
-          {% endif %}
-    	</table>
+    <br>
 
-  </section>
+    {{high_scores_macro.display_high_scores(high_scores, base_path, user_logged_in)}}
 
-  <br><br>
+    <br>
+    <a href="{{base_path}}/info" class="btn btn-default" role="button">Tietoa</a>
 
-  {% if user_logged_in %}
-    {{forms.new_game(courses, players_without_guests, base_path)}}
-  {% endif %}
-
-  <br>
-
-  {% if user_logged_in and high_scores | length != 0 %}
-    <h3>Omat ennätykset</h3>
-  {% endif %}
-
-  <br>
-
-  {{high_scores_macro.display_high_scores(high_scores, base_path, user_logged_in)}}
-
-  <br>
-  <a href="{{base_path}}/info" class="btn btn-default" role="button">Tietoa</a>
+    {% if not user_logged_in %}
+        <br><br>
+        {{forms.login(base_path, message, error)}}
+    {% endif %}
 
 {% endblock %}
 
