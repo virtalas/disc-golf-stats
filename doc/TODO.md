@@ -23,13 +23,18 @@ Features/bugs/etc planned for disc-golf-stats
 * longest birdie streak
 * (longest par streak)
 
+### Mobile gui
+
+* lisää validointi sille että 'sadetta' ja 'märkää_ei_sadetta' ei voi olla samaan aikaan
+* tyhjä peli ilmestyy kun valitaan 'vanha lisäyssivu' (Ohjaa uuden pelin sijaan muokkaussivulle tai poista vanha. Miten päästään lisäämään csv-peli?)
+* pelaajat eivät mahdu näytölle jos pelaajia on liian monta eikä sivua voi skrollata
+* piilota "to par" painamalla sitä, jolloin se vaihtuu "..." ja saa takaisin painamalla uudestaan
+* harkintaan: heitot nimen viereen, ob oikeaan laitaan, alusta par:eilla eikä nollilla, +- napit tulokselle
+
 ### Pelit
 
-* mobile gui: lisää validointi sille että 'sadetta' ja 'märkää_ei_sadetta' ei voi olla samaan aikaan
-* mobile gui: tyhjä peli ilmestyy kun valitaan 'vanha lisäyssivu'
-* mobile gui: pelaajat eivät mahdu näytölle jos pelaajia on liian monta eikä sivua voi skrollata
-* harkintaan: heitot nimen viereen, ob oikeaan laitaan, alusta par:eilla eikä nollilla, +- napit tulokselle
 * (pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5) (not a defect?)
+* uusi peli: rata-dropdownille joku tapa järjestää radat aakkosjärjestykseen
 
 ### Radat-sivu
 
