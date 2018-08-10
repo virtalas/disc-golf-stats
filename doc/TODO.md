@@ -6,6 +6,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 * change indentation to four everywhere
 * tests
+* ratojen suosio kaavassa järva
 * remember me -functionality (http://fishbowl.pastiche.org/2004/01/19/persistent%5Flogin%5Fcookie%5Fbest%5Fpractice/)
 * reset password -functionality
 * set collation (order by name not working in page player for the course list, ä before a)
@@ -27,6 +28,8 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Mobile gui
 
+* väylän tilastoja "väylän tilastoja" sivulle
+    * mm. to par keskiarvo
 * lisää validointi sille että 'sadetta' ja 'märkää_ei_sadetta' ei voi olla samaan aikaan
 * tyhjä peli ilmestyy kun valitaan 'vanha lisäyssivu' (Ohjaa uuden pelin sijaan muokkaussivulle tai poista vanha. Miten päästään lisäämään csv-peli?)
 * pelaajat eivät mahdu näytölle jos pelaajia on liian monta eikä sivua voi skrollata
@@ -37,6 +40,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 * (pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5) (not a defect?)
 * uusi peli: rata-dropdownille joku tapa järjestää radat aakkosjärjestykseen
+* Jos peli on kesken niin se näkyy etusivulla mutta linkki vie viimeiseen kokonaan valmiiseen peliin
 
 ### Radat-sivu
 
