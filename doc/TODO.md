@@ -46,6 +46,10 @@ Features/bugs/etc planned for disc-golf-stats
 
 * pelaaja voi muokata lisäämiään ratoja
     * (muokkaa-painike radan sivulle, ettei tarvitse etsiä sitä)
+* uusi tietokanta-sarake: "retired" radoille joiden nimessä on "(vanha)" eli layouttia ei enää ole
+    * älä näytä ratoja uusi peli -dropdownissa
+    * lajittele retired-radat erikseen radat-sivun sivupalkissa
+    * retired-checkbox radan muokkaussivulle
 * korjaa radan lisäysnäkymä jos on monta väylää (ja kapea näyttö), uusi rivi tai jotain
 * vaihda popularity <-> name javascriptillä ja päivitä ratalinkkien get-parametri oikeaksi
 * rate courses with 5 stars, how overall score and user's own score
