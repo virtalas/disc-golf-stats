@@ -22,6 +22,7 @@ Features/bugs/etc planned for disc-golf-stats
 
 ### Tilastot-sivu
 
+* viimeisin peli -linkki: hae viimeisin id päivämäärän, ei id:n numeron perusteella
 * longest streak (days in row)
 * longest birdie streak
 * (longest par streak)
