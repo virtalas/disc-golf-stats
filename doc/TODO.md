@@ -52,6 +52,7 @@ Features/bugs/etc planned for disc-golf-stats
     * lajittele retired-radat erikseen radat-sivun sivupalkissa
     * retired-checkbox radan muokkaussivulle
 * korjaa radan lisäysnäkymä jos on monta väylää (ja kapea näyttö), uusi rivi tai jotain
+* "tulosten jakautuminen radalla" -taulukon selitystekstit päinvastaisessa järjestyksessä (että vastaa diagrammia)
 * vaihda popularity <-> name javascriptillä ja päivitä ratalinkkien get-parametri oikeaksi
 * rate courses with 5 stars, how overall score and user's own score
 * (väylien pituudet) (liikaa ylläpitotyötä?)
