@@ -42,6 +42,7 @@ Features/bugs/etc planned for disc-golf-stats
 * (pelin lisäys: pelaaja-checkboxit kun pelaajamäärä != 5) (not a defect?)
 * uusi peli: rata-dropdownille joku tapa järjestää radat aakkosjärjestykseen
 * Jos peli on kesken niin se näkyy etusivulla mutta linkki vie viimeiseen kokonaan valmiiseen peliin
+* Feature: kuvien lataus peliin. MobileUI:ssa vikalla sivulla voi valita kuvat. Tuloskortissa nappi (jos on kuvia) joka avaa kuvat.
 
 ### Radat-sivu
 
